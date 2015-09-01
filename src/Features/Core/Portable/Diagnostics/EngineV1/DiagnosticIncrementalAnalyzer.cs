@@ -488,6 +488,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV1
                 return true;
             }
 
+            // PERF: Don't query descriptors for compiler analyzer, always execute it.
+            if (analyzer.IsCompilerAnalyzer())
+            {
+                return true;
+            }
+
             return Owner.GetDiagnosticDescriptors(analyzer).Any(d => GetEffectiveSeverity(d, options) != ReportDiagnostic.Hidden);
         }
 
@@ -523,6 +529,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV1
         private static bool ShouldRunAnalyzerForStateType(DiagnosticAnalyzer analyzer, StateType stateTypeId,
             ImmutableHashSet<string> diagnosticIds = null, Func<DiagnosticAnalyzer, ImmutableArray<DiagnosticDescriptor>> getDescriptors = null)
         {
+            // PERF: Don't query descriptors for compiler analyzer, always execute it for all state types.
+            if (analyzer.IsCompilerAnalyzer())
+            {
+                return true;
+            }
+
             if (diagnosticIds != null && getDescriptors(analyzer).All(d => !diagnosticIds.Contains(d.Id)))
             {
                 return false;
@@ -752,18 +764,17 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV1
                 diagnostic.Properties,
                 diagnostic.Workspace,
                 diagnostic.ProjectId,
-                diagnostic.DocumentId,
-                newSpan,
-                mappedFilePath: mappedLineInfo.GetMappedFilePathIfExist(),
-                mappedStartLine: mappedLineInfo.StartLinePosition.Line,
-                mappedStartColumn: mappedLineInfo.StartLinePosition.Character,
-                mappedEndLine: mappedLineInfo.EndLinePosition.Line,
-                mappedEndColumn: mappedLineInfo.EndLinePosition.Character,
-                originalFilePath: originalLineInfo.Path,
-                originalStartLine: originalLineInfo.StartLinePosition.Line,
-                originalStartColumn: originalLineInfo.StartLinePosition.Character,
-                originalEndLine: originalLineInfo.EndLinePosition.Line,
-                originalEndColumn: originalLineInfo.EndLinePosition.Character,
+                new DiagnosticDataLocation(diagnostic.DocumentId, newSpan,
+                    originalFilePath: originalLineInfo.Path,
+                    originalStartLine: originalLineInfo.StartLinePosition.Line,
+                    originalStartColumn: originalLineInfo.StartLinePosition.Character,
+                    originalEndLine: originalLineInfo.EndLinePosition.Line,
+                    originalEndColumn: originalLineInfo.EndLinePosition.Character,
+                    mappedFilePath: mappedLineInfo.GetMappedFilePathIfExist(),
+                    mappedStartLine: mappedLineInfo.StartLinePosition.Line,
+                    mappedStartColumn: mappedLineInfo.StartLinePosition.Character,
+                    mappedEndLine: mappedLineInfo.EndLinePosition.Line,
+                    mappedEndColumn: mappedLineInfo.EndLinePosition.Character),
                 description: diagnostic.Description,
                 helpLink: diagnostic.HelpLink);
         }
@@ -999,11 +1010,11 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV1
             return string.Format("project remove: {0}", id.ToString());
         }
 
-        #region unused 
+#region unused 
         public override Task NewSolutionSnapshotAsync(Solution solution, CancellationToken cancellationToken)
         {
             return SpecializedTasks.EmptyTask;
         }
-        #endregion
+#endregion
     }
 }
