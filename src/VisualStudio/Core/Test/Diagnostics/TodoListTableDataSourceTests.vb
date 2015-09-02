@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Diagnostics
                 Dim factory = TryCast(sink.Entries.First(), TableEntriesFactory(Of TodoItem))
                 Dim snapshot1 = factory.GetCurrentSnapshot()
 
-                factory.OnUpdated(snapshot1.Count)
+                factory.OnUpdated()
 
                 Dim snapshot2 = factory.GetCurrentSnapshot()
 
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Diagnostics
                 Dim factory = TryCast(sink.Entries.First(), TableEntriesFactory(Of TodoItem))
                 Dim snapshot1 = factory.GetCurrentSnapshot()
 
-                factory.OnUpdated(snapshot1.Count)
+                factory.OnUpdated()
 
                 Dim snapshot2 = factory.GetCurrentSnapshot()
 

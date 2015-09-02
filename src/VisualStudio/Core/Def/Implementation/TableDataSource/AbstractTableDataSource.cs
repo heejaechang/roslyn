@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         protected abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object id, object data);
 
-        protected void OnDataAddedOrChanged(object id, object data, int itemCount)
+        protected void OnDataAddedOrChanged(object id, object data)
         {
             // reuse factory. it is okay to re-use factory since we make sure we remove the factory before
             // adding it back
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 GetOrCreateFactory(id, data, out factory, out newFactory);
             }
 
-            factory.OnUpdated(itemCount);
+            factory.OnUpdated();
 
             for (var i = 0; i < snapshot.Length; i++)
             {
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 Map.Remove(id);
             }
 
-            factory.OnUpdated(0);
+            factory.OnUpdated();
 
             // let table manager know that we want to clear the entries
             for (var i = 0; i < snapshot.Length; i++)

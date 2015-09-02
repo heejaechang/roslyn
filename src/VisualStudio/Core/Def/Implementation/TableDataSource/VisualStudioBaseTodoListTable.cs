@@ -72,14 +72,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             private readonly string _identifier;
             private readonly ITodoListProvider _todoListProvider;
 
-            public TableDataSource(Workspace workspace, ITodoListProvider todoListProvider, string identifier)
+            public TableDataSource(Workspace workspace, ITodoListProvider todoListProvider, string identifier) :
+                base(workspace)
             {
                 _workspace = workspace;
                 _identifier = identifier;
                 _todoListProvider = todoListProvider;
                 _todoListProvider.TodoListUpdated += OnTodoListUpdated;
-
-                ConnectToSolutionCrawlerService(_workspace);
             }
 
             public override string DisplayName => ServicesVSResources.TodoTableSourceName;
@@ -101,7 +100,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return;
                 }
 
-                OnDataAddedOrChanged(e.DocumentId, e, e.TodoItems.Length);
+                OnDataAddedOrChanged(e.DocumentId, e);
             }
 
             protected override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object key, object data)

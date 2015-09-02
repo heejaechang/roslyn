@@ -28,7 +28,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             private readonly Workspace _workspace;
             private readonly OpenDocumentTracker _tracker;
 
-            public LiveTableDataSource(IServiceProvider serviceProvider, Workspace workspace, IDiagnosticService diagnosticService, string identifier)
+            public LiveTableDataSource(IServiceProvider serviceProvider, Workspace workspace, IDiagnosticService diagnosticService, string identifier) :
+                base(workspace)
             {
                 _workspace = workspace;
                 _serviceProvider = serviceProvider;
@@ -38,8 +39,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 _diagnosticService = diagnosticService;
                 _diagnosticService.DiagnosticsUpdated += OnDiagnosticsUpdated;
-
-                ConnectToSolutionCrawlerService(_workspace);
             }
 
             public override string DisplayName => ServicesVSResources.DiagnosticsTableSourceName;
@@ -66,7 +65,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return;
                 }
 
-                OnDataAddedOrChanged(e.Id, e, count);
+                OnDataAddedOrChanged(e.Id, e);
             }
 
             private static bool ShouldInclude(DiagnosticData diagnostic)

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.SolutionCrawler;
 
@@ -9,9 +8,20 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
     internal abstract class AbstractRoslynTableDataSource<TData> : AbstractTableDataSource<TData>
     {
-        protected void ConnectToSolutionCrawlerService(Workspace workspace)
+        public AbstractRoslynTableDataSource(Workspace workspace)
+        {
+            ConnectToSolutionCrawlerService(workspace);
+        }
+
+        private void ConnectToSolutionCrawlerService(Workspace workspace)
         {
             var crawlerService = workspace.Services.GetService<ISolutionCrawlerService>();
+            if (crawlerService == null)
+            {
+                // can happen depends on host such as testing host.
+                return;
+            }
+
             var reporter = crawlerService.GetProgressReporter(workspace);
 
             // set initial value

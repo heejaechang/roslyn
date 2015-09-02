@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 if (!started)
                 {
-                    OnDataAddedOrChanged(this, null, _buildErrorSource.GetBuildErrors().Length);
+                    OnDataAddedOrChanged(this, null);
                 }
             }
 

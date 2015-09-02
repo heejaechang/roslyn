@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         private readonly WeakReference<ITableEntriesSnapshot> _lastSnapshotWeakReference = new WeakReference<ITableEntriesSnapshot>(null);
 
         private int _lastVersion = 0;
-        private int _lastItemCount = 0;
 
         protected readonly object Gate = new object();
 
@@ -48,15 +47,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return lastSnapshot;
                 }
 
-                var itemCount = _lastItemCount;
                 var items = _entriesSources.GetItems();
-
-                if (items.Length != itemCount)
-                {
-                    _lastItemCount = items.Length;
-                    _source.Refresh(this);
-                }
-
                 return CreateSnapshot(version, items);
             }
         }
@@ -78,28 +69,16 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return null;
                 }
 
-                // version between error list and diagnostic service is different. 
-                // so even if our version is same, diagnostic service version might be different.
-                //
-                // this is a kind of sanity check to reduce number of times we return wrong snapshot.
-                // but the issue will quickly fixed up since diagnostic service will drive error list to latest snapshot.
                 var items = _entriesSources.GetItems();
-                if (items.Length != _lastItemCount)
-                {
-                    _source.Refresh(this);
-                    return null;
-                }
-
                 return CreateSnapshot(version, items);
             }
         }
 
-        public void OnUpdated(int count)
+        public void OnUpdated()
         {
             lock (Gate)
             {
                 UpdateVersion_NoLock();
-                _lastItemCount = count;
             }
         }
 
