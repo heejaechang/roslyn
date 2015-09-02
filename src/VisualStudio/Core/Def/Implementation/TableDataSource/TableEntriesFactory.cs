@@ -10,13 +10,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
     internal class TableEntriesFactory<TData> : ITableEntriesSnapshotFactory
     {
+        private readonly object _gate = new object();
+
         private readonly AbstractTableDataSource<TData> _source;
         private readonly AggregatedEntriesSource _entriesSources;
         private readonly WeakReference<ITableEntriesSnapshot> _lastSnapshotWeakReference = new WeakReference<ITableEntriesSnapshot>(null);
 
         private int _lastVersion = 0;
-
-        protected readonly object Gate = new object();
 
         public TableEntriesFactory(AbstractTableDataSource<TData> source, AbstractTableEntriesSource<TData> entriesSource)
         {
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         {
             get
             {
-                lock (Gate)
+                lock (_gate)
                 {
                     return _lastVersion;
                 }
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         public ITableEntriesSnapshot GetCurrentSnapshot()
         {
-            lock (Gate)
+            lock (_gate)
             {
                 var version = _lastVersion;
 
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         public ITableEntriesSnapshot GetSnapshot(int versionNumber)
         {
-            lock (Gate)
+            lock (_gate)
             {
                 ITableEntriesSnapshot lastSnapshot;
                 if (TryGetLastSnapshot(versionNumber, out lastSnapshot))
@@ -74,9 +74,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        public void OnUpdated()
+        public void OnUpdated(object data)
         {
-            lock (Gate)
+            lock (_gate)
             {
                 UpdateVersion_NoLock();
             }
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         public void OnRefreshed()
         {
-            lock (Gate)
+            lock (_gate)
             {
                 UpdateVersion_NoLock();
             }

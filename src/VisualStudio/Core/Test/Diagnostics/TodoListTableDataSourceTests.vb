@@ -4,10 +4,8 @@ Imports System.Collections.Immutable
 Imports System.Threading
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.Editor
-Imports Microsoft.CodeAnalysis.Editor.Implementation.TodoComments
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
-Imports Microsoft.VisualStudio.Shell.TableControl
 Imports Microsoft.VisualStudio.Shell.TableManager
 Imports Roslyn.Test.Utilities
 Imports Roslyn.Utilities
@@ -153,7 +151,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Diagnostics
                 Dim factory = TryCast(sink.Entries.First(), TableEntriesFactory(Of TodoItem))
                 Dim snapshot1 = factory.GetCurrentSnapshot()
 
-                factory.OnUpdated()
+                factory.OnUpdated(Nothing)
 
                 Dim snapshot2 = factory.GetCurrentSnapshot()
 
@@ -201,7 +199,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Diagnostics
                 Dim factory = TryCast(sink.Entries.First(), TableEntriesFactory(Of TodoItem))
                 Dim snapshot1 = factory.GetCurrentSnapshot()
 
-                factory.OnUpdated()
+                factory.OnUpdated(Nothing)
 
                 Dim snapshot2 = factory.GetCurrentSnapshot()
 

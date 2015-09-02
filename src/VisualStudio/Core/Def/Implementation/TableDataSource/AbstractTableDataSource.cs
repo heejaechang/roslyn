@@ -10,17 +10,17 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
     internal abstract class AbstractTableDataSource<TData> : ITableDataSource
     {
-        protected readonly object Gate;
-        protected readonly Dictionary<object, TableEntriesFactory<TData>> Map;
+        private readonly object _gate;
+        private readonly Dictionary<object, TableEntriesFactory<TData>> _map;
 
+        private ImmutableArray<SubscriptionWithoutLock> _subscriptions;
         protected bool IsStable;
-        protected ImmutableArray<SubscriptionWithoutLock> Subscriptions;
 
         public AbstractTableDataSource()
         {
-            Gate = new object();
-            Map = new Dictionary<object, TableEntriesFactory<TData>>();
-            Subscriptions = ImmutableArray<SubscriptionWithoutLock>.Empty;
+            _gate = new object();
+            _map = new Dictionary<object, TableEntriesFactory<TData>>();
+            _subscriptions = ImmutableArray<SubscriptionWithoutLock>.Empty;
 
             IsStable = true;
         }
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         public void Refresh(TableEntriesFactory<TData> factory)
         {
-            var snapshot = this.Subscriptions;
+            var snapshot = this._subscriptions;
 
             for (var i = 0; i < snapshot.Length; i++)
             {
@@ -45,10 +45,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         {
             ImmutableArray<SubscriptionWithoutLock> snapshot;
 
-            lock (Gate)
+            lock (_gate)
             {
-                snapshot = Subscriptions;
-                Map.Clear();
+                snapshot = _subscriptions;
+                _map.Clear();
             }
 
             // let table manager know that we want to clear all factories
@@ -58,9 +58,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        protected abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object id, object data);
+        protected abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object data);
+        protected abstract object GetKey(object data);
 
-        protected void OnDataAddedOrChanged(object id, object data)
+        protected void OnDataAddedOrChanged(object data)
         {
             // reuse factory. it is okay to re-use factory since we make sure we remove the factory before
             // adding it back
@@ -68,13 +69,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             ImmutableArray<SubscriptionWithoutLock> snapshot;
             TableEntriesFactory<TData> factory;
 
-            lock (Gate)
+            lock (_gate)
             {
-                snapshot = Subscriptions;
-                GetOrCreateFactory(id, data, out factory, out newFactory);
+                snapshot = _subscriptions;
+                GetOrCreateFactory(data, out factory, out newFactory);
             }
 
-            factory.OnUpdated();
+            factory.OnUpdated(data);
 
             for (var i = 0; i < snapshot.Length; i++)
             {
@@ -82,40 +83,26 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        private void GetOrCreateFactory(object id, object data, out TableEntriesFactory<TData> factory, out bool newFactory)
-        {
-            newFactory = false;
-            if (Map.TryGetValue(id, out factory))
-            {
-                return;
-            }
-
-            var source = CreateTableEntrySource(id, data);
-            factory = new TableEntriesFactory<TData>(this, source);
-
-            Map.Add(id, factory);
-            newFactory = true;
-        }
-
-        protected void OnDataRemoved(object id)
+        protected void OnDataRemoved(object data)
         {
             ImmutableArray<SubscriptionWithoutLock> snapshot;
             TableEntriesFactory<TData> factory;
 
-            lock (Gate)
+            var key = GetKey(data);
+            lock (_gate)
             {
-                snapshot = Subscriptions;
-                if (!Map.TryGetValue(id, out factory))
+                snapshot = _subscriptions;
+                if (!_map.TryGetValue(key, out factory))
                 {
                     // never reported about this before
                     return;
                 }
 
                 // remove it from map
-                Map.Remove(id);
+                _map.Remove(key);
             }
 
-            factory.OnUpdated();
+            factory.OnUpdated(data);
 
             // let table manager know that we want to clear the entries
             for (var i = 0; i < snapshot.Length; i++)
@@ -124,13 +111,30 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
+        private void GetOrCreateFactory(object data, out TableEntriesFactory<TData> factory, out bool newFactory)
+        {
+            var key = GetKey(data);
+
+            newFactory = false;
+            if (_map.TryGetValue(key, out factory))
+            {
+                return;
+            }
+
+            var source = CreateTableEntrySource(data);
+            factory = new TableEntriesFactory<TData>(this, source);
+
+            _map.Add(key, factory);
+            newFactory = true;
+        }
+
         protected void ChangeStableState(bool stable)
         {
             ImmutableArray<SubscriptionWithoutLock> snapshot;
 
-            lock (Gate)
+            lock (_gate)
             {
-                snapshot = Subscriptions;
+                snapshot = _subscriptions;
             }
 
             for (var i = 0; i < snapshot.Length; i++)
@@ -144,10 +148,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             ImmutableArray<SubscriptionWithoutLock> snapshot;
             List<TableEntriesFactory<TData>> factories;
 
-            lock (Gate)
+            lock (_gate)
             {
-                snapshot = Subscriptions;
-                factories = Map.Values.ToList();
+                snapshot = _subscriptions;
+                factories = _map.Values.ToList();
             }
 
             // let table manager know that we want to refresh factories.
@@ -164,7 +168,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         IDisposable ITableDataSource.Subscribe(ITableDataSink sink)
         {
-            lock (Gate)
+            lock (_gate)
             {
                 return new SubscriptionWithoutLock(this, sink);
             }
@@ -172,7 +176,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         internal int NumberOfSubscription_TestOnly
         {
-            get { return Subscriptions.Length; }
+            get { return _subscriptions.Length; }
         }
 
         protected class SubscriptionWithoutLock : IDisposable
@@ -231,7 +235,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             private void ReportInitialData()
             {
-                foreach (var provider in _source.Map.Values)
+                foreach (var provider in _source._map.Values)
                 {
                     AddOrUpdate(provider, newFactory: true);
                 }
@@ -253,11 +257,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             {
                 while (true)
                 {
-                    var current = _source.Subscriptions;
+                    var current = _source._subscriptions;
                     var @new = update(current);
 
                     // try replace with new list
-                    var registered = ImmutableInterlocked.InterlockedCompareExchange(ref _source.Subscriptions, @new, current);
+                    var registered = ImmutableInterlocked.InterlockedCompareExchange(ref _source._subscriptions, @new, current);
                     if (registered == current)
                     {
                         // succeeded

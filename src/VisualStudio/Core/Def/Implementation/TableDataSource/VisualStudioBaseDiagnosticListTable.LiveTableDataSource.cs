@@ -45,6 +45,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string SourceTypeIdentifier => StandardTableDataSources.ErrorTableDataSource;
             public override string Identifier => _identifier;
 
+            protected override object GetKey(object data)
+            {
+                var args = (DiagnosticsUpdatedArgs)data;
+                return args.Id;
+            }
+
             private void OnDiagnosticsUpdated(object sender, DiagnosticsUpdatedArgs e)
             {
                 if (_workspace != e.Workspace)
@@ -54,18 +60,18 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 if (e.Diagnostics.Length == 0)
                 {
-                    OnDataRemoved(e.Id);
+                    OnDataRemoved(e);
                     return;
                 }
 
                 var count = e.Diagnostics.Where(ShouldInclude).Count();
                 if (count <= 0)
                 {
-                    OnDataRemoved(e.Id);
+                    OnDataRemoved(e);
                     return;
                 }
 
-                OnDataAddedOrChanged(e.Id, e);
+                OnDataAddedOrChanged(e);
             }
 
             private static bool ShouldInclude(DiagnosticData diagnostic)
@@ -73,7 +79,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return diagnostic.Severity != DiagnosticSeverity.Hidden;
             }
 
-            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object key, object data)
+            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object data)
             {
                 var item = (DiagnosticsUpdatedArgs)data;
                 return new TableEntriesSource(this, item.Workspace, item.ProjectId, item.DocumentId, item.Id);

@@ -1,11 +1,9 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Collections.Immutable
-Imports System.IO
 Imports System.Threading
 Imports System.Windows
 Imports System.Windows.Controls
-Imports System.Windows.Documents
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.Diagnostics
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
@@ -157,7 +155,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Diagnostics
                 Dim factory = TryCast(sink.Entries.First(), TableEntriesFactory(Of DiagnosticData))
                 Dim snapshot1 = factory.GetCurrentSnapshot()
 
-                factory.OnUpdated()
+                factory.OnUpdated(Nothing)
 
                 Dim snapshot2 = factory.GetCurrentSnapshot()
 

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editor;
-using Microsoft.CodeAnalysis.Editor.Implementation.TodoComments;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -85,6 +84,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string SourceTypeIdentifier => StandardTableDataSources.CommentTableDataSource;
             public override string Identifier => _identifier;
 
+            protected override object GetKey(object data)
+            {
+                var args = (TodoListEventArgs)data;
+                return args.Id;
+            }
+
             private void OnTodoListUpdated(object sender, TodoListEventArgs e)
             {
                 if (_workspace != e.Workspace)
@@ -96,19 +101,16 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 if (e.TodoItems.Length == 0)
                 {
-                    OnDataRemoved(e.DocumentId);
+                    OnDataRemoved(e);
                     return;
                 }
 
-                OnDataAddedOrChanged(e.DocumentId, e);
+                OnDataAddedOrChanged(e);
             }
 
-            protected override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object key, object data)
+            protected override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object data)
             {
-                var documentId = (DocumentId)key;
                 var item = (TodoListEventArgs)data;
-                Contract.Requires(documentId == item.DocumentId);
-
                 return new TableEntriesSource(this, item.Workspace, item.DocumentId);
             }
 

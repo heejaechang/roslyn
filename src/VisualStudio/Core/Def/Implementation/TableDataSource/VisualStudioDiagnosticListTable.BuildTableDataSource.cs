@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 if (!started)
                 {
-                    OnDataAddedOrChanged(this, null);
+                    OnDataAddedOrChanged(null);
                 }
             }
 
@@ -57,7 +57,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string SourceTypeIdentifier => StandardTableDataSources.ErrorTableDataSource;
             public override string Identifier => IdentifierString;
 
-            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object id, object data)
+            protected override object GetKey(object data)
+            {
+                return this;
+            }
+
+            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object data)
             {
                 return new TableEntriesSource(this, _workspace);
             }
