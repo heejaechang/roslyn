@@ -58,8 +58,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        protected abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object data);
-        protected abstract object GetKey(object data);
+        public abstract object GetItemKey(object data);
+        public abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object data);
+
+        protected abstract object GetAggregationKey(object data);
 
         protected void OnDataAddedOrChanged(object data)
         {
@@ -73,9 +75,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             {
                 snapshot = _subscriptions;
                 GetOrCreateFactory(data, out factory, out newFactory);
-            }
 
-            factory.OnUpdated(data);
+                factory.OnDataAddedOrChanged(data);
+            }
 
             for (var i = 0; i < snapshot.Length; i++)
             {
@@ -88,7 +90,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             ImmutableArray<SubscriptionWithoutLock> snapshot;
             TableEntriesFactory<TData> factory;
 
-            var key = GetKey(data);
+            var key = GetAggregationKey(data);
             lock (_gate)
             {
                 snapshot = _subscriptions;
@@ -99,10 +101,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 }
 
                 // remove it from map
-                _map.Remove(key);
+                if (factory.OnDataRemoved(data))
+                {
+                    _map.Remove(key);
+                }
             }
-
-            factory.OnUpdated(data);
 
             // let table manager know that we want to clear the entries
             for (var i = 0; i < snapshot.Length; i++)
@@ -113,7 +116,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         private void GetOrCreateFactory(object data, out TableEntriesFactory<TData> factory, out bool newFactory)
         {
-            var key = GetKey(data);
+            var key = GetAggregationKey(data);
 
             newFactory = false;
             if (_map.TryGetValue(key, out factory))

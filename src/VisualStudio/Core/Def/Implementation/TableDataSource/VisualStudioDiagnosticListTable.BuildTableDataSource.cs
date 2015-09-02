@@ -56,13 +56,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string DisplayName => ServicesVSResources.BuildTableSourceName;
             public override string SourceTypeIdentifier => StandardTableDataSources.ErrorTableDataSource;
             public override string Identifier => IdentifierString;
+            public override object GetItemKey(object data) => this;
 
-            protected override object GetKey(object data)
+            protected override object GetAggregationKey(object data)
             {
                 return this;
             }
 
-            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object data)
+            public override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object data)
             {
                 return new TableEntriesSource(this, _workspace);
             }
@@ -77,6 +78,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     _source = source;
                     _workspace = workspace;
                 }
+
+                public override object Key => this;
 
                 public override ImmutableArray<DiagnosticData> GetItems()
                 {

@@ -44,11 +44,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string DisplayName => ServicesVSResources.DiagnosticsTableSourceName;
             public override string SourceTypeIdentifier => StandardTableDataSources.ErrorTableDataSource;
             public override string Identifier => _identifier;
+            public override object GetItemKey(object data) => ((DiagnosticsUpdatedArgs)data).Id;
 
-            protected override object GetKey(object data)
+            protected override object GetAggregationKey(object data)
             {
-                var args = (DiagnosticsUpdatedArgs)data;
-                return args.Id;
+                return ((DiagnosticsUpdatedArgs)data).Id;
             }
 
             private void OnDiagnosticsUpdated(object sender, DiagnosticsUpdatedArgs e)
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return diagnostic.Severity != DiagnosticSeverity.Hidden;
             }
 
-            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object data)
+            public override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object data)
             {
                 var item = (DiagnosticsUpdatedArgs)data;
                 return new TableEntriesSource(this, item.Workspace, item.ProjectId, item.DocumentId, item.Id);
@@ -109,6 +109,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     _id = id;
                     _buildTool = (id as BuildToolId)?.BuildTool ?? string.Empty;
                 }
+
+                public override object Key => _id;
 
                 public override ImmutableArray<DiagnosticData> GetItems()
                 {

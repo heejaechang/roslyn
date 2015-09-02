@@ -83,12 +83,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string DisplayName => ServicesVSResources.TodoTableSourceName;
             public override string SourceTypeIdentifier => StandardTableDataSources.CommentTableDataSource;
             public override string Identifier => _identifier;
+            public override object GetItemKey(object data) => ((TodoListEventArgs)data).Id;
 
-            protected override object GetKey(object data)
+            protected override object GetAggregationKey(object data)
             {
                 var args = (TodoListEventArgs)data;
                 return args.Id;
             }
+
 
             private void OnTodoListUpdated(object sender, TodoListEventArgs e)
             {
@@ -108,7 +110,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 OnDataAddedOrChanged(e);
             }
 
-            protected override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object data)
+            public override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object data)
             {
                 var item = (TodoListEventArgs)data;
                 return new TableEntriesSource(this, item.Workspace, item.DocumentId);
@@ -126,6 +128,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     _workspace = workspace;
                     _documentId = documentId;
                 }
+
+                public override object Key => _documentId;
 
                 public override ImmutableArray<TodoItem> GetItems()
                 {
