@@ -58,7 +58,46 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        protected void OnDataRemoved(object key)
+        protected abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object id, object data);
+
+        protected void OnDataAddedOrChanged(object id, object data, int itemCount)
+        {
+            // reuse factory. it is okay to re-use factory since we make sure we remove the factory before
+            // adding it back
+            bool newFactory = false;
+            ImmutableArray<SubscriptionWithoutLock> snapshot;
+            TableEntriesFactory<TData> factory;
+
+            lock (Gate)
+            {
+                snapshot = Subscriptions;
+                GetOrCreateFactory(id, data, out factory, out newFactory);
+            }
+
+            factory.OnUpdated(itemCount);
+
+            for (var i = 0; i < snapshot.Length; i++)
+            {
+                snapshot[i].AddOrUpdate(factory, newFactory);
+            }
+        }
+
+        private void GetOrCreateFactory(object id, object data, out TableEntriesFactory<TData> factory, out bool newFactory)
+        {
+            newFactory = false;
+            if (Map.TryGetValue(id, out factory))
+            {
+                return;
+            }
+
+            var source = CreateTableEntrySource(id, data);
+            factory = new TableEntriesFactory<TData>(this, source);
+
+            Map.Add(id, factory);
+            newFactory = true;
+        }
+
+        protected void OnDataRemoved(object id)
         {
             ImmutableArray<SubscriptionWithoutLock> snapshot;
             TableEntriesFactory<TData> factory;
@@ -66,14 +105,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             lock (Gate)
             {
                 snapshot = Subscriptions;
-                if (!Map.TryGetValue(key, out factory))
+                if (!Map.TryGetValue(id, out factory))
                 {
                     // never reported about this before
                     return;
                 }
 
                 // remove it from map
-                Map.Remove(key);
+                Map.Remove(id);
             }
 
             factory.OnUpdated(0);

@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             _source.Shutdown();
         }
 
-        private class TableDataSource : AbstractRoslynTableDataSource<TodoListEventArgs, TodoItem>
+        private class TableDataSource : AbstractRoslynTableDataSource<TodoItem>
         {
             private readonly Workspace _workspace;
             private readonly string _identifier;
@@ -101,20 +101,16 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return;
                 }
 
-                OnDataAddedOrChanged(e.Solution, e.ProjectId, e.DocumentId, e.DocumentId, e, e.TodoItems.Length);
+                OnDataAddedOrChanged(e.DocumentId, e, e.TodoItems.Length);
             }
 
-            protected override object GetKey(object key, TodoListEventArgs data)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object key, TodoListEventArgs data)
+            protected override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object key, object data)
             {
                 var documentId = (DocumentId)key;
-                Contract.Requires(documentId == data.DocumentId);
+                var item = (TodoListEventArgs)data;
+                Contract.Requires(documentId == item.DocumentId);
 
-                return new TableEntriesSource(this, data.Workspace, data.DocumentId);
+                return new TableEntriesSource(this, item.Workspace, item.DocumentId);
             }
 
             private class TableEntriesSource : AbstractTableEntriesSource<TodoItem>

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
     internal abstract partial class VisualStudioBaseDiagnosticListTable : AbstractTable<DiagnosticsUpdatedArgs, DiagnosticData>
     {
-        protected class LiveTableDataSource : AbstractRoslynTableDataSource<DiagnosticsUpdatedArgs, DiagnosticData>
+        protected class LiveTableDataSource : AbstractRoslynTableDataSource<DiagnosticData>
         {
             private readonly string _identifier;
             private readonly IDiagnosticService _diagnosticService;
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return;
                 }
 
-                OnDataAddedOrChanged(e.Solution, e.ProjectId, e.DocumentId, e.Id, e, count);
+                OnDataAddedOrChanged(e.Id, e, count);
             }
 
             private static bool ShouldInclude(DiagnosticData diagnostic)
@@ -74,14 +74,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return diagnostic.Severity != DiagnosticSeverity.Hidden;
             }
 
-            protected override object GetKey(object key, DiagnosticsUpdatedArgs data)
+            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object key, object data)
             {
-                throw new NotImplementedException();
-            }
-
-            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object key, DiagnosticsUpdatedArgs data)
-            {
-                return new TableEntriesSource(this, data.Workspace, data.ProjectId, data.DocumentId, data.Id);
+                var item = (DiagnosticsUpdatedArgs)data;
+                return new TableEntriesSource(this, item.Workspace, item.ProjectId, item.DocumentId, item.Id);
             }
 
             private ImmutableArray<DocumentId> GetRelatedDocumentIds(DiagnosticsUpdatedArgs data)
@@ -120,8 +116,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 public override ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<DiagnosticData> items)
                 {
-                    return CreateTrackingPoints(_workspace, _documentId, items, (d, s) => CreateTrackingPoint(s, 
-                        d.DataLocation?.OriginalStartLine ?? 0, 
+                    return CreateTrackingPoints(_workspace, _documentId, items, (d, s) => CreateTrackingPoint(s,
+                        d.DataLocation?.OriginalStartLine ?? 0,
                         d.DataLocation?.OriginalStartColumn ?? 0));
                 }
 

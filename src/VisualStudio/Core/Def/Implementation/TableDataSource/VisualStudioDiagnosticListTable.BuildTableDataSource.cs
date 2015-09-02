@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 if (!started)
                 {
-                    OnDataAddedOrChanged(this, _buildErrorSource.GetBuildErrors().Length);
+                    OnDataAddedOrChanged(this, null, _buildErrorSource.GetBuildErrors().Length);
                 }
             }
 
@@ -57,31 +57,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string SourceTypeIdentifier => StandardTableDataSources.ErrorTableDataSource;
             public override string Identifier => IdentifierString;
 
-            protected void OnDataAddedOrChanged(object key, int itemCount)
+            protected override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object id, object data)
             {
-                // reuse factory. it is okay to re-use factory since we make sure we remove the factory before
-                // adding it back
-                bool newFactory = false;
-                ImmutableArray<SubscriptionWithoutLock> snapshot;
-                TableEntriesFactory<DiagnosticData> factory;
-
-                lock (Gate)
-                {
-                    snapshot = Subscriptions;
-                    if (!Map.TryGetValue(key, out factory))
-                    {
-                        factory = new TableEntriesFactory<DiagnosticData>(this, new TableEntriesSource(this, _workspace));
-                        Map.Add(key, factory);
-                        newFactory = true;
-                    }
-                }
-
-                factory.OnUpdated(itemCount);
-
-                for (var i = 0; i < snapshot.Length; i++)
-                {
-                    snapshot[i].AddOrUpdate(factory, newFactory);
-                }
+                return new TableEntriesSource(this, _workspace);
             }
 
             private class TableEntriesSource : AbstractTableEntriesSource<DiagnosticData>
