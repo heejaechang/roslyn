@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.LanguageServices.Implementation.TaskList;
@@ -68,6 +70,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return new TableEntriesSource(this, _workspace);
             }
 
+            public override ImmutableArray<TableItem<DiagnosticData>> MergeGroupedItems(IEnumerable<IEnumerable<TableItem<DiagnosticData>>> groupedItems)
+            {
+                throw new NotImplementedException();
+            }
+
             private class TableEntriesSource : AbstractTableEntriesSource<DiagnosticData>
             {
                 private readonly BuildTableDataSource _source;
@@ -81,18 +88,18 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 public override object Key => this;
 
-                public override ImmutableArray<DiagnosticData> GetItems()
+                public override ImmutableArray<TableItem<DiagnosticData>> GetItems()
                 {
-                    return _source._buildErrorSource.GetBuildErrors();
+                    return _source._buildErrorSource.GetBuildErrors().Select(d => new TableItem<DiagnosticData>(d, null)).ToImmutableArray();
                 }
 
-                public override ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<DiagnosticData> items)
+                public override ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<DiagnosticData>> items)
                 {
                     return ImmutableArray<ITrackingPoint>.Empty;
                 }
 
                 public override AbstractTableEntriesSnapshot<DiagnosticData> CreateSnapshot(
-                    int version, ImmutableArray<DiagnosticData> items, ImmutableArray<ITrackingPoint> trackingPoints)
+                    int version, ImmutableArray<TableItem<DiagnosticData>> items, ImmutableArray<ITrackingPoint> trackingPoints)
                 {
                     return new TableEntriesSnapshot(this, version, items);
                 }
@@ -102,7 +109,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     private readonly TableEntriesSource _factorySource;
 
                     public TableEntriesSnapshot(
-                        TableEntriesSource factorySource, int version, ImmutableArray<DiagnosticData> items) :
+                        TableEntriesSource factorySource, int version, ImmutableArray<TableItem<DiagnosticData>> items) :
                         base(version, Guid.Empty, items, ImmutableArray<ITrackingPoint>.Empty)
                     {
                         _factorySource = factorySource;
@@ -112,7 +119,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     {
                         // REVIEW: this method is too-chatty to make async, but otherwise, how one can implement it async?
                         //         also, what is cancellation mechanism?
-                        var item = GetItem(index);
+                        var data = GetItem(index);
+
+                        var item = data.Primary;
                         if (item == null)
                         {
                             content = null;
@@ -158,9 +167,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                                 content = item.DataLocation?.MappedStartColumn ?? 0;
                                 return true;
                             case StandardTableKeyNames.ProjectName:
+                                // TODO: make it multiple projectId
                                 content = GetProjectName(_factorySource._workspace, item.ProjectId);
                                 return content != null;
                             case StandardTableKeyNames.ProjectGuid:
+                                // TODO: same here
                                 var guid = GetProjectGuid(_factorySource._workspace, item.ProjectId);
                                 content = guid;
                                 return guid != Guid.Empty;
@@ -172,7 +183,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                     public override bool TryNavigateTo(int index, bool previewTab)
                     {
-                        var item = GetItem(index);
+                        var item = GetItem(index).Primary;
                         if (item == null)
                         {
                             return false;

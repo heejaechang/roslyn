@@ -17,13 +17,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         }
 
         public abstract object Key { get; }
-        public abstract ImmutableArray<TData> GetItems();
-        public abstract ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TData> items);
-        public abstract AbstractTableEntriesSnapshot<TData> CreateSnapshot(int version, ImmutableArray<TData> items, ImmutableArray<ITrackingPoint> trackingPoints);
+        public abstract ImmutableArray<TableItem<TData>> GetItems();
+        public abstract ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<TData>> items);
+        public abstract AbstractTableEntriesSnapshot<TData> CreateSnapshot(int version, ImmutableArray<TableItem<TData>> items, ImmutableArray<ITrackingPoint> trackingPoints);
 
         protected ImmutableArray<ITrackingPoint> CreateTrackingPoints(
             Workspace workspace, DocumentId documentId,
-            ImmutableArray<TData> items, Func<TData, ITextSnapshot, ITrackingPoint> converter)
+            ImmutableArray<TableItem<TData>> items, Func<TData, ITextSnapshot, ITrackingPoint> converter)
         {
             if (documentId == null)
             {
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             var snapshot = text.FindCorrespondingEditorTextSnapshot();
             if (snapshot != null)
             {
-                return items.Select(d => converter(d, snapshot)).ToImmutableArray();
+                return items.Select(d => converter(d.Primary, snapshot)).ToImmutableArray();
             }
 
             var textBuffer = text.Container.TryGetTextBuffer();
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
 
             var currentSnapshot = textBuffer.CurrentSnapshot;
-            return items.Select(d => converter(d, currentSnapshot)).ToImmutableArray();
+            return items.Select(d => converter(d.Primary, currentSnapshot)).ToImmutableArray();
         }
 
         protected ITrackingPoint CreateTrackingPoint(ITextSnapshot snapshot, int line, int column)

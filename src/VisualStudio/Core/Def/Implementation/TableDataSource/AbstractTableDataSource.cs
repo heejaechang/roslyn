@@ -60,6 +60,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         public abstract object GetItemKey(object data);
         public abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object data);
+        public abstract ImmutableArray<TableItem<TData>> MergeGroupedItems(IEnumerable<IEnumerable<TableItem<TData>>> groupedItems);
 
         protected abstract object GetAggregationKey(object data);
 
