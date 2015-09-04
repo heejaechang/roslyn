@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using Roslyn.Utilities;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
@@ -12,12 +13,26 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         private int? _deduplicationKey;
 
         public readonly T Primary;
-        public readonly ImmutableArray<DocumentId> DocumentIds;
-        public readonly ImmutableArray<ProjectId> ProjectIds;
+        public readonly ImmutableHashSet<DocumentId> DocumentIds;
 
         public TableItem(T item, Func<T, int> keyGenerator) : this()
         {
+            _deduplicationKey = null;
+            _keyGenerator = keyGenerator;
+
             Primary = item;
+            DocumentIds = ImmutableHashSet<DocumentId>.Empty;
+        }
+
+        public TableItem(T primary, int deduplicationKey, ImmutableHashSet<DocumentId> documentIds) : this()
+        {
+            Contract.ThrowIfFalse(documentIds.Count > 0);
+
+            _deduplicationKey = deduplicationKey;
+            _keyGenerator = null;
+
+            Primary = primary;
+            DocumentIds = documentIds;
         }
 
         public int DeduplicationKey

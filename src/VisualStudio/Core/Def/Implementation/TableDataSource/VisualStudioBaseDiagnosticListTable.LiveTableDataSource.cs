@@ -47,21 +47,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string Identifier => _identifier;
             public override object GetItemKey(object data) => ((DiagnosticsUpdatedArgs)data).Id;
 
-            public override ImmutableArray<TableItem<DiagnosticData>> MergeGroupedItems(IEnumerable<IEnumerable<TableItem<DiagnosticData>>> groupedItems)
+            public override ImmutableArray<TableItem<DiagnosticData>> Deduplicate(IEnumerable<IList<TableItem<DiagnosticData>>> groupedItems)
             {
-                var builder = ImmutableArray.CreateBuilder<TableItem<DiagnosticData>>();
-
-                foreach (var group in groupedItems)
-                {
-                    builder.Add(CreateMergedItem(group));
-                }
-
-                return builder.ToImmutable();
-            }
-
-            private TableItem<DiagnosticData> CreateMergedItem(IEnumerable<TableItem<DiagnosticData>> group)
-            {
-                return default(TableItem<DiagnosticData>);
+                return groupedItems.MergeDuplicatesOrderedBy(Order);
             }
 
             protected override object GetAggregationKey(object data)
@@ -92,21 +80,26 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 OnDataAddedOrChanged(e);
             }
 
-            private static bool ShouldInclude(DiagnosticData diagnostic)
-            {
-                return diagnostic.Severity != DiagnosticSeverity.Hidden;
-            }
-
             public override AbstractTableEntriesSource<DiagnosticData> CreateTableEntrySource(object data)
             {
                 var item = (DiagnosticsUpdatedArgs)data;
                 return new TableEntriesSource(this, item.Workspace, item.ProjectId, item.DocumentId, item.Id);
             }
 
-            private ImmutableArray<DocumentId> GetRelatedDocumentIds(DiagnosticsUpdatedArgs data)
+            private static bool ShouldInclude(DiagnosticData diagnostic)
             {
-                var document = data.Solution.GetDocument(data.DocumentId);
-                return document.GetLinkedDocumentIds().Add(data.DocumentId);
+                return diagnostic.Severity != DiagnosticSeverity.Hidden;
+            }
+
+            private static IEnumerable<TableItem<DiagnosticData>> Order(IEnumerable<TableItem<DiagnosticData>> groupedItems)
+            {
+                // this should make order of result always deterministic. we only need these 6 values since data with all these same will merged to one.
+                return groupedItems.OrderBy(d => d.Primary.DataLocation?.OriginalStartLine ?? 0)
+                                   .ThenBy(d => d.Primary.DataLocation?.OriginalStartColumn ?? 0)
+                                   .ThenBy(d => d.Primary.Id)
+                                   .ThenBy(d => d.Primary.Message)
+                                   .ThenBy(d => d.Primary.DataLocation?.OriginalEndLine ?? 0)
+                                   .ThenBy(d => d.Primary.DataLocation?.OriginalEndColumn ?? 0);
             }
 
             private class TableEntriesSource : AbstractTableEntriesSource<DiagnosticData>
@@ -134,7 +127,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 {
                     var provider = _source._diagnosticService;
                     var items = provider.GetDiagnostics(_workspace, _projectId, _documentId, _id, CancellationToken.None)
-                                        .Where(ShouldInclude).Select(d => new TableItem<DiagnosticData>(d, null));
+                                        .Where(ShouldInclude).Select(d => new TableItem<DiagnosticData>(d, GenerateDeduplicationKey));
 
                     return items.ToImmutableArrayOrEmpty();
                 }
@@ -158,6 +151,20 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     }
 
                     return snapshot;
+                }
+
+                private int GenerateDeduplicationKey(DiagnosticData diagnostic)
+                {
+                    if (diagnostic.DataLocation == null)
+                    {
+                        return diagnostic.GetHashCode();
+                    }
+
+                    return Hash.Combine(diagnostic.DataLocation.OriginalStartColumn,
+                           Hash.Combine(diagnostic.DataLocation.OriginalStartLine,
+                           Hash.Combine(diagnostic.DataLocation.OriginalEndColumn,
+                           Hash.Combine(diagnostic.DataLocation.OriginalEndLine,
+                           Hash.Combine(diagnostic.Id.GetHashCode(), diagnostic.Message.GetHashCode())))));
                 }
 
                 private class TableEntriesSnapshot : AbstractTableEntriesSnapshot<DiagnosticData>, IWpfTableEntriesSnapshot

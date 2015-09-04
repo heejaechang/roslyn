@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.LanguageServices.Implementation.TaskList;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
+using Roslyn.Utilities;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
@@ -70,9 +71,22 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return new TableEntriesSource(this, _workspace);
             }
 
-            public override ImmutableArray<TableItem<DiagnosticData>> MergeGroupedItems(IEnumerable<IEnumerable<TableItem<DiagnosticData>>> groupedItems)
+            public override ImmutableArray<TableItem<DiagnosticData>> Deduplicate(IEnumerable<IList<TableItem<DiagnosticData>>> groupedItems)
             {
-                throw new NotImplementedException();
+                return groupedItems.MergeDuplicatesOrderedBy(Order);
+            }
+
+            private static IEnumerable<TableItem<DiagnosticData>> Order(IEnumerable<TableItem<DiagnosticData>> groupedItems)
+            {
+                // this should make order of result always deterministic.
+                return groupedItems.OrderBy(d => d.Primary.ProjectId?.Id ?? Guid.Empty)
+                                   .ThenBy(d => d.Primary.DocumentId?.Id ?? Guid.Empty)
+                                   .ThenBy(d => d.Primary.DataLocation?.OriginalStartLine ?? 0)
+                                   .ThenBy(d => d.Primary.DataLocation?.OriginalStartColumn ?? 0)
+                                   .ThenBy(d => d.Primary.Id)
+                                   .ThenBy(d => d.Primary.Message)
+                                   .ThenBy(d => d.Primary.DataLocation?.OriginalEndLine ?? 0)
+                                   .ThenBy(d => d.Primary.DataLocation?.OriginalEndColumn ?? 0);
             }
 
             private class TableEntriesSource : AbstractTableEntriesSource<DiagnosticData>
@@ -90,7 +104,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 public override ImmutableArray<TableItem<DiagnosticData>> GetItems()
                 {
-                    return _source._buildErrorSource.GetBuildErrors().Select(d => new TableItem<DiagnosticData>(d, null)).ToImmutableArray();
+                    var groupedItems = _source._buildErrorSource
+                                               .GetBuildErrors()
+                                               .Select(d => new TableItem<DiagnosticData>(d, GenerateDeduplicationKey))
+                                               .GroupBy(d => d.DeduplicationKey)
+                                               .Select(g => (IList<TableItem<DiagnosticData>>)g)
+                                               .ToImmutableArray();
+
+                    return _source.Deduplicate(groupedItems);
                 }
 
                 public override ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<DiagnosticData>> items)
@@ -102,6 +123,22 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     int version, ImmutableArray<TableItem<DiagnosticData>> items, ImmutableArray<ITrackingPoint> trackingPoints)
                 {
                     return new TableEntriesSnapshot(this, version, items);
+                }
+
+                private int GenerateDeduplicationKey(DiagnosticData diagnostic)
+                {
+                    if (diagnostic.DataLocation == null ||
+                        diagnostic.DataLocation.OriginalFilePath == null)
+                    {
+                        return diagnostic.GetHashCode();
+                    }
+
+                    return Hash.Combine(diagnostic.DataLocation.OriginalStartColumn,
+                           Hash.Combine(diagnostic.DataLocation.OriginalStartLine,
+                           Hash.Combine(diagnostic.DataLocation.OriginalEndColumn,
+                           Hash.Combine(diagnostic.DataLocation.OriginalEndLine,
+                           Hash.Combine(diagnostic.DataLocation.OriginalFilePath,
+                           Hash.Combine(diagnostic.Id.GetHashCode(), diagnostic.Message.GetHashCode()))))));
                 }
 
                 private class TableEntriesSnapshot : AbstractTableEntriesSnapshot<DiagnosticData>

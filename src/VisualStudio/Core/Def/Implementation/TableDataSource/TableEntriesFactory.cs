@@ -90,7 +90,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             lock (_gate)
             {
                 UpdateVersion_NoLock();
-
                 return _entriesSources.OnDataRemoved(data);
             }
         }
@@ -157,15 +156,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 }
 
                 // flatten items from multiple soures and group them by deduplication identity
-                //var groups = from data in _sources.GetSources().SelectMany(s => s.GetItems())
-                //             group data by data. into g
-                //             select g;
+                // merge duplicated items into de-duplicated item list
+                var items = _sources.GetSources()
+                                    .SelectMany(s => s.GetItems())
+                                    .GroupBy(d => d.DeduplicationKey)
+                                    .Select(g => (IList<TableItem<TData>>)g);
 
-                // merge grouped items into de-duplicated item list
-                //var items = from g in groups select (IEnumerable<TData>)g;
-                //return _tableSource.MergeGroupedItems(items);
-
-                return ImmutableArray<TableItem<TData>>.Empty;
+                return _tableSource.Deduplicate(items);
             }
 
             public ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<TData>> items)

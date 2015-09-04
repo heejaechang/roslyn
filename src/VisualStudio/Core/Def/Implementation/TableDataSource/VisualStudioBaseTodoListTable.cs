@@ -91,9 +91,15 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return args.Id;
             }
 
-            public override ImmutableArray<TableItem<TodoItem>> MergeGroupedItems(IEnumerable<IEnumerable<TableItem<TodoItem>>> groupedItems)
+            public override ImmutableArray<TableItem<TodoItem>> Deduplicate(IEnumerable<IList<TableItem<TodoItem>>> groupedItems)
             {
-                throw new NotImplementedException();
+                return groupedItems.MergeDuplicatesOrderedBy(Order);
+            }
+
+            private static IEnumerable<TableItem<TodoItem>> Order(IEnumerable<TableItem<TodoItem>> groupedItems)
+            {
+                return groupedItems.OrderBy(d => d.Primary.OriginalLine)
+                                   .ThenBy(d => d.Primary.OriginalColumn);
             }
 
             private void OnTodoListUpdated(object sender, TodoListEventArgs e)
@@ -141,7 +147,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                     // TODO: remove this wierd cast once we completely move off legacy task list. we, for now, need this since we share data
                     //       between old and new API.
-                    return provider.GetTodoItems(_workspace, _documentId, CancellationToken.None).Select(i => new TableItem<TodoItem>(i, null)).ToImmutableArray();
+                    return provider.GetTodoItems(_workspace, _documentId, CancellationToken.None)
+                                   .Select(i => new TableItem<TodoItem>(i, GenerateDeduplicationKey))
+                                   .ToImmutableArray();
                 }
 
                 public override ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<TodoItem>> items)
@@ -152,6 +160,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 public override AbstractTableEntriesSnapshot<TodoItem> CreateSnapshot(int version, ImmutableArray<TableItem<TodoItem>> items, ImmutableArray<ITrackingPoint> trackingPoints)
                 {
                     return new TableEntriesSnapshot(this, version, items, trackingPoints);
+                }
+
+                private int GenerateDeduplicationKey(TodoItem item)
+                {
+                    return Hash.Combine(item.OriginalColumn, item.OriginalLine);
                 }
 
                 private class TableEntriesSnapshot : AbstractTableEntriesSnapshot<TodoItem>
