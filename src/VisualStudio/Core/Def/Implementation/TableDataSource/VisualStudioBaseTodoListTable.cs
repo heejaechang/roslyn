@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string DisplayName => ServicesVSResources.TodoTableSourceName;
             public override string SourceTypeIdentifier => StandardTableDataSources.CommentTableDataSource;
             public override string Identifier => _identifier;
-            public override object GetItemKey(object data) => ((TodoListEventArgs)data).Id;
+            public override object GetItemKey(object data) => ((TodoListEventArgs)data).DocumentId;
 
             protected override object GetAggregationKey(object data)
             {
