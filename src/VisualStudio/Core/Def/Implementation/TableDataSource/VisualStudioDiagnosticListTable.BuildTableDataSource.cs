@@ -20,7 +20,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             private readonly Workspace _workspace;
             private readonly ExternalErrorDiagnosticUpdateSource _buildErrorSource;
 
-            public BuildTableDataSource(Workspace workspace, ExternalErrorDiagnosticUpdateSource errorSource)
+            public BuildTableDataSource(Workspace workspace, ExternalErrorDiagnosticUpdateSource errorSource) :
+                base(workspace)
             {
                 _workspace = workspace;
                 _buildErrorSource = errorSource;
@@ -74,6 +75,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override ImmutableArray<TableItem<DiagnosticData>> Deduplicate(IEnumerable<IList<TableItem<DiagnosticData>>> groupedItems)
             {
                 return groupedItems.MergeDuplicatesOrderedBy(Order);
+            }
+
+            public override ITrackingPoint CreateTrackingPoint(DiagnosticData data, ITextSnapshot snapshot)
+            {
+                return Contract.FailWithReturn<ITrackingPoint>("Build doesn't support tracking point");
             }
 
             private static IEnumerable<TableItem<DiagnosticData>> Order(IEnumerable<TableItem<DiagnosticData>> groupedItems)

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -33,6 +34,19 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             Primary = primary;
             DocumentIds = documentIds;
+        }
+
+        public DocumentId PrimaryDocumentId
+        {
+            get
+            {
+                if (DocumentIds.Count == 0)
+                {
+                    return Extensions.GetDocumentId(Primary);
+                }
+
+                return DocumentIds.First();
+            }
         }
 
         public int DeduplicationKey

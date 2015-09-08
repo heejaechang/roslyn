@@ -52,6 +52,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return groupedItems.MergeDuplicatesOrderedBy(Order);
             }
 
+            public override ITrackingPoint CreateTrackingPoint(DiagnosticData data, ITextSnapshot snapshot)
+            {
+                return snapshot.CreateTrackingPoint(data.DataLocation?.OriginalStartLine ?? 0, data.DataLocation?.OriginalStartColumn ?? 0);
+            }
+
             protected override object GetAggregationKey(object data)
             {
                 return ((DiagnosticsUpdatedArgs)data).Id;
@@ -134,9 +139,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 public override ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<DiagnosticData>> items)
                 {
-                    return CreateTrackingPoints(_workspace, _documentId, items, (d, s) => CreateTrackingPoint(s,
-                                                d.DataLocation?.OriginalStartLine ?? 0,
-                                                d.DataLocation?.OriginalStartColumn ?? 0));
+                    return _workspace.CreateTrackingPoints(_documentId, items, _source.CreateTrackingPoint);
                 }
 
                 public override AbstractTableEntriesSnapshot<DiagnosticData> CreateSnapshot(

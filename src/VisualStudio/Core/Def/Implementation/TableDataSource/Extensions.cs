@@ -7,6 +7,9 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Editor;
+using Microsoft.CodeAnalysis.Shared.Extensions;
+using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.Text;
 using Roslyn.Utilities;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
@@ -53,13 +56,74 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             // Make things to be deterministic. 
             // * There must be at least 1 item in the list
             // * If code reached here, there must be document id
-            var first = duplicatedItems.OrderBy(d => GetDocumentIds(d).ProjectId.Id).First();
-            var documentIds = ImmutableHashSet.CreateRange(duplicatedItems.Select(i => GetDocumentIds(i.Primary)));
+            var first = duplicatedItems.OrderBy(d => GetDocumentId(d).ProjectId.Id).First();
+            var documentIds = ImmutableHashSet.CreateRange(duplicatedItems.Select(i => GetDocumentId(i.Primary)));
 
             return new TableItem<T>(first.Primary, first.DeduplicationKey, documentIds);
         }
 
-        private static DocumentId GetDocumentIds<T>(T item)
+        public static ImmutableArray<ITrackingPoint> CreateTrackingPoints<TData>(
+            this Workspace workspace, DocumentId documentId,
+            ImmutableArray<TableItem<TData>> items, Func<TData, ITextSnapshot, ITrackingPoint> converter)
+        {
+            if (documentId == null)
+            {
+                return ImmutableArray<ITrackingPoint>.Empty;
+            }
+
+            var solution = workspace.CurrentSolution;
+            var document = solution.GetDocument(documentId);
+            if (document == null || !document.IsOpen())
+            {
+                return ImmutableArray<ITrackingPoint>.Empty;
+            }
+
+            SourceText text;
+            if (!document.TryGetText(out text))
+            {
+                return ImmutableArray<ITrackingPoint>.Empty;
+            }
+
+            var snapshot = text.FindCorrespondingEditorTextSnapshot();
+            if (snapshot != null)
+            {
+                return items.Select(d => converter(d.Primary, snapshot)).ToImmutableArray();
+            }
+
+            var textBuffer = text.Container.TryGetTextBuffer();
+            if (textBuffer == null)
+            {
+                return ImmutableArray<ITrackingPoint>.Empty;
+            }
+
+            var currentSnapshot = textBuffer.CurrentSnapshot;
+            return items.Select(d => converter(d.Primary, currentSnapshot)).ToImmutableArray();
+        }
+
+        public static ITrackingPoint CreateTrackingPoint(this ITextSnapshot snapshot, int line, int column)
+        {
+            if (snapshot.Length == 0)
+            {
+                return snapshot.CreateTrackingPoint(0, PointTrackingMode.Negative);
+            }
+
+            if (line >= snapshot.LineCount)
+            {
+                return snapshot.CreateTrackingPoint(snapshot.Length, PointTrackingMode.Positive);
+            }
+
+            var adjustedLine = Math.Max(line, 0);
+            var textLine = snapshot.GetLineFromLineNumber(adjustedLine);
+            if (column >= textLine.Length)
+            {
+                return snapshot.CreateTrackingPoint(textLine.End, PointTrackingMode.Positive);
+            }
+
+            var adjustedColumn = Math.Max(column, 0);
+            return snapshot.CreateTrackingPoint(textLine.Start + adjustedColumn, PointTrackingMode.Positive);
+        }
+
+        public static DocumentId GetDocumentId<T>(T item)
         {
             // item must be either one of diagnostic data and todo item
             var diagnostic = item as DiagnosticData;

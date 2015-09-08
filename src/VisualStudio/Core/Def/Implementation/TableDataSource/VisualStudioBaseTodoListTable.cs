@@ -96,6 +96,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return groupedItems.MergeDuplicatesOrderedBy(Order);
             }
 
+            public override ITrackingPoint CreateTrackingPoint(TodoItem data, ITextSnapshot snapshot)
+            {
+                return snapshot.CreateTrackingPoint(data.OriginalLine, data.OriginalColumn);
+            }
+
             private static IEnumerable<TableItem<TodoItem>> Order(IEnumerable<TableItem<TodoItem>> groupedItems)
             {
                 return groupedItems.OrderBy(d => d.Primary.OriginalLine)
@@ -154,7 +159,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 public override ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<TodoItem>> items)
                 {
-                    return CreateTrackingPoints(_workspace, _documentId, items, (d, s) => CreateTrackingPoint(s, d.OriginalLine, d.OriginalColumn));
+                    return _workspace.CreateTrackingPoints(_documentId, items, _source.CreateTrackingPoint);
                 }
 
                 public override AbstractTableEntriesSnapshot<TodoItem> CreateSnapshot(int version, ImmutableArray<TableItem<TodoItem>> items, ImmutableArray<ITrackingPoint> trackingPoints)

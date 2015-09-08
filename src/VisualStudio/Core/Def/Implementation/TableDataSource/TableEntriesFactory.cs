@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         private class AggregatedEntriesSource
         {
-            private readonly SourceCollections _sources;
+            private readonly EntriesSourceCollections _sources;
             private readonly AbstractTableDataSource<TData> _tableSource;
 
             private readonly AbstractTableEntriesSnapshot<TData> _lastSnapshot;
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public AggregatedEntriesSource(AbstractTableDataSource<TData> tableSource, AbstractTableEntriesSource<TData> primary)
             {
                 _tableSource = tableSource;
-                _sources = new SourceCollections(primary);
+                _sources = new EntriesSourceCollections(primary);
             }
 
             public void OnDataAddedOrChanged(object data)
@@ -167,12 +167,17 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             public ImmutableArray<ITrackingPoint> GetTrackingPoints(ImmutableArray<TableItem<TData>> items)
             {
+                if (items.Length == 0)
+                {
+                    return ImmutableArray<ITrackingPoint>.Empty;
+                }
+
                 if (_sources.Primary != null)
                 {
                     return _sources.Primary.GetTrackingPoints(items);
                 }
 
-                return ImmutableArray<ITrackingPoint>.Empty;
+                return _tableSource.Workspace.CreateTrackingPoints(items[0].PrimaryDocumentId, items, (d, s) => _tableSource.CreateTrackingPoint(d, s));
             }
 
             public AbstractTableEntriesSnapshot<TData> CreateSnapshot(int version, ImmutableArray<TableItem<TData>> items, ImmutableArray<ITrackingPoint> trackingPoints)
@@ -182,15 +187,45 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return _sources.Primary.CreateSnapshot(version, items, trackingPoints);
                 }
 
-                return null;
+                return new AggregatedSnapshot(version, items, trackingPoints);
             }
 
-            private struct SourceCollections
+            private class AggregatedSnapshot : AbstractTableEntriesSnapshot<TData>
+            {
+                private readonly int version;
+                private readonly ImmutableArray<TableItem<TData>> items;
+                private readonly ImmutableArray<ITrackingPoint> trackingPoints;
+
+                public AggregatedSnapshot(int version, ImmutableArray<TableItem<TData>> items, ImmutableArray<ITrackingPoint> trackingPoints) :
+                    base(version, Guid.Empty, items, trackingPoints)
+                {
+                    this.version = version;
+                    this.items = items;
+                    this.trackingPoints = trackingPoints;
+                }
+
+                public override bool TryGetValue(int index, string columnName, out object content)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public override bool TryNavigateTo(int index, bool previewTab)
+                {
+                    throw new NotImplementedException();
+                }
+
+                protected override bool IsEquivalent(TData item1, TData item2)
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            private struct EntriesSourceCollections
             {
                 private AbstractTableEntriesSource<TData> _primary;
                 private Dictionary<object, AbstractTableEntriesSource<TData>> _sources;
 
-                public SourceCollections(AbstractTableEntriesSource<TData> primary) : this()
+                public EntriesSourceCollections(AbstractTableEntriesSource<TData> primary) : this()
                 {
                     _primary = primary;
                 }
@@ -265,6 +300,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                         return _sources.Count == 0;
                     }
 
+                    // they never reported to us before
                     return false;
                 }
             }
