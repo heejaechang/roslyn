@@ -144,11 +144,20 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return;
             }
 
-            // remove it from map
-            if (factory.OnDataRemoved(data))
+            // remove this particular item from map
+            if (!factory.OnDataRemoved(data))
             {
-                _map.Remove(key);
+                // let error list know that factory has changed.
+                for (var i = 0; i < snapshot.Length; i++)
+                {
+                    snapshot[i].AddOrUpdate(factory, false);
+                }
+
+                return;
             }
+
+            // everything belong to the factory has removed. remove the factory
+            _map.Remove(key);
 
             // let table manager know that we want to clear the entries
             for (var i = 0; i < snapshot.Length; i++)

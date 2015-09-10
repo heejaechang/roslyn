@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 public bool OnDataRemoved(object data, AbstractTableDataSource<TData> tableSource)
                 {
                     var key = tableSource.GetItemKey(data);
-                    if (_primary != null && _primary.Key == key)
+                    if (_primary != null && _primary.Key.Equals(key))
                     {
                         return true;
                     }
