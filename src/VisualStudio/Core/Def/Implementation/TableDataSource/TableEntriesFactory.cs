@@ -130,8 +130,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             private readonly EntriesSourceCollections _sources;
             private readonly AbstractTableDataSource<TData> _tableSource;
 
-            private readonly AbstractTableEntriesSnapshot<TData> _lastSnapshot;
-
             public AggregatedEntriesSource(AbstractTableDataSource<TData> tableSource, AbstractTableEntriesSource<TData> primary)
             {
                 _tableSource = tableSource;

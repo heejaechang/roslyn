@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             protected override object GetAggregationKey(object data)
             {
-                return GetOrCreateAggregationKey(GetItemKey(data), data, CreateAggregationKey);
+                return GetOrCreateAggregationKey_NoLock(data, CreateAggregationKey);
             }
 
             private object CreateAggregationKey(object data)
@@ -120,13 +120,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 }
 
                 OnDataAddedOrChanged(e);
-            }
-
-            private void OnDataRemoved(DiagnosticsUpdatedArgs args)
-            {
-                base.OnDataRemoved(args);
-
-                RemoveAggregateKey(GetItemKey(args));
             }
 
             public override AbstractTableEntriesSource<DiagnosticData> CreateTableEntriesSource(object data)

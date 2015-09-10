@@ -104,37 +104,50 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             lock (_gate)
             {
                 snapshot = _subscriptions;
-                GetOrCreateFactory(data, out factory, out newFactory);
+                GetOrCreateFactory_NoLock(data, out factory, out newFactory);
 
                 factory.OnDataAddedOrChanged(data);
-            }
 
-            for (var i = 0; i < snapshot.Length; i++)
-            {
-                snapshot[i].AddOrUpdate(factory, newFactory);
+                for (var i = 0; i < snapshot.Length; i++)
+                {
+                    snapshot[i].AddOrUpdate(factory, newFactory);
+                }
             }
         }
 
         protected void OnDataRemoved(object data)
         {
+            lock (_gate)
+            {
+                OnDataRemoved_NoLock(data);
+
+                RemoveAggregateKey_NoLock(data);
+            }
+        }
+
+        private void OnDataRemoved_NoLock(object data)
+        {
             ImmutableArray<SubscriptionWithoutLock> snapshot;
             TableEntriesFactory<TData> factory;
 
-            var key = GetAggregationKey(data);
-            lock (_gate)
+            var key = TryGetAggregateKey_NoLock(data);
+            if (key == null)
             {
-                snapshot = _subscriptions;
-                if (!_map.TryGetValue(key, out factory))
-                {
-                    // never reported about this before
-                    return;
-                }
+                // never created before.
+                return;
+            }
 
-                // remove it from map
-                if (factory.OnDataRemoved(data))
-                {
-                    _map.Remove(key);
-                }
+            snapshot = _subscriptions;
+            if (!_map.TryGetValue(key, out factory))
+            {
+                // never reported about this before
+                return;
+            }
+
+            // remove it from map
+            if (factory.OnDataRemoved(data))
+            {
+                _map.Remove(key);
             }
 
             // let table manager know that we want to clear the entries
@@ -144,11 +157,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        private void GetOrCreateFactory(object data, out TableEntriesFactory<TData> factory, out bool newFactory)
+        private void GetOrCreateFactory_NoLock(object data, out TableEntriesFactory<TData> factory, out bool newFactory)
         {
-            var key = GetAggregationKey(data);
-
             newFactory = false;
+
+            var key = GetAggregationKey(data);
             if (_map.TryGetValue(key, out factory))
             {
                 return;
@@ -199,43 +212,36 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        public object GetOrCreateAggregationKey(object itemKey, object data, Func<object, object> aggregateKeyCreator)
+        public object GetOrCreateAggregationKey_NoLock(object data, Func<object, object> aggregateKeyCreator)
         {
-            lock (_gate)
+            object aggregateKey;
+            var key = GetItemKey(data);
+            if (_aggregateKeyMap.TryGetValue(key, out aggregateKey))
             {
-                object aggregateKey;
-                if (_aggregateKeyMap.TryGetValue(itemKey, out aggregateKey))
-                {
-                    return aggregateKey;
-                }
-
-                aggregateKey = aggregateKeyCreator(data);
-                _aggregateKeyMap.Add(itemKey, aggregateKey);
-
                 return aggregateKey;
             }
+
+            aggregateKey = aggregateKeyCreator(data);
+            _aggregateKeyMap.Add(key, aggregateKey);
+
+            return aggregateKey;
         }
 
-        public object TryGetAggregateKey(object itemKey)
+        private object TryGetAggregateKey_NoLock(object data)
         {
-            lock (_gate)
+            object aggregateKey;
+            var key = GetItemKey(data);
+            if (_aggregateKeyMap.TryGetValue(key, out aggregateKey))
             {
-                object aggregateKey;
-                if (_aggregateKeyMap.TryGetValue(itemKey, out aggregateKey))
-                {
-                    return aggregateKey;
-                }
+                return aggregateKey;
             }
 
             return null;
         }
 
-        public void RemoveAggregateKey(object itemKey)
+        private void RemoveAggregateKey_NoLock(object data)
         {
-            lock (_gate)
-            {
-                _aggregateKeyMap.Remove(itemKey);
-            }
+            _aggregateKeyMap.Remove(GetItemKey(data));
         }
 
         IDisposable ITableDataSource.Subscribe(ITableDataSink sink)
