@@ -165,10 +165,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 {
                     // REVIEW: this method is too-chatty to make async, but otherwise, how one can implement it async?
                     //         also, what is cancellation mechanism?
-                    var data = GetItem(index);
+                    var item = GetItem(index);
 
-                    var item = data.Primary;
-                    if (item == null)
+                    var data = item.Primary;
+                    if (data == null)
                     {
                         content = null;
                         return false;
@@ -180,19 +180,19 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                             content = WellKnownDiagnosticTags.Build;
                             return true;
                         case StandardTableKeyNames.ErrorSeverity:
-                            content = GetErrorCategory(item.Severity);
+                            content = GetErrorCategory(data.Severity);
                             return true;
                         case StandardTableKeyNames.ErrorCode:
-                            content = item.Id;
+                            content = data.Id;
                             return true;
                         case StandardTableKeyNames.ErrorCodeToolTip:
-                            content = GetHelpLinkToolTipText(item);
+                            content = GetHelpLinkToolTipText(data);
                             return content != null;
                         case StandardTableKeyNames.HelpLink:
-                            content = GetHelpLink(item);
+                            content = GetHelpLink(data);
                             return content != null;
                         case StandardTableKeyNames.ErrorCategory:
-                            content = item.Category;
+                            content = data.Category;
                             return true;
                         case StandardTableKeyNames.ErrorSource:
                             content = ErrorSource.Build;
@@ -201,24 +201,29 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                             content = _source.BuildTool;
                             return true;
                         case StandardTableKeyNames.Text:
-                            content = item.Message;
+                            content = data.Message;
                             return true;
                         case StandardTableKeyNames.DocumentName:
-                            content = GetFileName(item.DataLocation?.OriginalFilePath, item.DataLocation?.MappedFilePath);
+                            content = GetFileName(data.DataLocation?.OriginalFilePath, data.DataLocation?.MappedFilePath);
                             return true;
                         case StandardTableKeyNames.Line:
-                            content = item.DataLocation?.MappedStartLine ?? 0;
+                            content = data.DataLocation?.MappedStartLine ?? 0;
                             return true;
                         case StandardTableKeyNames.Column:
-                            content = item.DataLocation?.MappedStartColumn ?? 0;
+                            content = data.DataLocation?.MappedStartColumn ?? 0;
                             return true;
                         case StandardTableKeyNames.ProjectName:
-                            content = GetProjectName(item.Workspace, item.ProjectId);
+                            content = item.ProjectName;
                             return content != null;
+                        case ProjectNames:
+                            content = item.ProjectNames;
+                            return ((string[])content).Length > 0;
                         case StandardTableKeyNames.ProjectGuid:
-                            var guid = GetProjectGuid(item.Workspace, item.ProjectId);
-                            content = guid;
-                            return guid != Guid.Empty;
+                            content = item.ProjectGuid;
+                            return (Guid)content != Guid.Empty;
+                        case ProjectGuids:
+                            content = item.ProjectGuids;
+                            return ((Guid[])content).Length > 0;
                         default:
                             content = null;
                             return false;

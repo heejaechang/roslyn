@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Navigation;
 using Microsoft.CodeAnalysis.Shared.Extensions;
@@ -18,6 +19,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
     /// </summary>
     internal abstract class AbstractTableEntriesSnapshot<TData> : ITableEntriesSnapshot
     {
+        protected const string ProjectNames = StandardTableKeyNames.ProjectName + "s";
+        protected const string ProjectGuids = StandardTableKeyNames.ProjectGuid + "s";
+
         private readonly int _version;
         private readonly ImmutableArray<TableItem<TData>> _items;
         private ImmutableArray<ITrackingPoint> _trackingPoints;
@@ -193,39 +197,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
 
             return string.Empty;
-        }
-
-        protected string GetProjectName(Workspace workspace, ProjectId projectId)
-        {
-            if (projectId == null)
-            {
-                return null;
-            }
-
-            var project = workspace.CurrentSolution.GetProject(projectId);
-            if (project == null)
-            {
-                return null;
-            }
-
-            return project.Name;
-        }
-
-        protected static Guid GetProjectGuid(Workspace workspace, ProjectId projectId)
-        {
-            if (projectId == null)
-            {
-                return Guid.Empty;
-            }
-
-            var vsWorkspace = workspace as VisualStudioWorkspaceImpl;
-            var project = vsWorkspace?.GetHostProject(projectId);
-            if (project == null)
-            {
-                return Guid.Empty;
-            }
-
-            return project.Guid;
         }
 
         // we don't use these

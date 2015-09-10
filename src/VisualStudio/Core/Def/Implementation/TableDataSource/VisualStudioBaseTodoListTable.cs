@@ -186,10 +186,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 {
                     // REVIEW: this method is too-chatty to make async, but otherwise, how one can implement it async?
                     //         also, what is cancellation mechanism?
-                    var data = GetItem(index);
+                    var item = GetItem(index);
 
-                    var item = data.Primary;
-                    if (item == null)
+                    var data = item.Primary;
+                    if (data == null)
                     {
                         content = null;
                         return false;
@@ -198,29 +198,35 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     switch (columnName)
                     {
                         case StandardTableKeyNames.Priority:
-                            content = (VSTASKPRIORITY)item.Priority;
+                            content = (VSTASKPRIORITY)data.Priority;
                             return true;
                         case StandardTableKeyNames.Text:
-                            content = item.Message;
+                            content = data.Message;
                             return true;
                         case StandardTableKeyNames.DocumentName:
-                            content = GetFileName(item.OriginalFilePath, item.MappedFilePath);
+                            content = GetFileName(data.OriginalFilePath, data.MappedFilePath);
                             return true;
                         case StandardTableKeyNames.Line:
-                            content = GetLineColumn(item).Line;
+                            content = GetLineColumn(data).Line;
                             return true;
                         case StandardTableKeyNames.Column:
-                            content = GetLineColumn(item).Character;
+                            content = GetLineColumn(data).Character;
                             return true;
-                        case StandardTableKeyNames.ProjectName:
-                            content = GetProjectName(item.Workspace, item.DocumentId.ProjectId);
-                            return content != null;
-                        case StandardTableKeyNames.ProjectGuid:
-                            content = GetProjectGuid(item.Workspace, item.DocumentId.ProjectId);
-                            return (Guid)content != Guid.Empty;
                         case StandardTableKeyNames.TaskCategory:
                             content = VSTASKCATEGORY.CAT_COMMENTS;
                             return true;
+                        case StandardTableKeyNames.ProjectName:
+                            content = item.ProjectName;
+                            return content != null;
+                        case ProjectNames:
+                            content = item.ProjectNames;
+                            return ((string[])content).Length > 0;
+                        case StandardTableKeyNames.ProjectGuid:
+                            content = item.ProjectGuid;
+                            return (Guid)content != Guid.Empty;
+                        case ProjectGuids:
+                            content = item.ProjectGuids;
+                            return ((Guid[])content).Length > 0;
                         default:
                             content = null;
                             return false;
