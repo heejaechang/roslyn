@@ -13,21 +13,20 @@ using Roslyn.Utilities;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
+    /// <summary>
+    /// Base implementation of ITableEntriesSnapshot
+    /// </summary>
     internal abstract class AbstractTableEntriesSnapshot<TData> : ITableEntriesSnapshot
     {
         private readonly int _version;
         private readonly ImmutableArray<TableItem<TData>> _items;
         private ImmutableArray<ITrackingPoint> _trackingPoints;
 
-        protected readonly Guid ProjectGuid;
-
-        protected AbstractTableEntriesSnapshot(int version, Guid projectGuid, ImmutableArray<TableItem<TData>> items, ImmutableArray<ITrackingPoint> trackingPoints)
+        protected AbstractTableEntriesSnapshot(int version, ImmutableArray<TableItem<TData>> items, ImmutableArray<ITrackingPoint> trackingPoints)
         {
             _version = version;
             _items = items;
             _trackingPoints = trackingPoints;
-
-            ProjectGuid = projectGuid;
         }
 
         public abstract bool TryNavigateTo(int index, bool previewTab);

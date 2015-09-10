@@ -10,6 +10,9 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
+    /// <summary>
+    /// Base implementation of ITableDataSource
+    /// </summary>
     internal abstract class AbstractTableDataSource<TData> : ITableDataSource
     {
         private readonly object _gate;
@@ -63,11 +66,28 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
         }
 
-        public abstract object GetItemKey(object data);
-        public abstract AbstractTableEntriesSource<TData> CreateTableEntrySource(object data);
         public abstract ImmutableArray<TableItem<TData>> Deduplicate(IEnumerable<IList<TableItem<TData>>> duplicatedGroups);
         public abstract ITrackingPoint CreateTrackingPoint(TData data, ITextSnapshot snapshot);
+        public abstract AbstractTableEntriesSnapshot<TData> CreateSnapshot(AbstractTableEntriesSource<TData> source, int version, ImmutableArray<TableItem<TData>> items, ImmutableArray<ITrackingPoint> trackingPoints);
 
+        /// <summary>
+        /// Get unique ID per given data such as DiagnosticUpdatedArgs or TodoUpdatedArgs.
+        /// Data contains multiple items belong to one logical chunk. and the Id represents this particular 
+        /// chunk of the data
+        /// </summary>
+        public abstract object GetItemKey(object data);
+
+        /// <summary>
+        /// Create TableEntriesSource for the given data.
+        /// </summary>
+        public abstract AbstractTableEntriesSource<TData> CreateTableEntriesSource(object data);
+
+        /// <summary>
+        /// Get unique ID for given data that will be used to find data whose items needed to be merged together.
+        /// 
+        /// for example, for linked files, data that belong to same physical file will be gathered and items that belong to
+        /// those data will be de-duplicated.
+        /// </summary>
         protected abstract object GetAggregationKey(object data);
 
         protected void OnDataAddedOrChanged(object data)
@@ -131,7 +151,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return;
             }
 
-            var source = CreateTableEntrySource(data);
+            var source = CreateTableEntriesSource(data);
             factory = new TableEntriesFactory<TData>(this, source);
 
             _map.Add(key, factory);

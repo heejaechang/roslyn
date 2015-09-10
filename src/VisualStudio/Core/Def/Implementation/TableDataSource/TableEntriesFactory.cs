@@ -184,40 +184,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             {
                 if (_sources.Primary != null)
                 {
-                    return _sources.Primary.CreateSnapshot(version, items, trackingPoints);
+                    return _tableSource.CreateSnapshot(_sources.Primary, version, items, trackingPoints);
                 }
 
-                return new AggregatedSnapshot(version, items, trackingPoints);
-            }
-
-            private class AggregatedSnapshot : AbstractTableEntriesSnapshot<TData>
-            {
-                private readonly int version;
-                private readonly ImmutableArray<TableItem<TData>> items;
-                private readonly ImmutableArray<ITrackingPoint> trackingPoints;
-
-                public AggregatedSnapshot(int version, ImmutableArray<TableItem<TData>> items, ImmutableArray<ITrackingPoint> trackingPoints) :
-                    base(version, Guid.Empty, items, trackingPoints)
-                {
-                    this.version = version;
-                    this.items = items;
-                    this.trackingPoints = trackingPoints;
-                }
-
-                public override bool TryGetValue(int index, string columnName, out object content)
-                {
-                    throw new NotImplementedException();
-                }
-
-                public override bool TryNavigateTo(int index, bool previewTab)
-                {
-                    throw new NotImplementedException();
-                }
-
-                protected override bool IsEquivalent(TData item1, TData item2)
-                {
-                    throw new NotImplementedException();
-                }
+                return _tableSource.CreateSnapshot(_sources.GetSources().First(), version, items, trackingPoints);
             }
 
             private struct EntriesSourceCollections
@@ -282,7 +252,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                     EnsureSources();
 
-                    var source = tableSource.CreateTableEntrySource(data);
+                    var source = tableSource.CreateTableEntriesSource(data);
                     _sources.Add(source.Key, source);
                 }
 

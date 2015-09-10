@@ -101,6 +101,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return snapshot.CreateTrackingPoint(data.OriginalLine, data.OriginalColumn);
             }
 
+            public override AbstractTableEntriesSnapshot<TodoItem> CreateSnapshot(AbstractTableEntriesSource<TodoItem> source, int version, ImmutableArray<TableItem<TodoItem>> items, ImmutableArray<ITrackingPoint> trackingPoints)
+            {
+                return new TableEntriesSnapshot(source, version, items, trackingPoints);
+            }
+
             private static IEnumerable<TableItem<TodoItem>> Order(IEnumerable<TableItem<TodoItem>> groupedItems)
             {
                 return groupedItems.OrderBy(d => d.Primary.OriginalLine)
@@ -125,7 +130,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 OnDataAddedOrChanged(e);
             }
 
-            public override AbstractTableEntriesSource<TodoItem> CreateTableEntrySource(object data)
+            public override AbstractTableEntriesSource<TodoItem> CreateTableEntriesSource(object data)
             {
                 var item = (TodoListEventArgs)data;
                 return new TableEntriesSource(this, item.Workspace, item.DocumentId);
@@ -150,8 +155,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 {
                     var provider = _source._todoListProvider;
 
-                    // TODO: remove this wierd cast once we completely move off legacy task list. we, for now, need this since we share data
-                    //       between old and new API.
                     return provider.GetTodoItems(_workspace, _documentId, CancellationToken.None)
                                    .Select(i => new TableItem<TodoItem>(i, GenerateDeduplicationKey))
                                    .ToImmutableArray();
@@ -162,107 +165,100 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return _workspace.CreateTrackingPoints(_documentId, items, _source.CreateTrackingPoint);
                 }
 
-                public override AbstractTableEntriesSnapshot<TodoItem> CreateSnapshot(int version, ImmutableArray<TableItem<TodoItem>> items, ImmutableArray<ITrackingPoint> trackingPoints)
-                {
-                    return new TableEntriesSnapshot(this, version, items, trackingPoints);
-                }
-
                 private int GenerateDeduplicationKey(TodoItem item)
                 {
                     return Hash.Combine(item.OriginalColumn, item.OriginalLine);
                 }
+            }
 
-                private class TableEntriesSnapshot : AbstractTableEntriesSnapshot<TodoItem>
+            private class TableEntriesSnapshot : AbstractTableEntriesSnapshot<TodoItem>
+            {
+                private readonly AbstractTableEntriesSource<TodoItem> _source;
+
+                public TableEntriesSnapshot(
+                    AbstractTableEntriesSource<TodoItem> source, int version, ImmutableArray<TableItem<TodoItem>> items, ImmutableArray<ITrackingPoint> trackingPoints) :
+                    base(version, items, trackingPoints)
                 {
-                    private readonly TableEntriesSource _factorySource;
+                    _source = source;
+                }
 
-                    public TableEntriesSnapshot(
-                        TableEntriesSource factorySource, int version, ImmutableArray<TableItem<TodoItem>> items, ImmutableArray<ITrackingPoint> trackingPoints) :
-                        base(version, GetProjectGuid(factorySource._workspace, factorySource._documentId.ProjectId), items, trackingPoints)
+                public override bool TryGetValue(int index, string columnName, out object content)
+                {
+                    // REVIEW: this method is too-chatty to make async, but otherwise, how one can implement it async?
+                    //         also, what is cancellation mechanism?
+                    var data = GetItem(index);
+
+                    var item = data.Primary;
+                    if (item == null)
                     {
-                        _factorySource = factorySource;
+                        content = null;
+                        return false;
                     }
 
-                    public override bool TryGetValue(int index, string columnName, out object content)
+                    switch (columnName)
                     {
-                        // REVIEW: this method is too-chatty to make async, but otherwise, how one can implement it async?
-                        //         also, what is cancellation mechanism?
-                        var data = GetItem(index);
-
-                        var item = data.Primary;
-                        if (item == null)
-                        {
+                        case StandardTableKeyNames.Priority:
+                            content = (VSTASKPRIORITY)item.Priority;
+                            return true;
+                        case StandardTableKeyNames.Text:
+                            content = item.Message;
+                            return true;
+                        case StandardTableKeyNames.DocumentName:
+                            content = GetFileName(item.OriginalFilePath, item.MappedFilePath);
+                            return true;
+                        case StandardTableKeyNames.Line:
+                            content = GetLineColumn(item).Line;
+                            return true;
+                        case StandardTableKeyNames.Column:
+                            content = GetLineColumn(item).Character;
+                            return true;
+                        case StandardTableKeyNames.ProjectName:
+                            content = GetProjectName(item.Workspace, item.DocumentId.ProjectId);
+                            return content != null;
+                        case StandardTableKeyNames.ProjectGuid:
+                            content = GetProjectGuid(item.Workspace, item.DocumentId.ProjectId);
+                            return (Guid)content != Guid.Empty;
+                        case StandardTableKeyNames.TaskCategory:
+                            content = VSTASKCATEGORY.CAT_COMMENTS;
+                            return true;
+                        default:
                             content = null;
                             return false;
-                        }
-
-                        switch (columnName)
-                        {
-                            case StandardTableKeyNames.Priority:
-                                content = (VSTASKPRIORITY)item.Priority;
-                                return true;
-                            case StandardTableKeyNames.Text:
-                                content = item.Message;
-                                return true;
-                            case StandardTableKeyNames.DocumentName:
-                                content = GetFileName(item.OriginalFilePath, item.MappedFilePath);
-                                return true;
-                            case StandardTableKeyNames.Line:
-                                content = GetLineColumn(item).Line;
-                                return true;
-                            case StandardTableKeyNames.Column:
-                                content = GetLineColumn(item).Character;
-                                return true;
-                            case StandardTableKeyNames.ProjectName:
-                                // TODO: get project name from item
-                                content = GetProjectName(_factorySource._workspace, _factorySource._documentId.ProjectId);
-                                return content != null;
-                            case StandardTableKeyNames.ProjectGuid:
-                                // TODO: get project guid from item
-                                content = ProjectGuid;
-                                return ProjectGuid != Guid.Empty;
-                            case StandardTableKeyNames.TaskCategory:
-                                content = VSTASKCATEGORY.CAT_COMMENTS;
-                                return true;
-                            default:
-                                content = null;
-                                return false;
-                        }
                     }
+                }
 
-                    private LinePosition GetLineColumn(TodoItem item)
+                private LinePosition GetLineColumn(TodoItem item)
+                {
+                    return VisualStudioVenusSpanMappingService.GetAdjustedLineColumn(
+                        item.Workspace,
+                        item.DocumentId,
+                        item.OriginalLine,
+                        item.OriginalColumn,
+                        item.MappedLine,
+                        item.MappedColumn);
+                }
+
+                public override bool TryNavigateTo(int index, bool previewTab)
+                {
+                    var item = GetItem(index).Primary;
+                    if (item == null)
                     {
-                        return VisualStudioVenusSpanMappingService.GetAdjustedLineColumn(
-                            _factorySource._workspace,
-                            _factorySource._documentId,
-                            item.OriginalLine,
-                            item.OriginalColumn,
-                            item.MappedLine,
-                            item.MappedColumn);
+                        return false;
                     }
 
-                    public override bool TryNavigateTo(int index, bool previewTab)
+                    var trackingLinePosition = GetTrackingLineColumn(item.Workspace, item.DocumentId, index);
+                    if (trackingLinePosition != LinePosition.Zero)
                     {
-                        var item = GetItem(index).Primary;
-                        if (item == null)
-                        {
-                            return false;
-                        }
-
-                        var trackingLinePosition = GetTrackingLineColumn(_factorySource._workspace, _factorySource._documentId, index);
-                        if (trackingLinePosition != LinePosition.Zero)
-                        {
-                            return TryNavigateTo(_factorySource._workspace, _factorySource._documentId, trackingLinePosition.Line, trackingLinePosition.Character, previewTab);
-                        }
-
-                        return TryNavigateTo(_factorySource._workspace, _factorySource._documentId, item.OriginalLine, item.OriginalColumn, previewTab);
+                        return TryNavigateTo(item.Workspace, item.DocumentId, trackingLinePosition.Line, trackingLinePosition.Character, previewTab);
                     }
 
-                    protected override bool IsEquivalent(TodoItem item1, TodoItem item2)
-                    {
-                        // everything same except location
-                        return item1.DocumentId == item2.DocumentId && item1.Message == item2.Message;
-                    }
+                    return TryNavigateTo(item.Workspace, item.DocumentId, item.OriginalLine, item.OriginalColumn, previewTab);
+                }
+
+                protected override bool IsEquivalent(TodoItem item1, TodoItem item2)
+                {
+                    // everything same except location
+                    return item1.DocumentId == item2.DocumentId && item1.Message == item2.Message;
                 }
             }
         }
