@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Diagnostics.EngineV1;
 using Microsoft.CodeAnalysis.Editor.Implementation.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -77,7 +78,25 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             protected override object GetAggregationKey(object data)
             {
-                return ((DiagnosticsUpdatedArgs)data).Id;
+                return GetOrCreateAggregationKey(GetItemKey(data), data, CreateAggregationKey);
+            }
+
+            private object CreateAggregationKey(object data)
+            {
+                var args = (DiagnosticsUpdatedArgs)data;
+                if (args.DocumentId == null || args.Solution == null)
+                {
+                    return args.Id;
+                }
+
+                var argumentKey = args.Id as DiagnosticIncrementalAnalyzer.ArgumentKey;
+                if (argumentKey == null)
+                {
+                    return args.Id;
+                }
+
+                var documents = args.Solution.GetRelatedDocumentIds(args.DocumentId);
+                return ValueTuple.Create(documents, argumentKey.Analyzer, argumentKey.StateType);
             }
 
             private void OnDiagnosticsUpdated(object sender, DiagnosticsUpdatedArgs e)
@@ -101,6 +120,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 }
 
                 OnDataAddedOrChanged(e);
+            }
+
+            private void OnDataRemoved(DiagnosticsUpdatedArgs args)
+            {
+                base.OnDataRemoved(args);
+
+                RemoveAggregateKey(GetItemKey(args));
             }
 
             public override AbstractTableEntriesSource<DiagnosticData> CreateTableEntriesSource(object data)

@@ -87,8 +87,18 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             protected override object GetAggregationKey(object data)
             {
+                return GetOrCreateAggregationKey(GetItemKey(data), data, CreateAggregationKey);
+            }
+
+            private object CreateAggregationKey(object data)
+            {
                 var args = (TodoListEventArgs)data;
-                return args.Id;
+                if (args.Solution == null)
+                {
+                    return args.DocumentId;
+                }
+
+                return args.Solution.GetRelatedDocumentIds(args.DocumentId);
             }
 
             public override ImmutableArray<TableItem<TodoItem>> Deduplicate(IEnumerable<IList<TableItem<TodoItem>>> groupedItems)
@@ -128,6 +138,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 }
 
                 OnDataAddedOrChanged(e);
+            }
+
+            private void OnDataRemoved(TodoListEventArgs args)
+            {
+                base.OnDataRemoved(args);
+
+                RemoveAggregateKey(GetItemKey(args));
             }
 
             public override AbstractTableEntriesSource<TodoItem> CreateTableEntriesSource(object data)

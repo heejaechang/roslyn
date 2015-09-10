@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
     {
         private readonly object _gate;
         private readonly Dictionary<object, TableEntriesFactory<TData>> _map;
+        private readonly Dictionary<object, object> _aggregateKeyMap;
 
         private ImmutableArray<SubscriptionWithoutLock> _subscriptions;
         protected bool IsStable;
@@ -25,6 +26,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         {
             _gate = new object();
             _map = new Dictionary<object, TableEntriesFactory<TData>>();
+            _aggregateKeyMap = new Dictionary<object, object>();
+
             _subscriptions = ImmutableArray<SubscriptionWithoutLock>.Empty;
 
             Workspace = workspace;
@@ -193,6 +196,45 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                     snapshot[i].AddOrUpdate(factory, newFactory: false);
                 }
+            }
+        }
+
+        public object GetOrCreateAggregationKey(object itemKey, object data, Func<object, object> aggregateKeyCreator)
+        {
+            lock (_gate)
+            {
+                object aggregateKey;
+                if (_aggregateKeyMap.TryGetValue(itemKey, out aggregateKey))
+                {
+                    return aggregateKey;
+                }
+
+                aggregateKey = aggregateKeyCreator(data);
+                _aggregateKeyMap.Add(itemKey, aggregateKey);
+
+                return aggregateKey;
+            }
+        }
+
+        public object TryGetAggregateKey(object itemKey)
+        {
+            lock (_gate)
+            {
+                object aggregateKey;
+                if (_aggregateKeyMap.TryGetValue(itemKey, out aggregateKey))
+                {
+                    return aggregateKey;
+                }
+            }
+
+            return null;
+        }
+
+        public void RemoveAggregateKey(object itemKey)
+        {
+            lock (_gate)
+            {
+                _aggregateKeyMap.Remove(itemKey);
             }
         }
 
