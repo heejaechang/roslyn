@@ -17,6 +17,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
     {
         private class BuildTableDataSource : AbstractTableDataSource<DiagnosticData>
         {
+            private readonly object _key = new object();
+
             private readonly Workspace _workspace;
             private readonly ExternalErrorDiagnosticUpdateSource _buildErrorSource;
 
@@ -47,7 +49,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                 if (!started)
                 {
-                    OnDataAddedOrChanged(null);
+                    OnDataAddedOrChanged(_key);
                 }
             }
 
@@ -60,11 +62,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             public override string DisplayName => ServicesVSResources.BuildTableSourceName;
             public override string SourceTypeIdentifier => StandardTableDataSources.ErrorTableDataSource;
             public override string Identifier => IdentifierString;
-            public override object GetItemKey(object data) => this;
+            public override object GetItemKey(object data) => data;
 
             protected override object GetAggregationKey(object data)
             {
-                return this;
+                return data;
             }
 
             public override AbstractTableEntriesSource<DiagnosticData> CreateTableEntriesSource(object data)
@@ -79,7 +81,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             public override ITrackingPoint CreateTrackingPoint(DiagnosticData data, ITextSnapshot snapshot)
             {
-                return Contract.FailWithReturn<ITrackingPoint>("Build doesn't support tracking point");
+                return snapshot.CreateTrackingPoint(data.DataLocation?.OriginalStartLine ?? 0, data.DataLocation?.OriginalStartColumn ?? 0);
             }
 
             public override AbstractTableEntriesSnapshot<DiagnosticData> CreateSnapshot(AbstractTableEntriesSource<DiagnosticData> source, int version, ImmutableArray<TableItem<DiagnosticData>> items, ImmutableArray<ITrackingPoint> trackingPoints)
@@ -111,7 +113,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     _workspace = workspace;
                 }
 
-                public override object Key => this;
+                public override object Key => _source._key;
                 public override string BuildTool => PredefinedBuildTools.Build;
                 public override bool SupportSpanTracking => false;
                 public override DocumentId TrackingDocumentId => Contract.FailWithReturn<DocumentId>("This should never be called");

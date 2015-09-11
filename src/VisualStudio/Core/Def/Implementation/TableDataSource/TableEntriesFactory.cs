@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                         if (_sources.Count == 1)
                         {
-                            return _sources[0];
+                            return _sources.Values.First();
                         }
 
                         return null;
