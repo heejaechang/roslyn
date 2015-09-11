@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             _keyGenerator = keyGenerator;
 
             Primary = item;
-            DocumentIds = ImmutableHashSet<DocumentId>.Empty;
+            DocumentIds = ImmutableHashSet.Create(PrimaryDocumentId);
         }
 
         public TableItem(T primary, int deduplicationKey, ImmutableHashSet<DocumentId> documentIds) : this()
