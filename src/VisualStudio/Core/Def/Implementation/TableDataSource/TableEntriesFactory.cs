@@ -188,12 +188,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 return _tableSource.CreateSnapshot(_sources.GetSources().First(), version, items, trackingPoints);
             }
 
-            private struct EntriesSourceCollections
+            private class EntriesSourceCollections
             {
                 private AbstractTableEntriesSource<TData> _primary;
                 private Dictionary<object, AbstractTableEntriesSource<TData>> _sources;
 
-                public EntriesSourceCollections(AbstractTableEntriesSource<TData> primary) : this()
+                public EntriesSourceCollections(AbstractTableEntriesSource<TData> primary)
                 {
                     _primary = primary;
                 }
