@@ -2,7 +2,7 @@
   "locked": false,
   "version": 1,
   "targets": {
-    ".NETPlatform,Version=v5.4": {
+    ".NETStandard,Version=v1.3": {
       "Microsoft.DiaSymReader/1.0.7": {
         "compile": {
           "lib/portable-net45+win8/Microsoft.DiaSymReader.dll": {}
@@ -39,7 +39,7 @@
           }
         }
       },
-      "Microsoft.NETCore.Portable.Compatibility/1.0.1-beta-23504": {
+      "Microsoft.NETCore.Portable.Compatibility/1.0.0": {
         "compile": {
           "ref/dotnet/System.ComponentModel.DataAnnotations.dll": {},
           "ref/dotnet/System.Core.dll": {},
@@ -76,10 +76,10 @@
           "System.Threading": "4.0.0"
         },
         "compile": {
-          "lib/dotnet/System.Collections.Immutable.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll": {}
         },
         "runtime": {
-          "lib/dotnet/System.Collections.Immutable.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll": {}
         }
       },
       "System.Diagnostics.Debug/4.0.10": {
@@ -185,7 +185,21 @@
       },
       "System.Reflection.Metadata/1.2.0": {
         "dependencies": {
-          "System.Collections.Immutable": "1.1.37"
+          "System.Collections": "4.0.0",
+          "System.Collections.Immutable": "1.1.37",
+          "System.Diagnostics.Debug": "4.0.0",
+          "System.IO": "4.0.0",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.0",
+          "System.Runtime.Extensions": "4.0.0",
+          "System.Runtime.InteropServices": "4.0.0",
+          "System.Text.Encoding": "4.0.0",
+          "System.Text.Encoding.Extensions": "4.0.0",
+          "System.Threading": "4.0.0"
         },
         "compile": {
           "lib/portable-net45+win8/System.Reflection.Metadata.dll": {}
@@ -252,6 +266,15 @@
           "ref/dotnet/System.Text.Encoding.dll": {}
         }
       },
+      "System.Text.Encoding.Extensions/4.0.0": {
+        "dependencies": {
+          "System.Runtime": "4.0.0",
+          "System.Text.Encoding": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Text.Encoding.Extensions.dll": {}
+        }
+      },
       "System.Text.RegularExpressions/4.0.0": {
         "dependencies": {
           "System.Runtime": "4.0.0"
@@ -306,24 +329,14 @@
           "System.Threading.Tasks": "4.0.0"
         },
         "compile": {
-          "lib/dotnet/xunit.assert.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/xunit.assert.dll": {}
         },
         "runtime": {
-          "lib/dotnet/xunit.assert.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/xunit.assert.dll": {}
         }
       },
       "xunit.core/2.1.0": {
         "dependencies": {
-          "System.Collections": "4.0.0",
-          "System.Diagnostics.Debug": "4.0.0",
-          "System.Globalization": "4.0.0",
-          "System.Linq": "4.0.0",
-          "System.Reflection": "4.0.0",
-          "System.Reflection.Extensions": "4.0.0",
-          "System.Runtime": "4.0.0",
-          "System.Runtime.Extensions": "4.0.0",
-          "System.Threading.Tasks": "4.0.0",
-          "xunit.abstractions": "2.0.0",
           "xunit.extensibility.core": "[2.1.0]",
           "xunit.extensibility.execution": "[2.1.0]"
         }
@@ -333,10 +346,10 @@
           "xunit.abstractions": "[2.0.0]"
         },
         "compile": {
-          "lib/dotnet/xunit.core.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/xunit.core.dll": {}
         },
         "runtime": {
-          "lib/dotnet/xunit.core.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/xunit.core.dll": {}
         }
       },
       "xunit.extensibility.execution/2.1.0": {
@@ -358,10 +371,10 @@
           "xunit.extensibility.core": "[2.1.0]"
         },
         "compile": {
-          "lib/dotnet/xunit.execution.dotnet.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/xunit.execution.dotnet.dll": {}
         },
         "runtime": {
-          "lib/dotnet/xunit.execution.dotnet.dll": {}
+          "lib/portable-net45+win8+wp8+wpa81/xunit.execution.dotnet.dll": {}
         }
       }
     }
@@ -394,11 +407,11 @@
         "runtimes/win8-arm/native/Microsoft.DiaSymReader.Native.arm.dll"
       ]
     },
-    "Microsoft.NETCore.Portable.Compatibility/1.0.1-beta-23504": {
-      "sha512": "/12zABXWCTHNRBN6bNHxoqvmnJ1UKVaDSOR1BsAM+sv2aXjGMEM7bcDecvT/1zMKilWDmJpiPJJNCxjdZPQRTA==",
+    "Microsoft.NETCore.Portable.Compatibility/1.0.0": {
+      "sha512": "5/IFqf2zN1jzktRJitxO+5kQ+0AilcIbPvSojSJwDG3cGNSMZg44LXLB5E9RkSETE0Wh4QoALdNh1koKoF7/mA==",
       "type": "package",
       "files": [
-        "Microsoft.NETCore.Portable.Compatibility.1.0.1-beta-23504.nupkg.sha512",
+        "Microsoft.NETCore.Portable.Compatibility.1.0.0.nupkg.sha512",
         "Microsoft.NETCore.Portable.Compatibility.nuspec",
         "lib/dnxcore50/System.ComponentModel.DataAnnotations.dll",
         "lib/dnxcore50/System.Core.dll",
@@ -1161,6 +1174,53 @@
         "ref/xamarinmac20/_._"
       ]
     },
+    "System.Text.Encoding.Extensions/4.0.0": {
+      "sha512": "FktA77+2DC0S5oRhgM569pbzFrcA45iQpYiI7+YKl68B6TfI2N5TQbXqSWlh2YXKoFXHi2RFwPMha2lxiFJZ6A==",
+      "type": "package",
+      "files": [
+        "License.rtf",
+        "System.Text.Encoding.Extensions.4.0.0.nupkg.sha512",
+        "System.Text.Encoding.Extensions.nuspec",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/dotnet/System.Text.Encoding.Extensions.dll",
+        "ref/dotnet/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/de/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/es/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/fr/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/it/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/ja/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/ko/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/ru/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/zh-hans/System.Text.Encoding.Extensions.xml",
+        "ref/dotnet/zh-hant/System.Text.Encoding.Extensions.xml",
+        "ref/net45/_._",
+        "ref/netcore50/System.Text.Encoding.Extensions.dll",
+        "ref/netcore50/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/de/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/es/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/fr/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/it/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/ja/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/ko/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/ru/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/zh-hans/System.Text.Encoding.Extensions.xml",
+        "ref/netcore50/zh-hant/System.Text.Encoding.Extensions.xml",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._"
+      ]
+    },
     "System.Text.RegularExpressions/4.0.0": {
       "sha512": "D2CHm8LBIymJK9+1E3sn4cUEzMd6B+quQUrCGUluv9QFBNOdL3XqNu548QKeNplEXFOmF5aKXMxXbTrjbEUNMw==",
       "type": "package",
@@ -1416,7 +1476,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Microsoft.NETCore.Portable.Compatibility >= 1.0.1-beta-23504",
+      "Microsoft.NETCore.Portable.Compatibility >= 1.0.0",
       "System.Collections >= 4.0.10",
       "System.Diagnostics.Debug >= 4.0.10",
       "System.IO.FileSystem >= 4.0.0",
@@ -1425,6 +1485,6 @@
       "System.Runtime.InteropServices >= 4.0.20",
       "xunit >= 2.1.0"
     ],
-    ".NETPlatform,Version=v5.4": []
+    ".NETStandard,Version=v1.3": []
   }
 }
