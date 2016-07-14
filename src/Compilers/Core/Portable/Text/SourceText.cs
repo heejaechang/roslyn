@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.Text
             }
         }
 
-        public ImmutableArray<byte> GetChecksum(bool useDefaultEncodingIfNull = false)
+        internal ImmutableArray<byte> GetChecksum(bool useDefaultEncodingIfNull = false)
         {
             if (_lazyChecksum.IsDefault)
             {
