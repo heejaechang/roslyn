@@ -62,7 +62,8 @@
     <Compile Include="Services\RemoteHostService.cs" />
     <Compile Include="Services\ServiceHubJsonRpcServiceBase.cs" />
     <Compile Include="Services\ServiceHubServiceBase.cs" />
-    <Compile Include="Services\ServiceHubSnapshotService.cs" />
+    <Compile Include="Services\SnapshotService.JsonRpcAssetSource.cs" />
+    <Compile Include="Services\SnapshotService.cs" />
     <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\ServerDirectStream.cs" />
     <Compile Include="Shared\ClientDirectStream.cs" />

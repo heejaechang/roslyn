@@ -106,6 +106,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
                 }
 
                 private ChecksumScope ChecksumScope => _owner.ChecksumScope;
+
                 protected override object GetTarget() => this;
 
                 public async Task RequestAssetAsync(int serviceId, byte[] checksum, string streamName)
