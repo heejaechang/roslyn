@@ -12,7 +12,7 @@ using Roslyn.Utilities;
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.Remote
 {
     /// <summary>
-    /// This lets users create a session to communicate with remote host (i.e. ServiceHub)
+    /// Let's users create a session to communicate with remote host (i.e. ServiceHub)
     /// </summary>
     internal abstract class RemoteHostClient
     {
