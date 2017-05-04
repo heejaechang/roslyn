@@ -3,7 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Diagnostics.Log;
@@ -154,12 +157,31 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     // analyzerDriver can be null if given project doesn't support compilation.
                     if (analyzerDriverOpt != null)
                     {
-                        // calculate regular diagnostic analyzers diagnostics
-                        var compilerResult = await AnalyzeAsync(analyzerDriverOpt, project, cancellationToken).ConfigureAwait(false);
-                        result = compilerResult.AnalysisResult;
+                        var count = Interlocked.Add(ref s_count, 1);
+                        var sb = new StringBuilder();
 
-                        // record telemetry data
-                        UpdateAnalyzerTelemetryData(compilerResult, project, cancellationToken);
+                        try
+                        {
+                            sb.AppendLine($"({count}) Run on {project.Name} at {DateTime.Now.ToString(@"yyyy-MM-dd HH\:mm\:ss\.fff", CultureInfo.InvariantCulture)} --- ");
+
+                            // calculate regular diagnostic analyzers diagnostics
+                            var compilerResult = await AnalyzeAsync(analyzerDriverOpt, project, cancellationToken).ConfigureAwait(false);
+                            result = compilerResult.AnalysisResult;
+
+                            // record telemetry data
+                            UpdateAnalyzerTelemetryData(compilerResult, project, count, sb, cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            sb.AppendLine($"({count}) Cancelled on {project.Name} at {DateTime.Now.ToString(@"yyyy-MM-dd HH\:mm\:ss\.fff", CultureInfo.InvariantCulture)} --- ");
+                            throw;
+                        }
+                        finally
+                        {
+                            sb.AppendLine($"({count}) Done on {project.Name} at {DateTime.Now.ToString(@"yyyy-MM-dd HH\:mm\:ss\.fff", CultureInfo.InvariantCulture)} --- ");
+
+                            File.AppendAllText(@"c:\data.log", sb.ToString());
+                        }
                     }
 
                     // check whether there is IDE specific project diagnostic analyzer
@@ -187,8 +209,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                         // if we reduced to 0, we just pass in null for analyzer drvier. it could be reduced to 0
                         // since we might have up to date results for analyzers from compiler but not for 
                         // workspace analyzers.
-                        var analyzerDriverWithReducedSet = 
-                            analyzersToRun.Length == 0 ? 
+                        var analyzerDriverWithReducedSet =
+                            analyzersToRun.Length == 0 ?
                                 null : await _owner._compilationManager.CreateAnalyzerDriverAsync(
                                         project, analyzersToRun, analyzerDriverOpt.AnalysisOptions.ReportSuppressedDiagnostics, cancellationToken).ConfigureAwait(false);
 
@@ -415,11 +437,14 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
             }
 
+            private static int s_count = 0;
+
             private void UpdateAnalyzerTelemetryData(
-                DiagnosticAnalysisResultMap<DiagnosticAnalyzer, DiagnosticAnalysisResult> analysisResults, Project project, CancellationToken cancellationToken)
+                DiagnosticAnalysisResultMap<DiagnosticAnalyzer, DiagnosticAnalysisResult> analysisResults, Project project, int count, StringBuilder sb, CancellationToken cancellationToken)
             {
                 foreach (var kv in analysisResults.TelemetryInfo)
                 {
+                    sb.AppendLine($"({count}) [{kv.Key.GetAnalyzerId()}] {kv.Value.ExecutionTime.ToString(@"hh\:mm\:ss\.fff")}");
                     DiagnosticAnalyzerLogger.UpdateAnalyzerTypeCount(kv.Key, kv.Value, project, _owner.DiagnosticLogAggregator);
                 }
             }
