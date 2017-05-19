@@ -13,8 +13,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.Experimentation
 {
-    // Disabling until https://github.com/dotnet/roslyn/issues/19629 is fixed.
-    // [Export(typeof(ISuggestedActionCallback))]
+    [Export(typeof(ISuggestedActionCallback))]
     internal class AnalyzerVsixSuggestedActionCallback : ForegroundThreadAffinitizedObject, ISuggestedActionCallback
     {
         private const string AnalyzerEnabledFlight = @"LiveCA/LiveCAcf";
@@ -51,7 +50,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Experimentation
             // thread to get it
             AssertIsForeground();
 
-            
             // If the user has previously clicked don't show again, then we bail out immediately
             if (_workspace.Options.GetOption(AnalyzerABTestOptions.NeverShowAgain))
             {
