@@ -72,18 +72,27 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     return await AnalyzeInProcAsync(analyzerDriver, project, cancellationToken).ConfigureAwait(false);
                 }
 
-                var outOfProcResult = await AnalyzeOutOfProcAsync(remoteHostClient, analyzerDriver, project, cancellationToken).ConfigureAwait(false);
+                // due to OpenFileOnly analyzer, we need to run inproc as well for such analyzers
+                var inProcResultTask = AnalyzeInProcAsync(CreateAnalyzerDriver(analyzerDriver, a => a.IsOpenFileOnly(project.Solution.Workspace)), project, cancellationToken);
+                var outOfProcResultTask = AnalyzeOutOfProcAsync(remoteHostClient, analyzerDriver, project, cancellationToken);
+
+                // run them concurrently in vs and remote host
+                await Task.WhenAll(inProcResultTask, outOfProcResultTask).ConfigureAwait(false);
 
                 // make sure things are not cancelled
                 cancellationToken.ThrowIfCancellationRequested();
 
-                return DiagnosticAnalysisResultMap.Create(outOfProcResult.AnalysisResult, outOfProcResult.TelemetryInfo);
+                // merge 2 results
+                return DiagnosticAnalysisResultMap.Create(
+                    inProcResultTask.Result.AnalysisResult.AddRange(outOfProcResultTask.Result.AnalysisResult),
+                    inProcResultTask.Result.TelemetryInfo.AddRange(outOfProcResultTask.Result.TelemetryInfo));
             }
 
             private async Task<DiagnosticAnalysisResultMap<DiagnosticAnalyzer, DiagnosticAnalysisResult>> AnalyzeInProcAsync(
                 CompilationWithAnalyzers analyzerDriver, Project project, CancellationToken cancellationToken)
             {
-                if (analyzerDriver.Analyzers.Length == 0)
+                if (analyzerDriver == null ||
+                    analyzerDriver.Analyzers.Length == 0)
                 {
                     // quick bail out
                     return DiagnosticAnalysisResultMap.Create(ImmutableDictionary<DiagnosticAnalyzer, DiagnosticAnalysisResult>.Empty, ImmutableDictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo>.Empty);
@@ -107,7 +116,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 var snapshotService = solution.Workspace.Services.GetService<ISolutionSynchronizationService>();
 
                 // TODO: this should be moved out
-                var analyzerMap = CreateAnalyzerMap(analyzerDriver.Analyzers);
+                var analyzerMap = CreateAnalyzerMap(analyzerDriver.Analyzers.Where(a => !a.IsOpenFileOnly(project.Solution.Workspace)));
                 if (analyzerMap.Count == 0)
                 {
                     return DiagnosticAnalysisResultMap.Create(ImmutableDictionary<DiagnosticAnalyzer, DiagnosticAnalysisResult>.Empty, ImmutableDictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo>.Empty);
@@ -141,6 +150,18 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
             }
 
+            private CompilationWithAnalyzers CreateAnalyzerDriver(CompilationWithAnalyzers analyzerDriver, Func<DiagnosticAnalyzer, bool> predicate)
+            {
+                var analyzers = analyzerDriver.Analyzers.Where(predicate).ToImmutableArray();
+                if (analyzers.Length == 0)
+                {
+                    // return null since we can't create CompilationWithAnalyzers with 0 analyzers
+                    return null;
+                }
+
+                return analyzerDriver.Compilation.WithAnalyzers(analyzers, analyzerDriver.AnalysisOptions);
+            }
+
             private CustomAsset GetOptionsAsset(Solution solution, string language, CancellationToken cancellationToken)
             {
                 // TODO: we need better way to deal with options. optionSet itself is green node but
@@ -160,18 +181,6 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
                 _lastOptionSetPerLanguage[language] = ValueTuple.Create(options, asset);
                 return asset;
-            }
-
-            private CompilationWithAnalyzers CreateAnalyzerDriver(CompilationWithAnalyzers analyzerDriver, Func<DiagnosticAnalyzer, bool> predicate)
-            {
-                var analyzers = analyzerDriver.Analyzers.Where(predicate).ToImmutableArray();
-                if (analyzers.Length == 0)
-                {
-                    // we can't create analyzer driver with 0 analyzers
-                    return null;
-                }
-
-                return analyzerDriver.Compilation.WithAnalyzers(analyzers, analyzerDriver.AnalysisOptions);
             }
 
             private async Task<DiagnosticAnalysisResultMap<DiagnosticAnalyzer, DiagnosticAnalysisResult>> GetCompilerAnalysisResultAsync(Stream stream, Dictionary<string, DiagnosticAnalyzer> analyzerMap, Project project, CancellationToken cancellationToken)

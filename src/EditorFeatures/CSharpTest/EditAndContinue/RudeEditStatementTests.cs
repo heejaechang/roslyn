@@ -1483,7 +1483,6 @@ var x = $""Hello{123:N2}"";
             edits.VerifyEdits("Update [x = $\"Hello{123:N1}\"]@8 -> [x = $\"Hello{123:N2}\"]@8");
         }
 
-        [WorkItem(18970, "https://github.com/dotnet/roslyn/issues/18970")]
         [Fact]
         public void MatchCasePattern_UpdateDelete()
         {
@@ -1507,9 +1506,9 @@ switch(shape)
 
             var expected = new MatchingPairs {
                 { "switch(shape) {     case Point p: return 0;     case Circle c: return 1; }", "switch(shape) {     case Circle circle: return 1; }" },
-                { "p", "circle" },
                 { "case Circle c: return 1;", "case Circle circle: return 1;" },
                 { "case Circle c:", "case Circle circle:" },
+                { "c", "circle" },
                 { "return 1;", "return 1;" }
             };
 
@@ -1716,7 +1715,6 @@ var (a1, a3) = (1, () => { return 8; });
                 "Update [case 1: f(); break;]@18 -> [case 2: f(); break;]@18");
         }
 
-        [WorkItem(18970, "https://github.com/dotnet/roslyn/issues/18970")]
         [Fact]
         public void CasePatternLabel_UpdateDelete()
         {
@@ -1739,12 +1737,11 @@ switch(shape)
 
             edits.VerifyEdits(
                 "Update [case Circle c: return 1;]@55 -> [case Circle circle: return 1;]@26",
-                "Update [p]@37 -> [circle]@38",
-                "Move [p]@37 -> @38",
+                "Update [c]@67 -> [circle]@38",
                 "Delete [case Point p: return 0;]@26",
                 "Delete [case Point p:]@26",
-                "Delete [return 0;]@40",
-                "Delete [c]@67");
+                "Delete [p]@37",
+                "Delete [return 0;]@40");
         }
 
         #endregion
@@ -4416,7 +4413,7 @@ class C
         }
 
         // Add corresponding test to VB
-        [WpfFact(Skip = "TODO")]
+        [Fact(Skip = "TODO")]
         public void Lambdas_Update_Signature_CustomModifiers1()
         {
             var delegateSource = @"
@@ -4500,6 +4497,43 @@ class C
 
             // TODO
             edits.VerifySemanticDiagnostics();
+        }
+
+        [Fact]
+        public void Lambdas_Signature_SemanticErrors()
+        {
+            var src1 = @"
+using System;
+
+class C
+{
+    void G(Func<Unknown, Unknown> f) {}
+
+    void F()
+    {
+        G(a => 1);
+    }
+}
+";
+            var src2 = @"
+using System;
+
+class C
+{
+    void G(Func<Unknown, Unknown> f) {}
+
+    void F()
+    {
+        G(a => 2);
+    }
+}
+";
+            var edits = GetTopEdits(src1, src2);
+
+            edits.VerifySemanticDiagnostics(
+                // (6,17): error CS0246: The type or namespace name 'Unknown' could not be found (are you missing a using directive or an assembly reference?)
+                //     void G(Func<Unknown, Unknown> f) {}
+                Diagnostic(ErrorCode.ERR_SingleTypeNameNotFound, "Unknown").WithArguments("Unknown").WithLocation(6, 17));
         }
 
         [Fact]
@@ -7530,6 +7564,7 @@ class C
                 null,
                 null,
                 null,
+                null,
                 new[]
                 {
                     Diagnostic(RudeEditKind.UpdatingStateMachineMethodMissingAttribute, "static IEnumerable<int> F()", "System.Runtime.CompilerServices.IteratorStateMachineAttribute")
@@ -7570,130 +7605,6 @@ class C
                 null,
                 null,
                 null);
-        }
-
-        [Fact]
-        public void CSharp7SwitchStatement()
-        {
-            var src1 = @"
-class C
-{
-    static void F(object o)
-    {
-        switch (o)
-        {
-            case int i:
-                break;
-        }
-        System.Console.WriteLine(1);
-    }
-}
-";
-            var src2 = @"
-class C
-{
-    static void F(object o)
-    {
-        switch (o)
-        {
-            case int i:
-                break;
-        }
-        System.Console.WriteLine(2);
-    }
-}
-";
-            var edits = GetTopEdits(src1, src2);
-
-            CSharpEditAndContinueTestHelpers.Instance.VerifySemantics(
-                edits,
-                ActiveStatementsDescription.Empty,
-                expectedDiagnostics: new[]
-                {
-                    Diagnostic(RudeEditKind.UpdateAroundActiveStatement, null, CSharpFeaturesResources.v7_switch)
-                });
-        }
-
-        [Fact]
-        public void AddCSharp7SwitchStatement()
-        {
-            var src1 = @"
-class C
-{
-    static void F(object o)
-    {
-    }
-}
-";
-            var src2 = @"
-class C
-{
-    static void F(object o)
-    {
-        switch (o)
-        {
-            case string s:
-                break;
-        }
-        switch (o)
-        {
-            case int i:
-                break;
-        }
-    }
-}
-";
-            var edits = GetTopEdits(src1, src2);
-
-            CSharpEditAndContinueTestHelpers.Instance.VerifySemantics(
-                edits,
-                ActiveStatementsDescription.Empty,
-                additionalOldSources: null,
-                additionalNewSources: null,
-                expectedSemanticEdits: null,
-                expectedDiagnostics: new[]
-                {
-                    Diagnostic(RudeEditKind.UpdateAroundActiveStatement, "switch (o)", CSharpFeaturesResources.v7_switch)
-                });
-        }
-
-        [Fact]
-        public void AddCSharp7SwitchStatement2()
-        {
-            var src1 = @"
-class C
-{
-    static void F(object o)
-    {
-        switch (o)
-        {
-            case 1:
-            case """":
-                break;
-        }
-    }
-}
-";
-            var src2 = @"
-class C
-{
-    static void F(object o)
-    {
-    }
-}
-";
-            var edits = GetTopEdits(src1, src2);
-
-            CSharpEditAndContinueTestHelpers.Instance.VerifySemantics(
-                edits,
-                ActiveStatementsDescription.Empty,
-                additionalOldSources: null,
-                additionalNewSources: null,
-                expectedSemanticEdits: null,
-                expectedDiagnostics: new[]
-                {
-                    Diagnostic(RudeEditKind.UpdateAroundActiveStatement, null, CSharpFeaturesResources.v7_switch)
-                });
         }
 
         #endregion
@@ -8111,12 +8022,13 @@ class C
             var edits = GetTopEdits(src1, src2);
 
             CSharpEditAndContinueTestHelpers.InstanceMinAsync.VerifySemantics(
-                edits,
-                ActiveStatementsDescription.Empty,
-                null,
-                null,
-                null,
-                new[]
+                editScript: edits,
+                activeStatements: ActiveStatementsDescription.Empty,
+                additionalNewSources: null,
+                additionalOldSources: null,
+                expectedSemanticEdits: null,
+                expectedDeclarationError: null,
+                expectedDiagnostics: new[]
                 {
                     Diagnostic(RudeEditKind.UpdatingStateMachineMethodMissingAttribute, "static async Task<int> F()", "System.Runtime.CompilerServices.AsyncStateMachineAttribute")
                 });
@@ -8157,6 +8069,43 @@ class C
                 null,
                 null,
                 null);
+        }
+
+        [Fact]
+        public void SemanticError_AwaitInPropertyAccessor()
+        {
+            string src1 = @"
+using System.Threading.Tasks;
+
+class C
+{
+   public Task<int> P
+   {
+       get 
+       { 
+           await Task.Delay(1);
+           return 1;
+       }
+   }
+}
+";
+            string src2 = @"
+using System.Threading.Tasks;
+
+class C
+{
+   public Task<int> P
+   {
+       get 
+       { 
+           await Task.Delay(2);
+           return 1;
+       }
+   }
+}
+";
+            var edits = GetTopEdits(src1, src2);
+            edits.VerifySemanticDiagnostics();
         }
 
         #endregion
@@ -8347,12 +8296,11 @@ switch(shape)
             edits.VerifyEdits(
                 "Update [case Circle c: A(c); break;]@55 -> [case Circle c1: A(c1); break;]@26",
                 "Update [A(c);]@70 -> [A(c1);]@42",
-                "Update [p]@37 -> [c1]@38",
-                "Move [p]@37 -> @38",
+                "Update [c]@67 -> [c1]@38",
                 "Delete [case Point p: return 0;]@26",
                 "Delete [case Point p:]@26",
-                "Delete [return 0;]@40",
-                "Delete [c]@67");
+                "Delete [p]@37",
+                "Delete [return 0;]@40");
         }
 
         [Fact]

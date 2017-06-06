@@ -1,5 +1,6 @@
 [CmdletBinding(PositionalBinding=$false)]
 param (
+    [switch]$test32 = $false,
     [switch]$test64 = $false,
     [switch]$testDeterminism = $false,
     [switch]$testBuildCorrectness = $false,
@@ -7,12 +8,11 @@ param (
     [switch]$testPerfRun = $false,
     [switch]$testVsi = $false,
     [switch]$testVsiNetCore = $false,
-    [switch]$skipTest = $false,
+    [switch]$testDesktop = $false,
+    [switch]$testCoreClr = $false,
     [switch]$skipRestore = $false,
     [switch]$skipCommitPrinting = $false,
     [switch]$release = $false,
-    [switch]$skipCoreClrTests = $false,
-    [switch]$skipDesktopTests = $false,
     [parameter(ValueFromRemainingArguments=$true)] $badArgs)
 
 Set-StrictMode -version 2.0
@@ -20,14 +20,14 @@ $ErrorActionPreference = "Stop"
 
 function Print-Usage() {
     Write-Host "Usage: cibuild.cmd [-debug^|-release] [-test32^|-test64] [-restore]"
-    Write-Host "  -debug   Perform debug build.  This is the default."
-    Write-Host "  -release Perform release build."
-    Write-Host "  -test32  Run unit tests in the 32-bit runner.  This is the default."
-    Write-Host "  -test64  Run units tests in the 64-bit runner."
-    Write-Host "  -$testVsi  Run all integration tests."
-    Write-Host "  -$testVsiNetCore  Run just dotnet core integration tests."
-    Write-Host "  -skipCoreClrTests  Skip running unit tests on CoreCLR"
-    Write-Host "  -skipDesktopTests  Skip running unit tests on Desktop"
+    Write-Host "  -debug            Perform debug build.  This is the default."
+    Write-Host "  -release          Perform release build."
+    Write-Host "  -test32           Run unit tests in the 32-bit runner.  This is the default."
+    Write-Host "  -test64           Run units tests in the 64-bit runner."
+    Write-Host "  -testDesktop      Run desktop unit tests"
+    Write-Host "  -testCoreClr      Run CoreClr unit tests"
+    Write-Host "  -testVsi          Run all integration tests."
+    Write-Host "  -testVsiNetCore   Run just dotnet core integration tests."
 }
 
 function Run-MSBuild() {
@@ -50,6 +50,31 @@ function Run-MSBuild() {
 function Terminate-BuildProcesses() {
     Get-Process msbuild -ErrorAction SilentlyContinue | kill 
     Get-Process vbcscompiler -ErrorAction SilentlyContinue | kill
+}
+
+# Ensure that procdump is available on the machine.  Returns the path to the directory that contains 
+# the procdump binaries (both 32 and 64 bit)
+function Ensure-ProcDump() {
+
+    # Jenkins images default to having procdump installed in the root.  Use that if available to avoid
+    # an unnecessary download.
+    if (Test-Path "c:\SysInternals\procdump.exe") {
+        return "c:\SysInternals";
+    }    
+
+    $toolsDir = Join-Path $binariesDir "Tools"
+    $outDir = Join-Path $toolsDir "ProcDump"
+    $filePath = Join-Path $outDir "procdump.exe"
+    if (-not (Test-Path $filePath)) { 
+        Remove-Item -Re $filePath -ErrorAction SilentlyContinue
+        Create-Directory $outDir 
+        $zipFilePath = Join-Path $toolsDir "procdump.zip"
+        Invoke-WebRequest "https://download.sysinternals.com/files/Procdump.zip" -outfile $zipFilePath | Out-Null
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        [IO.Compression.ZipFile]::ExtractToDirectory($zipFilePath, $outDir)
+    }
+
+    return $outDir
 }
 
 # The Jenkins images used to execute our tests can live for a very long time.  Over the course
@@ -85,7 +110,11 @@ try {
 
     if (-not $skipRestore) { 
         Write-Host "Running restore"
+
+        # Temporary work around to help NuGet team debug a restore issue
+        ${env:NUGET_SHOW_STACK}="true"
         Restore-All -msbuildDir $msbuildDir 
+        Remove-Item env:\NUGET_SHOW_STACK
     }
 
     # Ensure the binaries directory exists because msbuild can fail when part of the path to LogFile isn't present.
@@ -114,7 +143,7 @@ try {
     Terminate-BuildProcesses
 
     if ($testDeterminism) {
-        Exec-Block { & ".\build\scripts\test-determinism.ps1" -buildDir $bootstrapDir } | Out-Host
+        Exec-Block { & ".\build\scripts\test-determinism.ps1" -bootstrapDir $bootstrapDir } | Out-Host
         Terminate-BuildProcesses
         exit 0
     }
@@ -157,19 +186,23 @@ try {
         exit 0
     }
 
-    $target = if ($skipTest) { "Build" } else { "BuildAndTest" }
-    $test64Arg = if ($test64) { "true" } else { "false" }
+    $test64Arg = if ($test64 -and (-not $test32)) { "true" } else { "false" }
     $testVsiArg = if ($testVsi) { "true" } else { "false" }
-    $skipCoreClrTestsArg = if ($skipCoreClrTests) { "true" } else { "false" }
-    $skipDesktopTestsArg = if ($skipDesktopTests) { "true" } else { "false" }
+    $testVsiNetCoreArg = if ($testVsiNetCore) { "true" } else { "false" }
     $buildLog = Join-Path $binariesdir "Build.log"
+    $procDumpDir = Ensure-ProcDump
 
-    if ($testVsiNetCore) { 
-        Run-MSBuild /p:BootstrapBuildPath="$bootstrapDir" BuildAndTest.proj /t:$target /p:Configuration=$buildConfiguration /p:Test64=$test64Arg /p:TestVsi=true /p:SkipCoreClrTest=$skipCoreClrTestsArg /p:SkipDesktopTest=$skipDesktopTestsArg /p:Trait="Feature=NetCore" /p:PathMap="$($repoDir)=q:\roslyn" /p:Feature=pdb-path-determinism /fileloggerparameters:LogFile="$buildLog"`;verbosity=diagnostic /p:DeployExtension=false
+    # To help the VS SDK team track down their issues around install via build temporarily 
+    # re-enabling the build based deployment
+    # 
+    # https://github.com/dotnet/roslyn/issues/17456
+    $deployExtensionViaBuild = $false
+
+    if ($testVsiNetCore -and ($test32 -or $test64 -or $testVsi)) {
+        Write-Host "The testVsiNetCore option can't be combined with other test arguments"
     }
-    else {
-        Run-MSBuild /p:BootstrapBuildPath="$bootstrapDir" BuildAndTest.proj /t:$target /p:Configuration=$buildConfiguration /p:Test64=$test64Arg /p:TestVsi=$testVsiArg /p:SkipCoreClrTest=$skipCoreClrTestsArg /p:SkipDesktopTest=$skipDesktopTestsArg /p:Trait="Feature=NetCore" /p:PathMap="$($repoDir)=q:\roslyn" /p:Feature=pdb-path-determinism /fileloggerparameters:LogFile="$buildLog"`;verbosity=diagnostic /p:DeployExtension=false
-    }
+
+    Run-MSBuild /p:BootstrapBuildPath="$bootstrapDir" BuildAndTest.proj /p:Configuration=$buildConfiguration /p:Test64=$test64Arg /p:TestVsi=$testVsiArg /p:TestDesktop=$testDesktop /p:TestCoreClr=$testCoreClr /p:TestVsiNetCore=$testVsiNetCoreArg /p:PathMap="$($repoDir)=q:\roslyn" /p:Feature=pdb-path-determinism /fileloggerparameters:LogFile="$buildLog"`;verbosity=diagnostic /p:DeployExtension=false /p:RoslynRuntimeIdentifier=win7-x64 /p:DeployExtensionViaBuild=$deployExtensionViaBuild /p:TreatWarningsAsErrors=true /p:ProcDumpDir=$procDumpDir
 
     exit 0
 }
