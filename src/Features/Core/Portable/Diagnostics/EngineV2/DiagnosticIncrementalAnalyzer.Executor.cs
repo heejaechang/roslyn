@@ -208,7 +208,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
                         try
                         {
-                            sb.AppendLine($"({count}) Run on {project.Name} at {DateTime.Now.ToString(@"yyyy-MM-dd HH\:mm\:ss\.fff", CultureInfo.InvariantCulture)} --- ");
+                            sb.AppendLine($"({count}) Run on {Path.GetFileName(project.Solution.FilePath)} solution {project.Name} project at {DateTime.Now.ToString(@"yyyy-MM-dd HH\:mm\:ss\.fff", CultureInfo.InvariantCulture)} --- ");
 
                             // calculate regular diagnostic analyzers diagnostics
                             var compilerResult = await AnalyzeAsync(analyzerDriverOpt, project, cancellationToken).ConfigureAwait(false);
