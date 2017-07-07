@@ -155,20 +155,38 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             AssertEx.Equal(expectedAssembliesAndAliases, actual, itemInspector: s => '"' + s + '"');
         }
 
-        internal static void VerifyOperationTree(this Compilation compilation, SyntaxNode node, string expectedOperationTree)
+        internal static void VerifyOperationTree(this Compilation compilation, SyntaxNode node, string expectedOperationTree,
+            [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
+            [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
         {
             var actualTextBuilder = new StringBuilder();
             SemanticModel model = compilation.GetSemanticModel(node.SyntaxTree);
             AppendOperationTree(model, node, actualTextBuilder);
-            OperationTreeVerifier.Verify(expectedOperationTree, actualTextBuilder.ToString());
+
+            try
+            {
+                OperationTreeVerifier.Verify(expectedOperationTree, actualTextBuilder.ToString());
+            }
+            catch
+            {
+                OperationTreeVerifier.SaveResult(memberName, sourceFilePath, sourceLineNumber.ToString(), actualTextBuilder.ToString(), expectedOperationTree);
+            }
         }
 
-        internal static void VerifyOperationTree(this Compilation compilation, string expectedOperationTree, bool skipImplicitlyDeclaredSymbols = false)
+        internal static void VerifyOperationTree(this Compilation compilation, string expectedOperationTree, bool skipImplicitlyDeclaredSymbols = false,
+            [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
+            [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
         {
-            VerifyOperationTree(compilation, symbolToVerify: null, expectedOperationTree: expectedOperationTree, skipImplicitlyDeclaredSymbols: skipImplicitlyDeclaredSymbols);
+            string symbolToVerify = null;
+            VerifyOperationTree(compilation, symbolToVerify, expectedOperationTree, skipImplicitlyDeclaredSymbols, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        internal static void VerifyOperationTree(this Compilation compilation, string symbolToVerify, string expectedOperationTree, bool skipImplicitlyDeclaredSymbols = false)
+        internal static void VerifyOperationTree(this Compilation compilation, string symbolToVerify, string expectedOperationTree, bool skipImplicitlyDeclaredSymbols = false,
+            [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
+            [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
         {
             SyntaxTree tree = compilation.SyntaxTrees.First();
             SyntaxNode root = tree.GetRoot();
@@ -219,7 +237,14 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 actualTextBuilder.Append(Environment.NewLine);
             }
 
-            OperationTreeVerifier.Verify(expectedOperationTree, actualTextBuilder.ToString());
+            try
+            {
+                OperationTreeVerifier.Verify(expectedOperationTree, actualTextBuilder.ToString());
+            }
+            catch
+            {
+                OperationTreeVerifier.SaveResult(memberName, sourceFilePath, sourceLineNumber.ToString(), actualTextBuilder.ToString(), expectedOperationTree);
+            }
         }
 
         private static void AppendOperationTree(SemanticModel model, SyntaxNode node, StringBuilder actualTextBuilder, int initialIndent = 0)

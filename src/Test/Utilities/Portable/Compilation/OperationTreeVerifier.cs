@@ -1163,5 +1163,23 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         }
 
         #endregion
+
+        private static readonly object s_gate = new object();
+
+        public static void SaveResult(string methodName, string filePath, string line, string actual, string expected)
+        {
+            lock (s_gate)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine($"{methodName}|{filePath}|{line}");
+                sb.AppendLine("**BEGIN**");
+                sb.AppendLine(actual);
+                sb.AppendLine("**NEXT**");
+                sb.AppendLine(Regex.Replace(expected, "([^\r])\n", "$1" + Environment.NewLine));
+                sb.AppendLine("**END**");
+
+                System.IO.File.AppendAllText(@"C:\dd\roslyn\log.txt", sb.ToString());
+            }
+        }
     }
 }
