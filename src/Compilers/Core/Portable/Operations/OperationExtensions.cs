@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Semantics
                 return true;
             }
 
-            // if given compilation is wrong, we will throw null ref exception
+            // if wrong compilation is given, GetSemanticModel will throw due to tree not belong to the given compilation.
             var model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
             return model.GetDiagnostics(operation.Syntax.Span, cancellationToken).Any(d => d.Severity == DiagnosticSeverity.Error);
         }
