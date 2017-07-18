@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis
         // but once initialized, will never change
         private IOperation _parentDoNotAccessDirectly;
 
-        public Operation(SemanticModel semanticModel, OperationKind kind, SyntaxNode syntax, ITypeSymbol type, Optional<object> constantValue)
+        public Operation(OperationKind kind, SemanticModel semanticModel, SyntaxNode syntax, ITypeSymbol type, Optional<object> constantValue)
         {
             _semanticModel = semanticModel;
 
@@ -78,6 +78,9 @@ namespace Microsoft.CodeAnalysis
 #if DEBUG
             if (result == null)
             {
+                // tree must belong to same semantic model
+                Debug.Assert(((Operation)operation)._semanticModel == _semanticModel);
+
                 // confirm explicitly given parent is same as what we would have found.
                 Debug.Assert(operation == _semanticModel.FindParentOperation(this));
             }
@@ -99,7 +102,7 @@ namespace Microsoft.CodeAnalysis
             private readonly Func<ImmutableArray<IOperation>> _getChildren;
 
             public NoneOperation(SemanticModel semanticMode, SyntaxNode node, Optional<object> constantValue, Func<ImmutableArray<IOperation>> getChildren) :
-                base(semanticMode, OperationKind.None, node, type: null, constantValue: constantValue)
+                base(OperationKind.None, semanticMode, node, type: null, constantValue: constantValue)
             {
                 _getChildren = getChildren;
             }
