@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.Semantics;
 
@@ -15,6 +16,11 @@ namespace Microsoft.CodeAnalysis
     [InternalImplementationOnly]
     public interface IOperation
     {
+        /// <summary>
+        /// IOperation that has this operation as a child
+        /// </summary>
+        IOperation Parent { get; }
+
         /// <summary>
         /// Identifies the kind of the operation.
         /// </summary>
@@ -34,6 +40,11 @@ namespace Microsoft.CodeAnalysis
         /// If the operation is an expression that evaluates to a constant value, <see cref="Optional{Object}.HasValue"/> is true and <see cref="Optional{Object}.Value"/> is the value of the expression. Otherwise, <see cref="Optional{Object}.HasValue"/> is false.
         /// </summary>
         Optional<object> ConstantValue { get; }
+
+        /// <summary>
+        /// An array of child operations for this operation.
+        /// </summary>
+        IEnumerable<IOperation> Children { get; }
 
         void Accept(OperationVisitor visitor);
 

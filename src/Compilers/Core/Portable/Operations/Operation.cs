@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Threading;
 using Microsoft.CodeAnalysis.Semantics;
 
 namespace Microsoft.CodeAnalysis
@@ -11,12 +14,36 @@ namespace Microsoft.CodeAnalysis
     /// </summary>
     internal abstract class Operation : IOperation
     {
-        public Operation(OperationKind kind, SyntaxNode syntax, ITypeSymbol type, Optional<object> constantValue)
+        private readonly SemanticModel _semanticModel;
+
+        // this will be lazily initialized. this will be initialized only once
+        // but once initialized, will never change
+        private IOperation _parentDoNotAccessDirectly;
+
+        public Operation(SemanticModel semanticModel, OperationKind kind, SyntaxNode syntax, ITypeSymbol type, Optional<object> constantValue)
         {
+            _semanticModel = semanticModel;
+
             Kind = kind;
             Syntax = syntax;
             Type = type;
             ConstantValue = constantValue;
+        }
+
+        /// <summary>
+        /// IOperation that has this operation as a child
+        /// </summary>
+        public IOperation Parent
+        {
+            get
+            {
+                if (_parentDoNotAccessDirectly == null)
+                {
+                    Interlocked.CompareExchange(ref _parentDoNotAccessDirectly, _semanticModel.FindParentOperation(this), null);
+                }
+
+                return _parentDoNotAccessDirectly;
+            }
         }
 
         /// <summary>
@@ -39,45 +66,55 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public Optional<object> ConstantValue { get; }
 
+        public abstract IEnumerable<IOperation> Children { get; }
+
         public abstract void Accept(OperationVisitor visitor);
 
         public abstract TResult Accept<TArgument, TResult>(OperationVisitor<TArgument, TResult> visitor, TArgument argument);
 
-        public static IOperation CreateOperationNone(SyntaxNode node, Optional<object> constantValue, Func<ImmutableArray<IOperation>> getChildren)
+        protected void SetParentOperation(IOperation operation)
         {
-            return new NoneOperation(node, constantValue, getChildren);
+            var result = Interlocked.CompareExchange(ref _parentDoNotAccessDirectly, operation, null);
+#if DEBUG
+            if (result == null)
+            {
+                // confirm explicitly given parent is same as what we would have found.
+                Debug.Assert(operation == _semanticModel.FindParentOperation(this));
+            }
+#endif
         }
 
-        private class NoneOperation : IOperation, IOperationWithChildren
+        public static IOperation CreateOperationNone(SemanticModel semanticModel, SyntaxNode node, Optional<object> constantValue, Func<ImmutableArray<IOperation>> getChildren)
+        {
+            return new NoneOperation(semanticModel, node, constantValue, getChildren);
+        }
+
+        public static void SetParentOperation(IOperation current, IOperation parent)
+        {
+            ((Operation)current).SetParentOperation(parent);
+        }
+
+        private class NoneOperation : Operation
         {
             private readonly Func<ImmutableArray<IOperation>> _getChildren;
 
-            public NoneOperation(SyntaxNode node, Optional<object> constantValue, Func<ImmutableArray<IOperation>> getChildren)
+            public NoneOperation(SemanticModel semanticMode, SyntaxNode node, Optional<object> constantValue, Func<ImmutableArray<IOperation>> getChildren) :
+                base(semanticMode, OperationKind.None, node, type: null, constantValue: constantValue)
             {
-                Syntax = node;
-                ConstantValue = constantValue;
                 _getChildren = getChildren;
             }
 
-            public OperationKind Kind => OperationKind.None;
-
-            public SyntaxNode Syntax { get; }
-
-            public ITypeSymbol Type => null;
-
-            public Optional<object> ConstantValue { get; }
-
-            public void Accept(OperationVisitor visitor)
+            public override void Accept(OperationVisitor visitor)
             {
                 visitor.VisitNoneOperation(this);
             }
 
-            public TResult Accept<TArgument, TResult>(OperationVisitor<TArgument, TResult> visitor, TArgument argument)
+            public override TResult Accept<TArgument, TResult>(OperationVisitor<TArgument, TResult> visitor, TArgument argument)
             {
                 return visitor.VisitNoneOperation(this, argument);
             }
 
-            public ImmutableArray<IOperation> Children => _getChildren();
+            public override IEnumerable<IOperation> Children => _getChildren().NullToEmpty();
         }
     }
 }

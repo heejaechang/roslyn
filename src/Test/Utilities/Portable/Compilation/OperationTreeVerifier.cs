@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             }
 
             // IsInvalid
-            if (operation.IsInvalid(_compilation))
+            if (operation.HasErrors(_compilation))
             {
                 LogString(", IsInvalid");
             }
@@ -201,6 +201,8 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             if (operation == null)
             {
+                LogString("null");
+                LogNewLine();
                 return;
             }
 
@@ -221,31 +223,33 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             Debug.Assert(!string.IsNullOrEmpty(header));
 
-            if (operation == null)
-            {
-                return;
-            }
-
             Indent();
             LogString($"{header}: ");
             Visit(operation);
             Unindent();
         }
 
-        private void VisitArray<T>(ImmutableArray<T> list, string header, bool logElementCount)
+        private void VisitArray<T>(IEnumerable<T> list, string header, bool logElementCount)
             where T : IOperation
         {
             Debug.Assert(!string.IsNullOrEmpty(header));
 
-            if (list.IsDefaultOrEmpty)
+            Indent();
+            if (!list.IsEmpty())
             {
-                return;
+                var elementCount = logElementCount ? $"({list.Count()})" : string.Empty;
+                LogString($"{header}{elementCount}:");
+                LogNewLine();
+                Indent();
+                VisitArray(list);
+                Unindent();
+            }
+            else
+            {
+                LogString($"{header}(0)");
+                LogNewLine();
             }
 
-            var elementCount = logElementCount ? $"({list.Length})" : string.Empty;
-            Indent();
-            LogString($"{header}{elementCount}: ");
-            VisitArray(list);
             Unindent();
         }
 
@@ -259,13 +263,10 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             LogString("IOperation: ");
             LogCommonPropertiesAndNewLine(operation);
 
-            if (operation is IOperationWithChildren operationWithChildren)
+            var children = operation.Children.WhereNotNull();
+            if (children.Any())
             {
-                var children = operationWithChildren.Children.WhereNotNull().ToImmutableArray();
-                if (children.Length > 0)
-                {
-                    VisitArray(children, "Children", logElementCount: true);
-                }
+                VisitArray(children, "Children", logElementCount: true);
             }
         }
 
@@ -538,9 +539,8 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             LogString(nameof(IInvocationExpression));
 
             var isVirtualStr = operation.IsVirtual ? "virtual " : string.Empty;
-            var isStaticStr = operation.Instance == null ? "static " : string.Empty;
             var spacing = !operation.IsVirtual && operation.Instance != null ? " " : string.Empty;
-            LogString($" ({isVirtualStr}{isStaticStr}{spacing}");
+            LogString($" ({isVirtualStr}{spacing}");
             LogSymbol(operation.TargetMethod, header: string.Empty);
             LogString(")");
             LogCommonPropertiesAndNewLine(operation);
@@ -1150,6 +1150,14 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             LogString(nameof(IDefaultCaseClause));
             LogCaseClauseCommon(operation);
+        }
+
+        public override void VisitTupleExpression(ITupleExpression operation)
+        {
+            LogString(nameof(ITupleExpression));
+            LogCommonPropertiesAndNewLine(operation);
+
+            VisitArray(operation.Elements, "Elements", logElementCount: true);
         }
 
         public override void VisitInterpolatedStringExpression(IInterpolatedStringExpression operation)
