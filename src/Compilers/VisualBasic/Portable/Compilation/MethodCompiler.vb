@@ -1221,8 +1221,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
                                 End If
                                 Return semanticModel
                             End Function)
-                        Dim symbolToProduce = If(method.PartialDefinitionPart, method)
-                        compilation.EventQueue.TryEnqueue(New SymbolDeclaredCompilationEvent(compilation, symbolToProduce, lazySemanticModel))
+                        compilation.EventQueue.TryEnqueue(New SymbolDeclaredCompilationEvent(compilation, method, lazySemanticModel))
                     End If
                 End If
             End If
