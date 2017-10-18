@@ -25,6 +25,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         private const string indent = "  ";
         private string _currentIndent;
         private bool _pendingIndent;
+        private bool _logParent;
 
         public OperationTreeVerifier(Compilation compilation, IOperation root, int initialIndent)
         {
@@ -34,6 +35,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
             _currentIndent = new string(' ', initialIndent);
             _pendingIndent = true;
+            _logParent = true;
         }
 
         public static void Verify(Compilation compilation, IOperation operation, string expectedOperationTree, int initialIndent = 0)
@@ -64,6 +66,9 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         private void LogCommonPropertiesAndNewLine(IOperation operation)
         {
             LogString(" (");
+
+            // Child Ordial
+            LogString($"[{GetChildOrdinal(operation)}] ");
 
             // Kind
             LogString($"{nameof(OperationKind)}.{operation.Kind}");
@@ -100,13 +105,54 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 LogString(", IsImplicit");
             }
 
-
             LogString(")");
 
             // Syntax
-            LogString($" (Syntax: {GetSnippetFromSyntax(operation.Syntax)})");
+            LogString($" (Syntax: {GetKind(operation.Syntax)}, {GetSnippetFromSyntax(operation.Syntax)})");
+
+            // Parent
+            if (_logParent)
+            {
+                LogString($" (Parent: {operation.Parent?.Kind})");
+
+                // log only once for the first operation.
+                _logParent = false;
+            }
 
             LogNewLine();
+        }
+
+        private string GetChildOrdinal(IOperation operation)
+        {
+            var parent = operation.Parent;
+            if (parent == null)
+            {
+                // root operation
+                return "Root";
+            }
+
+            var count = 0;
+            foreach (var child in parent.Children)
+            {
+                if (child == operation)
+                {
+                    return count.ToString();
+                }
+
+                count++;
+            }
+
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        private string GetKind(SyntaxNode syntax)
+        {
+            if (syntax.Language == LanguageNames.CSharp)
+            {
+                return ((CSharp.CSharpSyntaxNode)syntax).Kind().ToString();
+            }
+
+            return ((VisualBasic.VisualBasicSyntaxNode)syntax).Kind().ToString();
         }
 
         private static string GetSnippetFromSyntax(SyntaxNode syntax)
