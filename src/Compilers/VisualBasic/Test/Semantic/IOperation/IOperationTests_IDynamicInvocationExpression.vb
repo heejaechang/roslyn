@@ -139,8 +139,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
     IParameterReferenceExpression: d ([1] OperationKind.ParameterReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
     IParameterReferenceExpression: e ([2] OperationKind.ParameterReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'e')
   ArgumentNames(2):
-  "d"
-  "c"
+    "d"
+    "c"
   ArgumentRefKinds: null
 ]]>.Value
 
@@ -344,8 +344,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
     IParameterReferenceExpression: e ([1] OperationKind.ParameterReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'e')
     IParameterReferenceExpression: d ([2] OperationKind.ParameterReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
   ArgumentNames(2):
-  "x2"
-  "x"
+    "x2"
+    "x"
   ArgumentRefKinds: null
 ]]>.Value
 
@@ -390,8 +390,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
     IParameterReferenceExpression: e ([1] OperationKind.ParameterReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'e')
     IParameterReferenceExpression: d ([2] OperationKind.ParameterReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
   ArgumentNames(2):
-  "x2"
-  "x"
+    "x2"
+    "x"
   ArgumentRefKinds: null
 ]]>.Value
 

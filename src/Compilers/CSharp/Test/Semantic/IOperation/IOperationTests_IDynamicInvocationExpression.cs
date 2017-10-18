@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Test.Utilities;
@@ -153,8 +153,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
     IParameterReferenceExpression: d ([1] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
     IParameterReferenceExpression: e ([2] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'e')
   ArgumentNames(2):
-  ""i""
-  ""ch""
+    ""i""
+    ""ch""
   ArgumentRefKinds(0)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -194,9 +194,9 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
     IParameterReferenceExpression: e ([3] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'e')
   ArgumentNames(0)
   ArgumentRefKinds(3):
-  Ref
-  Out
-  None
+    Ref
+    Out
+    None
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -359,11 +359,11 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
     ILocalReferenceExpression: i ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'i')
     IParameterReferenceExpression: d ([2] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
   ArgumentNames(2):
-  ""null""
-  ""c""
+    ""null""
+    ""c""
   ArgumentRefKinds(2):
-  Ref
-  None
+    Ref
+    None
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 

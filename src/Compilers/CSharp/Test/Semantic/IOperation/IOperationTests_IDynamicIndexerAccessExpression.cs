@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Test.Utilities;
@@ -126,8 +126,8 @@ IDynamicIndexerAccessExpression ([0] OperationKind.DynamicIndexerAccessExpressio
     IParameterReferenceExpression: d ([1] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
     IParameterReferenceExpression: e ([2] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'e')
   ArgumentNames(2):
-  ""i""
-  ""ch""
+    ""i""
+    ""ch""
   ArgumentRefKinds(0)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -158,11 +158,11 @@ IDynamicIndexerAccessExpression ([0] OperationKind.DynamicIndexerAccessExpressio
     IParameterReferenceExpression: d ([1] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
     IParameterReferenceExpression: e ([2] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'e')
   ArgumentNames(2):
-  ""i""
-  ""ch""
+    ""i""
+    ""ch""
   ArgumentRefKinds(2):
-  None
-  Ref
+    None
+    Ref
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0631: ref and out are not valid in this context
@@ -286,11 +286,11 @@ IDynamicIndexerAccessExpression ([0] OperationKind.DynamicIndexerAccessExpressio
     ILocalReferenceExpression: i ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'i')
     IParameterReferenceExpression: d ([2] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
   ArgumentNames(2):
-  ""null""
-  ""c""
+    ""null""
+    ""c""
   ArgumentRefKinds(2):
-  Ref
-  None
+    Ref
+    None
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0631: ref and out are not valid in this context

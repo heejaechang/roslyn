@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Test.Utilities;
@@ -203,7 +203,7 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: ""GetValue"", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: dynamic) (Syntax: SimpleMemberAccessExpression, 'd.GetValue<int>')
       Type Arguments(1):
-      Symbol: System.Int32
+        Symbol: System.Int32
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
   Arguments(0)
@@ -237,8 +237,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: ""GetValue"", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: dynamic) (Syntax: SimpleMemberAccessExpression, 'd.GetValue<int, C1>')
       Type Arguments(2):
-      Symbol: System.Int32
-      Symbol: ConsoleApp1.C1
+        Symbol: System.Int32
+        Symbol: ConsoleApp1.C1
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
   Arguments(0)
@@ -270,8 +270,8 @@ namespace ConsoleApp1
             string expectedOperationTree = @"
 IDynamicMemberReferenceExpression (Member Name: ""GetValue"", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: dynamic, IsInvalid) (Syntax: SimpleMemberAccessExpression, 'd.GetValue<int, C1>') (Parent: ExpressionStatement)
   Type Arguments(2):
-  Symbol: System.Int32
-  Symbol: ConsoleApp1.C1
+    Symbol: System.Int32
+    Symbol: ConsoleApp1.C1
   Instance Receiver: 
     ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: dynamic, IsInvalid) (Syntax: IdentifierName, 'd')
 ";
@@ -309,8 +309,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: ""GetValue"", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: dynamic, IsInvalid) (Syntax: SimpleMemberAccessExpression, 'd.GetValue<int,>')
       Type Arguments(2):
-      Symbol: System.Int32
-      Symbol: ?
+        Symbol: System.Int32
+        Symbol: ?
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
   Arguments(0)
@@ -425,7 +425,7 @@ IDynamicMemberReferenceExpression (Member Name: ""Prop2"", Containing Type: null
       Expression: 
         IDynamicMemberReferenceExpression (Member Name: ""Method1"", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: dynamic) (Syntax: SimpleMemberAccessExpression, 'd.Method1<int>')
           Type Arguments(1):
-          Symbol: System.Int32
+            Symbol: System.Int32
           Instance Receiver: 
             ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
       Arguments(0)

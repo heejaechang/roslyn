@@ -55,7 +55,7 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: "F", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: System.Object) (Syntax: SimpleMemberAccessExpression, 'd.F(Of String)')
       Type Arguments(1):
-      Symbol: System.String
+        Symbol: System.String
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
   Arguments(0)
@@ -86,7 +86,7 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: "F", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: System.Object, IsInvalid) (Syntax: SimpleMemberAccessExpression, 'd.F(Of)')
       Type Arguments(1):
-      Symbol: ?
+        Symbol: ?
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
   Arguments(0)
@@ -190,7 +190,7 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: "GetValue", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: System.Object) (Syntax: SimpleMemberAccessExpression, 'd.GetValue(Of String)')
       Type Arguments(1):
-      Symbol: System.String
+        Symbol: System.String
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
   Arguments(0)
@@ -221,8 +221,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: "GetValue", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: System.Object) (Syntax: SimpleMemberAccessExpression, 'd.GetValue( ... g, Integer)')
       Type Arguments(2):
-      Symbol: System.String
-      Symbol: System.Int32
+        Symbol: System.String
+        Symbol: System.Int32
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
   Arguments(0)
@@ -253,8 +253,8 @@ IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Typ
   Expression: 
     IDynamicMemberReferenceExpression (Member Name: "GetValue", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: System.Object, IsInvalid) (Syntax: SimpleMemberAccessExpression, 'd.GetValue(Of String,)')
       Type Arguments(2):
-      Symbol: System.String
-      Symbol: ?
+        Symbol: System.String
+        Symbol: ?
       Instance Receiver: 
         ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'd')
   Arguments(0)

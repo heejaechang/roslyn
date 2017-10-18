@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Test.Utilities;
@@ -139,8 +139,8 @@ IDynamicObjectCreationExpression ([0] OperationKind.DynamicObjectCreationExpress
     IParameterReferenceExpression: d ([0] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
     IParameterReferenceExpression: e ([1] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'e')
   ArgumentNames(2):
-  ""i""
-  ""c""
+    ""i""
+    ""c""
   ArgumentRefKinds(0)
   Initializer: 
     null
@@ -177,9 +177,9 @@ IDynamicObjectCreationExpression ([0] OperationKind.DynamicObjectCreationExpress
     IParameterReferenceExpression: e ([2] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'e')
   ArgumentNames(0)
   ArgumentRefKinds(3):
-  Ref
-  Out
-  None
+    Ref
+    Out
+    None
   Initializer: 
     null
 ";
@@ -259,11 +259,11 @@ IDynamicObjectCreationExpression ([0] OperationKind.DynamicObjectCreationExpress
     ILocalReferenceExpression: i ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'i')
     IParameterReferenceExpression: d ([1] OperationKind.ParameterReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
   ArgumentNames(2):
-  ""null""
-  ""c""
+    ""null""
+    ""c""
   ArgumentRefKinds(2):
-  Ref
-  None
+    Ref
+    None
   Initializer: 
     IObjectOrCollectionInitializerExpression ([2] OperationKind.ObjectOrCollectionInitializerExpression, Type: C) (Syntax: ObjectInitializerExpression, '{ X = 0 }')
       Initializers(1):
