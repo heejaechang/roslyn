@@ -25,7 +25,6 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         private const string indent = "  ";
         private string _currentIndent;
         private bool _pendingIndent;
-        private bool _logParent;
 
         public OperationTreeVerifier(Compilation compilation, IOperation root, int initialIndent)
         {
@@ -35,7 +34,6 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
             _currentIndent = new string(' ', initialIndent);
             _pendingIndent = true;
-            _logParent = true;
         }
 
         public static void Verify(Compilation compilation, IOperation operation, string expectedOperationTree, int initialIndent = 0)
@@ -111,12 +109,9 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             LogString($" (Syntax: {GetKind(operation.Syntax)}, {GetSnippetFromSyntax(operation.Syntax)})");
 
             // Parent
-            if (_logParent)
+            if (operation == _root)
             {
                 LogString($" (Parent: {operation.Parent?.Kind})");
-
-                // log only once for the first operation.
-                _logParent = false;
             }
 
             LogNewLine();
@@ -333,12 +328,10 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 var elementCount = logElementCount ? $"({list.Count()})" : string.Empty;
                 LogString($"{header}{elementCount}:");
                 LogNewLine();
-                Indent();
                 foreach (var element in list)
                 {
                     arrayElementVisitor(element);
                 }
-                Unindent();
             }
             else
             {
