@@ -24,11 +24,11 @@ class C
 
             string expectedOperationTree =
 @"
-IBinaryOperatorExpression (BinaryOperatorKind.Add, IsLifted) (OperationKind.BinaryOperatorExpression, Type: System.Int32?) (Syntax: 'x + y')
+IBinaryOperatorExpression (BinaryOperatorKind.Add, IsLifted) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32?) (Syntax: AddExpression, 'x + y') (Parent: VariableInitializer)
   Left: 
-    IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: 'x')
+    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: IdentifierName, 'x')
   Right: 
-    IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: 'y')
+    IParameterReferenceExpression: y ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: IdentifierName, 'y')
 ";
 
             VerifyOperationTreeForTest<BinaryExpressionSyntax>(source, expectedOperationTree);
@@ -49,11 +49,11 @@ class C
 
             string expectedOperationTree =
 @"
-IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y')
+IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y') (Parent: VariableInitializer)
   Left: 
-    IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'x')
+    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
   Right: 
-    IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'y')
+    IParameterReferenceExpression: y ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'y')
 ";
 
             VerifyOperationTreeForTest<BinaryExpressionSyntax>(source, expectedOperationTree);
@@ -76,11 +76,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IBinaryOperatorExpression (BinaryOperatorKind.Add, IsLifted, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Int32?) (Syntax: 'x + y')
+IBinaryOperatorExpression (BinaryOperatorKind.Add, IsLifted, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32?) (Syntax: AddExpression, 'x + y') (Parent: VariableInitializer)
   Left: 
-    IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: 'x')
+    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: IdentifierName, 'x')
   Right: 
-    IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: 'y')
+    IParameterReferenceExpression: y ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32?) (Syntax: IdentifierName, 'y')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -104,11 +104,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IBinaryOperatorExpression (BinaryOperatorKind.Add, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y')
+IBinaryOperatorExpression (BinaryOperatorKind.Add, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y') (Parent: VariableInitializer)
   Left: 
-    IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'x')
+    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
   Right: 
-    IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'y')
+    IParameterReferenceExpression: y ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'y')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -131,11 +131,11 @@ struct C
 
             string expectedOperationTree =
 @"
-IBinaryOperatorExpression (BinaryOperatorKind.Add, IsLifted) (OperatorMethod: C C.op_Addition(C c1, C c2)) (OperationKind.BinaryOperatorExpression, Type: C?) (Syntax: 'x + y')
+IBinaryOperatorExpression (BinaryOperatorKind.Add, IsLifted) (OperatorMethod: C C.op_Addition(C c1, C c2)) ([0] OperationKind.BinaryOperatorExpression, Type: C?) (Syntax: AddExpression, 'x + y') (Parent: VariableInitializer)
   Left: 
-    IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: C?) (Syntax: 'x')
+    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: C?) (Syntax: IdentifierName, 'x')
   Right: 
-    IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: C?) (Syntax: 'y')
+    IParameterReferenceExpression: y ([1] OperationKind.ParameterReferenceExpression, Type: C?) (Syntax: IdentifierName, 'y')
 ";
 
             VerifyOperationTreeForTest<BinaryExpressionSyntax>(source, expectedOperationTree);
@@ -157,11 +157,11 @@ struct C
 
             string expectedOperationTree =
 @"
-IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperatorMethod: C C.op_Addition(C c1, C c2)) (OperationKind.BinaryOperatorExpression, Type: C) (Syntax: 'x + y')
+IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperatorMethod: C C.op_Addition(C c1, C c2)) ([0] OperationKind.BinaryOperatorExpression, Type: C) (Syntax: AddExpression, 'x + y') (Parent: VariableInitializer)
   Left: 
-    IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: C) (Syntax: 'x')
+    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: C) (Syntax: IdentifierName, 'x')
   Right: 
-    IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: C) (Syntax: 'y')
+    IParameterReferenceExpression: y ([1] OperationKind.ParameterReferenceExpression, Type: C) (Syntax: IdentifierName, 'y')
 ";
 
             VerifyOperationTreeForTest<BinaryExpressionSyntax>(source, expectedOperationTree);
@@ -184,114 +184,114 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvocationExpression (void System.Console.WriteLine(System.Int32 value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ) ? 1 : 0))')
+IInvocationExpression (void System.Console.WriteLine(System.Int32 value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ) ? 1 : 0))') (Parent: ExpressionStatement)
   Instance Receiver: 
     null
   Arguments(1):
-      IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: '(a >> 10) + ... 0) ? 1 : 0)')
-        IBinaryOperatorExpression (BinaryOperatorKind.Or) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + ... 0) ? 1 : 0)')
-          Left: 
-            IBinaryOperatorExpression (BinaryOperatorKind.And) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + ... / e % f & g')
-              Left: 
-                IBinaryOperatorExpression (BinaryOperatorKind.Subtract) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + ... * d / e % f')
-                  Left: 
-                    IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + (b << 20)')
-                      Left: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.RightShift) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'a >> 10')
-                          Left: 
-                            IParameterReferenceExpression: a (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'a')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-                      Right: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.LeftShift) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'b << 20')
-                          Left: 
-                            IParameterReferenceExpression: b (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'b')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 20) (Syntax: '20')
-                  Right: 
-                    IBinaryOperatorExpression (BinaryOperatorKind.Remainder) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'c * d / e % f')
-                      Left: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Divide) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'c * d / e')
-                          Left: 
-                            IBinaryOperatorExpression (BinaryOperatorKind.Multiply) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'c * d')
-                              Left: 
-                                IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'c')
-                              Right: 
-                                IParameterReferenceExpression: d (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'd')
-                          Right: 
-                            IParameterReferenceExpression: e (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'e')
-                      Right: 
-                        IParameterReferenceExpression: f (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'f')
-              Right: 
-                IParameterReferenceExpression: g (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'g')
-          Right: 
-            IBinaryOperatorExpression (BinaryOperatorKind.ExclusiveOr) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'h ^ (i == ( ... 0) ? 1 : 0)')
-              Left: 
-                IParameterReferenceExpression: h (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'h')
-              Right: 
-                IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: 'i == (j !=  ...  0) ? 1 : 0')
-                  Condition: 
-                    IBinaryOperatorExpression (BinaryOperatorKind.Equals) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'i == (j !=  ... 0) ? 1 : 0)')
-                      Left: 
-                        IParameterReferenceExpression: i (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'i')
-                      Right: 
-                        IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: 'j != ((((k  ...  0) ? 1 : 0')
-                          Condition: 
-                            IBinaryOperatorExpression (BinaryOperatorKind.NotEquals) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'j != ((((k  ...  p ? 1 : 0)')
-                              Left: 
-                                IParameterReferenceExpression: j (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'j')
-                              Right: 
-                                IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: '(((k < l ?  ... = p ? 1 : 0')
-                                  Condition: 
-                                    IBinaryOperatorExpression (BinaryOperatorKind.GreaterThanOrEqual) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: '(((k < l ?  ... 1 : 0) >= p')
-                                      Left: 
-                                        IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: '((k < l ? 1 ... = o ? 1 : 0')
-                                          Condition: 
-                                            IBinaryOperatorExpression (BinaryOperatorKind.LessThanOrEqual) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: '((k < l ? 1 ... 1 : 0) <= o')
-                                              Left: 
-                                                IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: '(k < l ? 1  ... > m ? 1 : 0')
-                                                  Condition: 
-                                                    IBinaryOperatorExpression (BinaryOperatorKind.GreaterThan) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: '(k < l ? 1 : 0) > m')
-                                                      Left: 
-                                                        IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: 'k < l ? 1 : 0')
-                                                          Condition: 
-                                                            IBinaryOperatorExpression (BinaryOperatorKind.LessThan) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'k < l')
-                                                              Left: 
-                                                                IParameterReferenceExpression: k (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'k')
-                                                              Right: 
-                                                                IParameterReferenceExpression: l (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'l')
-                                                          WhenTrue: 
-                                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                                          WhenFalse: 
-                                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                                                      Right: 
-                                                        IParameterReferenceExpression: m (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'm')
-                                                  WhenTrue: 
-                                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                                  WhenFalse: 
-                                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                                              Right: 
-                                                IParameterReferenceExpression: o (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'o')
-                                          WhenTrue: 
-                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                          WhenFalse: 
-                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                                      Right: 
-                                        IParameterReferenceExpression: p (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'p')
-                                  WhenTrue: 
-                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                  WhenFalse: 
-                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                          WhenTrue: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                          WhenFalse: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                  WhenTrue: 
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                  WhenFalse: 
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+    IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, '(a >> 10) + ... 0) ? 1 : 0)')
+      IBinaryOperatorExpression (BinaryOperatorKind.Or) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: BitwiseOrExpression, '(a >> 10) + ... 0) ? 1 : 0)')
+        Left: 
+          IBinaryOperatorExpression (BinaryOperatorKind.And) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: BitwiseAndExpression, '(a >> 10) + ... / e % f & g')
+            Left: 
+              IBinaryOperatorExpression (BinaryOperatorKind.Subtract) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: SubtractExpression, '(a >> 10) + ... * d / e % f')
+                Left: 
+                  IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, '(a >> 10) + (b << 20)')
+                    Left: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.RightShift) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: RightShiftExpression, 'a >> 10')
+                        Left: 
+                          IParameterReferenceExpression: a ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'a')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
+                    Right: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.LeftShift) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: LeftShiftExpression, 'b << 20')
+                        Left: 
+                          IParameterReferenceExpression: b ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'b')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 20) (Syntax: NumericLiteralExpression, '20')
+                Right: 
+                  IBinaryOperatorExpression (BinaryOperatorKind.Remainder) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: ModuloExpression, 'c * d / e % f')
+                    Left: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Divide) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: DivideExpression, 'c * d / e')
+                        Left: 
+                          IBinaryOperatorExpression (BinaryOperatorKind.Multiply) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: MultiplyExpression, 'c * d')
+                            Left: 
+                              IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'c')
+                            Right: 
+                              IParameterReferenceExpression: d ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'd')
+                        Right: 
+                          IParameterReferenceExpression: e ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'e')
+                    Right: 
+                      IParameterReferenceExpression: f ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'f')
+            Right: 
+              IParameterReferenceExpression: g ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'g')
+        Right: 
+          IBinaryOperatorExpression (BinaryOperatorKind.ExclusiveOr) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: ExclusiveOrExpression, 'h ^ (i == ( ... 0) ? 1 : 0)')
+            Left: 
+              IParameterReferenceExpression: h ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'h')
+            Right: 
+              IConditionalExpression ([1] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, 'i == (j !=  ...  0) ? 1 : 0')
+                Condition: 
+                  IBinaryOperatorExpression (BinaryOperatorKind.Equals) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: EqualsExpression, 'i == (j !=  ... 0) ? 1 : 0)')
+                    Left: 
+                      IParameterReferenceExpression: i ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'i')
+                    Right: 
+                      IConditionalExpression ([1] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, 'j != ((((k  ...  0) ? 1 : 0')
+                        Condition: 
+                          IBinaryOperatorExpression (BinaryOperatorKind.NotEquals) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: NotEqualsExpression, 'j != ((((k  ...  p ? 1 : 0)')
+                            Left: 
+                              IParameterReferenceExpression: j ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'j')
+                            Right: 
+                              IConditionalExpression ([1] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, '(((k < l ?  ... = p ? 1 : 0')
+                                Condition: 
+                                  IBinaryOperatorExpression (BinaryOperatorKind.GreaterThanOrEqual) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: GreaterThanOrEqualExpression, '(((k < l ?  ... 1 : 0) >= p')
+                                    Left: 
+                                      IConditionalExpression ([0] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, '((k < l ? 1 ... = o ? 1 : 0')
+                                        Condition: 
+                                          IBinaryOperatorExpression (BinaryOperatorKind.LessThanOrEqual) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: LessThanOrEqualExpression, '((k < l ? 1 ... 1 : 0) <= o')
+                                            Left: 
+                                              IConditionalExpression ([0] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, '(k < l ? 1  ... > m ? 1 : 0')
+                                                Condition: 
+                                                  IBinaryOperatorExpression (BinaryOperatorKind.GreaterThan) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: GreaterThanExpression, '(k < l ? 1 : 0) > m')
+                                                    Left: 
+                                                      IConditionalExpression ([0] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, 'k < l ? 1 : 0')
+                                                        Condition: 
+                                                          IBinaryOperatorExpression (BinaryOperatorKind.LessThan) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: LessThanExpression, 'k < l')
+                                                            Left: 
+                                                              IParameterReferenceExpression: k ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'k')
+                                                            Right: 
+                                                              IParameterReferenceExpression: l ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'l')
+                                                        WhenTrue: 
+                                                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                                        WhenFalse: 
+                                                          ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                                                    Right: 
+                                                      IParameterReferenceExpression: m ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'm')
+                                                WhenTrue: 
+                                                  ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                                WhenFalse: 
+                                                  ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                                            Right: 
+                                              IParameterReferenceExpression: o ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'o')
+                                        WhenTrue: 
+                                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                        WhenFalse: 
+                                          ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                                    Right: 
+                                      IParameterReferenceExpression: p ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'p')
+                                WhenTrue: 
+                                  ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                WhenFalse: 
+                                  ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                        WhenTrue: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                        WhenFalse: 
+                          ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                WhenTrue: 
+                  ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                WhenFalse: 
+                  ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -318,114 +318,114 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvocationExpression (void System.Console.WriteLine(System.Int32 value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ) ? 1 : 0))')
+IInvocationExpression (void System.Console.WriteLine(System.Int32 value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ) ? 1 : 0))') (Parent: ExpressionStatement)
   Instance Receiver: 
     null
   Arguments(1):
-      IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: '(a >> 10) + ... 0) ? 1 : 0)')
-        IBinaryOperatorExpression (BinaryOperatorKind.Or) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + ... 0) ? 1 : 0)')
-          Left: 
-            IBinaryOperatorExpression (BinaryOperatorKind.And) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + ... / e % f & g')
-              Left: 
-                IBinaryOperatorExpression (BinaryOperatorKind.Subtract, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + ... * d / e % f')
-                  Left: 
-                    IBinaryOperatorExpression (BinaryOperatorKind.Add, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '(a >> 10) + (b << 20)')
-                      Left: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.RightShift) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'a >> 10')
-                          Left: 
-                            IParameterReferenceExpression: a (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'a')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-                      Right: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.LeftShift) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'b << 20')
-                          Left: 
-                            IParameterReferenceExpression: b (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'b')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 20) (Syntax: '20')
-                  Right: 
-                    IBinaryOperatorExpression (BinaryOperatorKind.Remainder) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'c * d / e % f')
-                      Left: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Divide, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'c * d / e')
-                          Left: 
-                            IBinaryOperatorExpression (BinaryOperatorKind.Multiply, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'c * d')
-                              Left: 
-                                IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'c')
-                              Right: 
-                                IParameterReferenceExpression: d (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'd')
-                          Right: 
-                            IParameterReferenceExpression: e (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'e')
-                      Right: 
-                        IParameterReferenceExpression: f (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'f')
-              Right: 
-                IParameterReferenceExpression: g (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'g')
-          Right: 
-            IBinaryOperatorExpression (BinaryOperatorKind.ExclusiveOr) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'h ^ (i == ( ... 0) ? 1 : 0)')
-              Left: 
-                IParameterReferenceExpression: h (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'h')
-              Right: 
-                IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: 'i == (j !=  ...  0) ? 1 : 0')
-                  Condition: 
-                    IBinaryOperatorExpression (BinaryOperatorKind.Equals) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'i == (j !=  ... 0) ? 1 : 0)')
-                      Left: 
-                        IParameterReferenceExpression: i (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'i')
-                      Right: 
-                        IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: 'j != ((((k  ...  0) ? 1 : 0')
-                          Condition: 
-                            IBinaryOperatorExpression (BinaryOperatorKind.NotEquals) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'j != ((((k  ...  p ? 1 : 0)')
-                              Left: 
-                                IParameterReferenceExpression: j (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'j')
-                              Right: 
-                                IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: '(((k < l ?  ... = p ? 1 : 0')
-                                  Condition: 
-                                    IBinaryOperatorExpression (BinaryOperatorKind.GreaterThanOrEqual) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: '(((k < l ?  ... 1 : 0) >= p')
-                                      Left: 
-                                        IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: '((k < l ? 1 ... = o ? 1 : 0')
-                                          Condition: 
-                                            IBinaryOperatorExpression (BinaryOperatorKind.LessThanOrEqual) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: '((k < l ? 1 ... 1 : 0) <= o')
-                                              Left: 
-                                                IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: '(k < l ? 1  ... > m ? 1 : 0')
-                                                  Condition: 
-                                                    IBinaryOperatorExpression (BinaryOperatorKind.GreaterThan) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: '(k < l ? 1 : 0) > m')
-                                                      Left: 
-                                                        IConditionalExpression (OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: 'k < l ? 1 : 0')
-                                                          Condition: 
-                                                            IBinaryOperatorExpression (BinaryOperatorKind.LessThan) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'k < l')
-                                                              Left: 
-                                                                IParameterReferenceExpression: k (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'k')
-                                                              Right: 
-                                                                IParameterReferenceExpression: l (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'l')
-                                                          WhenTrue: 
-                                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                                          WhenFalse: 
-                                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                                                      Right: 
-                                                        IParameterReferenceExpression: m (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'm')
-                                                  WhenTrue: 
-                                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                                  WhenFalse: 
-                                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                                              Right: 
-                                                IParameterReferenceExpression: o (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'o')
-                                          WhenTrue: 
-                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                          WhenFalse: 
-                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                                      Right: 
-                                        IParameterReferenceExpression: p (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'p')
-                                  WhenTrue: 
-                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                                  WhenFalse: 
-                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                          WhenTrue: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                          WhenFalse: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-                  WhenTrue: 
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                  WhenFalse: 
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+    IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, '(a >> 10) + ... 0) ? 1 : 0)')
+      IBinaryOperatorExpression (BinaryOperatorKind.Or) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: BitwiseOrExpression, '(a >> 10) + ... 0) ? 1 : 0)')
+        Left: 
+          IBinaryOperatorExpression (BinaryOperatorKind.And) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: BitwiseAndExpression, '(a >> 10) + ... / e % f & g')
+            Left: 
+              IBinaryOperatorExpression (BinaryOperatorKind.Subtract, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: SubtractExpression, '(a >> 10) + ... * d / e % f')
+                Left: 
+                  IBinaryOperatorExpression (BinaryOperatorKind.Add, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, '(a >> 10) + (b << 20)')
+                    Left: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.RightShift) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: RightShiftExpression, 'a >> 10')
+                        Left: 
+                          IParameterReferenceExpression: a ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'a')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
+                    Right: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.LeftShift) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: LeftShiftExpression, 'b << 20')
+                        Left: 
+                          IParameterReferenceExpression: b ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'b')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 20) (Syntax: NumericLiteralExpression, '20')
+                Right: 
+                  IBinaryOperatorExpression (BinaryOperatorKind.Remainder) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: ModuloExpression, 'c * d / e % f')
+                    Left: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Divide, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: DivideExpression, 'c * d / e')
+                        Left: 
+                          IBinaryOperatorExpression (BinaryOperatorKind.Multiply, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: MultiplyExpression, 'c * d')
+                            Left: 
+                              IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'c')
+                            Right: 
+                              IParameterReferenceExpression: d ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'd')
+                        Right: 
+                          IParameterReferenceExpression: e ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'e')
+                    Right: 
+                      IParameterReferenceExpression: f ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'f')
+            Right: 
+              IParameterReferenceExpression: g ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'g')
+        Right: 
+          IBinaryOperatorExpression (BinaryOperatorKind.ExclusiveOr) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: ExclusiveOrExpression, 'h ^ (i == ( ... 0) ? 1 : 0)')
+            Left: 
+              IParameterReferenceExpression: h ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'h')
+            Right: 
+              IConditionalExpression ([1] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, 'i == (j !=  ...  0) ? 1 : 0')
+                Condition: 
+                  IBinaryOperatorExpression (BinaryOperatorKind.Equals) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: EqualsExpression, 'i == (j !=  ... 0) ? 1 : 0)')
+                    Left: 
+                      IParameterReferenceExpression: i ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'i')
+                    Right: 
+                      IConditionalExpression ([1] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, 'j != ((((k  ...  0) ? 1 : 0')
+                        Condition: 
+                          IBinaryOperatorExpression (BinaryOperatorKind.NotEquals) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: NotEqualsExpression, 'j != ((((k  ...  p ? 1 : 0)')
+                            Left: 
+                              IParameterReferenceExpression: j ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'j')
+                            Right: 
+                              IConditionalExpression ([1] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, '(((k < l ?  ... = p ? 1 : 0')
+                                Condition: 
+                                  IBinaryOperatorExpression (BinaryOperatorKind.GreaterThanOrEqual) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: GreaterThanOrEqualExpression, '(((k < l ?  ... 1 : 0) >= p')
+                                    Left: 
+                                      IConditionalExpression ([0] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, '((k < l ? 1 ... = o ? 1 : 0')
+                                        Condition: 
+                                          IBinaryOperatorExpression (BinaryOperatorKind.LessThanOrEqual) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: LessThanOrEqualExpression, '((k < l ? 1 ... 1 : 0) <= o')
+                                            Left: 
+                                              IConditionalExpression ([0] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, '(k < l ? 1  ... > m ? 1 : 0')
+                                                Condition: 
+                                                  IBinaryOperatorExpression (BinaryOperatorKind.GreaterThan) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: GreaterThanExpression, '(k < l ? 1 : 0) > m')
+                                                    Left: 
+                                                      IConditionalExpression ([0] OperationKind.ConditionalExpression, Type: System.Int32) (Syntax: ConditionalExpression, 'k < l ? 1 : 0')
+                                                        Condition: 
+                                                          IBinaryOperatorExpression (BinaryOperatorKind.LessThan) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: LessThanExpression, 'k < l')
+                                                            Left: 
+                                                              IParameterReferenceExpression: k ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'k')
+                                                            Right: 
+                                                              IParameterReferenceExpression: l ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'l')
+                                                        WhenTrue: 
+                                                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                                        WhenFalse: 
+                                                          ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                                                    Right: 
+                                                      IParameterReferenceExpression: m ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'm')
+                                                WhenTrue: 
+                                                  ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                                WhenFalse: 
+                                                  ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                                            Right: 
+                                              IParameterReferenceExpression: o ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'o')
+                                        WhenTrue: 
+                                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                        WhenFalse: 
+                                          ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                                    Right: 
+                                      IParameterReferenceExpression: p ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'p')
+                                WhenTrue: 
+                                  ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                                WhenFalse: 
+                                  ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                        WhenTrue: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                        WhenFalse: 
+                          ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+                WhenTrue: 
+                  ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                WhenFalse: 
+                  ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 

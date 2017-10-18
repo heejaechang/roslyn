@@ -51,29 +51,29 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from i in c select i')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from i in c select i') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select i')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select i')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from i in c')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from i in c')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'i')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'i')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from i in c')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from i in c')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'i')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'i')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'i')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'i')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'i')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -117,46 +117,46 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from i in c ...  q select q')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from i in c ...  q select q') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select q')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select q')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'select i')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select i')
-              Instance Receiver: 
-                null
-              Arguments(2):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from i in c')
-                    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from i in c')
-                      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                      Operand: 
-                        ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'i')
-                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i')
-                      Target: 
-                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i')
-                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i')
-                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i')
-                              ReturnedValue: 
-                                IOperation:  (OperationKind.None) (Syntax: 'i')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'q')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'q')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'q')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'q')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'q')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'q')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: SelectClause, 'select i')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select i')
+            Instance Receiver: 
+              null
+            Arguments(2):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from i in c')
+                IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from i in c')
+                  Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                  Operand: 
+                    ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'i')
+                IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'i')
+                  Target: 
+                    IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'i')
+                      IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'i')
+                        IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'i')
+                          ReturnedValue: 
+                            IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'q')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'q')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'q')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'q')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'q')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'q')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -198,33 +198,33 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from i in c select i+1')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from i in c select i+1') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select i+1')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select i+1')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from i in c')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from i in c')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'i+1')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i+1')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i+1')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i+1')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i+1')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'i+1')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'i')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from i in c')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from i in c')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'i+1')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: AddExpression, 'i+1')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'i+1')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'i+1')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'i+1')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'i+1')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -266,33 +266,33 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Linq.IGrouping<System.Int32, System.Int32>>) (Syntax: 'from i in c ...  i by i % 2')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Linq.IGrouping<System.Int32, System.Int32>>) (Syntax: QueryExpression, 'from i in c ...  i by i % 2') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Linq.IGrouping<System.Int32, System.Int32>> System.Linq.Enumerable.GroupBy<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> keySelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Linq.IGrouping<System.Int32, System.Int32>>, IsImplicit) (Syntax: 'group i by i % 2')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Linq.IGrouping<System.Int32, System.Int32>> System.Linq.Enumerable.GroupBy<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> keySelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Linq.IGrouping<System.Int32, System.Int32>>, IsImplicit) (Syntax: GroupClause, 'group i by i % 2')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from i in c')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from i in c')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: keySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'i % 2')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i % 2')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i % 2')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i % 2')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i % 2')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Remainder) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'i % 2')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'i')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 2) (Syntax: '2')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from i in c')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from i in c')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: keySelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: ModuloExpression, 'i % 2')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: ModuloExpression, 'i % 2')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: ModuloExpression, 'i % 2')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: ModuloExpression, 'i % 2')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: ModuloExpression, 'i % 2')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Remainder) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: ModuloExpression, 'i % 2')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 2) (Syntax: NumericLiteralExpression, '2')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -350,36 +350,36 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from int i in c select i')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from int i in c select i') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select i')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select i')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int i in c')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from int i in c')
-              Instance Receiver: 
-                null
-              Arguments(1):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c')
-                    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c')
-                      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                      Operand: 
-                        ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Object>) (Syntax: 'c')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'i')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'i')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int i in c')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from int i in c')
+            Instance Receiver: 
+              null
+            Arguments(1):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c')
+                IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c')
+                  Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                  Operand: 
+                    ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Object>) (Syntax: IdentifierName, 'c')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'i')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'i')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'i')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'i')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'i')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -420,40 +420,40 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from int i  ...  5 select i')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from int i  ...  5 select i') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Where<System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Boolean> predicate)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'where i < 5')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Where<System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Boolean> predicate)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: WhereClause, 'where i < 5')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int i in c')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from int i in c')
-              Instance Receiver: 
-                null
-              Arguments(1):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c')
-                    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c')
-                      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                      Operand: 
-                        ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Object>) (Syntax: 'c')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: predicate) (OperationKind.Argument, IsImplicit) (Syntax: 'i < 5')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Boolean>, IsImplicit) (Syntax: 'i < 5')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i < 5')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i < 5')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i < 5')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.LessThan) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'i < 5')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'i')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 5) (Syntax: '5')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int i in c')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from int i in c')
+            Instance Receiver: 
+              null
+            Arguments(1):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c')
+                IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c')
+                  Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                  Operand: 
+                    ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Object>) (Syntax: IdentifierName, 'c')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: predicate) ([1] OperationKind.Argument, IsImplicit) (Syntax: LessThanExpression, 'i < 5')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Boolean>, IsImplicit) (Syntax: LessThanExpression, 'i < 5')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: LessThanExpression, 'i < 5')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: LessThanExpression, 'i < 5')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: LessThanExpression, 'i < 5')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.LessThan) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: LessThanExpression, 'i < 5')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 5) (Syntax: NumericLiteralExpression, '5')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -503,64 +503,64 @@ class Query
             // BoundRangeVariable still doesn't have an IOperation API: https://github.com/dotnet/roslyn/issues/21238
 
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from x1 in  ... elect x1+x2')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from x1 in  ... elect x1+x2') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Join<System.Int32, System.Int32, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> outer, System.Collections.Generic.IEnumerable<System.Int32> inner, System.Func<System.Int32, System.Int32> outerKeySelector, System.Func<System.Int32, System.Int32> innerKeySelector, System.Func<System.Int32, System.Int32, System.Int32> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'join x2 in  ... quals x2/10')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Join<System.Int32, System.Int32, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> outer, System.Collections.Generic.IEnumerable<System.Int32> inner, System.Func<System.Int32, System.Int32> outerKeySelector, System.Func<System.Int32, System.Int32> innerKeySelector, System.Func<System.Int32, System.Int32, System.Int32> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: JoinClause, 'join x2 in  ... quals x2/10')
       Instance Receiver: 
         null
       Arguments(5):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: outer) (OperationKind.Argument, IsImplicit) (Syntax: 'from x1 in c1')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from x1 in c1')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: inner) (OperationKind.Argument, IsImplicit) (Syntax: 'c2')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'c2')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c2')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: outerKeySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x1')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'x1')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x1')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x1')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x1')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'x1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: innerKeySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x2/10')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'x2/10')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x2/10')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x2/10')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x2/10')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Divide) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x2/10')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'x2')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x1+x2')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, System.Int32>, IsImplicit) (Syntax: 'x1+x2')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x1+x2')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x1+x2')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x1+x2')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x1+x2')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'x1')
-                          Right: 
-                            IOperation:  (OperationKind.None) (Syntax: 'x2')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: outer) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from x1 in c1')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from x1 in c1')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: inner) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c2')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: IdentifierName, 'c2')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c2')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: outerKeySelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'x1')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'x1')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'x1')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'x1')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'x1')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: innerKeySelector) ([3] OperationKind.Argument, IsImplicit) (Syntax: DivideExpression, 'x2/10')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: DivideExpression, 'x2/10')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: DivideExpression, 'x2/10')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: DivideExpression, 'x2/10')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: DivideExpression, 'x2/10')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Divide) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: DivideExpression, 'x2/10')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x2')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([4] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'x1+x2')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, System.Int32>, IsImplicit) (Syntax: AddExpression, 'x1+x2')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'x1+x2')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'x1+x2')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'x1+x2')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x1+x2')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x1')
+                        Right: 
+                          IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'x2')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -607,54 +607,54 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Linq.IOrderedEnumerable<System.Int32>) (Syntax: 'from i in c ... select i')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Linq.IOrderedEnumerable<System.Int32>) (Syntax: QueryExpression, 'from i in c ... select i') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Linq.IOrderedEnumerable<System.Int32> System.Linq.Enumerable.ThenBy<System.Int32, System.Int32>(this System.Linq.IOrderedEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> keySelector)) (OperationKind.InvocationExpression, Type: System.Linq.IOrderedEnumerable<System.Int32>, IsImplicit) (Syntax: 'i%10')
+    IInvocationExpression (System.Linq.IOrderedEnumerable<System.Int32> System.Linq.Enumerable.ThenBy<System.Int32, System.Int32>(this System.Linq.IOrderedEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> keySelector)) ([0] OperationKind.InvocationExpression, Type: System.Linq.IOrderedEnumerable<System.Int32>, IsImplicit) (Syntax: AscendingOrdering, 'i%10')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'i/10 descending')
-            IInvocationExpression (System.Linq.IOrderedEnumerable<System.Int32> System.Linq.Enumerable.OrderByDescending<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> keySelector)) (OperationKind.InvocationExpression, Type: System.Linq.IOrderedEnumerable<System.Int32>, IsImplicit) (Syntax: 'i/10 descending')
-              Instance Receiver: 
-                null
-              Arguments(2):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from i in c')
-                    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from i in c')
-                      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                      Operand: 
-                        ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: keySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'i/10')
-                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i/10')
-                      Target: 
-                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i/10')
-                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i/10')
-                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i/10')
-                              ReturnedValue: 
-                                IBinaryOperatorExpression (BinaryOperatorKind.Divide) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'i/10')
-                                  Left: 
-                                    IOperation:  (OperationKind.None) (Syntax: 'i')
-                                  Right: 
-                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: keySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'i%10')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i%10')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i%10')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i%10')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i%10')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Remainder) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'i%10')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'i')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: DescendingOrdering, 'i/10 descending')
+          IInvocationExpression (System.Linq.IOrderedEnumerable<System.Int32> System.Linq.Enumerable.OrderByDescending<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> keySelector)) ([0] OperationKind.InvocationExpression, Type: System.Linq.IOrderedEnumerable<System.Int32>, IsImplicit) (Syntax: DescendingOrdering, 'i/10 descending')
+            Instance Receiver: 
+              null
+            Arguments(2):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from i in c')
+                IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from i in c')
+                  Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                  Operand: 
+                    ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: keySelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: DivideExpression, 'i/10')
+                IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: DivideExpression, 'i/10')
+                  Target: 
+                    IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: DivideExpression, 'i/10')
+                      IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: DivideExpression, 'i/10')
+                        IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: DivideExpression, 'i/10')
+                          ReturnedValue: 
+                            IBinaryOperatorExpression (BinaryOperatorKind.Divide) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: DivideExpression, 'i/10')
+                              Left: 
+                                IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                              Right: 
+                                ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: keySelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: ModuloExpression, 'i%10')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: ModuloExpression, 'i%10')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: ModuloExpression, 'i%10')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: ModuloExpression, 'i%10')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: ModuloExpression, 'i%10')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Remainder) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: ModuloExpression, 'i%10')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -706,74 +706,74 @@ class Query
             // BoundRangeVariable still doesn't have an IOperation API: https://github.com/dotnet/roslyn/issues/21238
 
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.String>) (Syntax: 'from x1 in  ... .ToString()')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.String>) (Syntax: QueryExpression, 'from x1 in  ... .ToString()') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.String> System.Linq.Enumerable.GroupJoin<System.Int32, System.Int32, System.Int32, System.String>(this System.Collections.Generic.IEnumerable<System.Int32> outer, System.Collections.Generic.IEnumerable<System.Int32> inner, System.Func<System.Int32, System.Int32> outerKeySelector, System.Func<System.Int32, System.Int32> innerKeySelector, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>, System.String> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.String>, IsImplicit) (Syntax: 'join x2 in  ... / 10 into g')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.String> System.Linq.Enumerable.GroupJoin<System.Int32, System.Int32, System.Int32, System.String>(this System.Collections.Generic.IEnumerable<System.Int32> outer, System.Collections.Generic.IEnumerable<System.Int32> inner, System.Func<System.Int32, System.Int32> outerKeySelector, System.Func<System.Int32, System.Int32> innerKeySelector, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>, System.String> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.String>, IsImplicit) (Syntax: JoinClause, 'join x2 in  ... / 10 into g')
       Instance Receiver: 
         null
       Arguments(5):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: outer) (OperationKind.Argument, IsImplicit) (Syntax: 'from x1 in c1')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from x1 in c1')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: inner) (OperationKind.Argument, IsImplicit) (Syntax: 'c2')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'c2')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c2')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: outerKeySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x1')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'x1')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x1')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x1')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x1')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'x1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: innerKeySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x2 / 10')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'x2 / 10')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x2 / 10')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x2 / 10')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x2 / 10')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Divide) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x2 / 10')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'x2')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x1 + "":"" + g.ToString()')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>, System.String>, IsImplicit) (Syntax: 'x1 + "":"" + g.ToString()')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x1 + "":"" + g.ToString()')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x1 + "":"" + g.ToString()')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x1 + "":"" + g.ToString()')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'x1 + "":"" + g.ToString()')
-                          Left: 
-                            IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'x1 + "":""')
-                              Left: 
-                                IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Object, IsImplicit) (Syntax: 'x1')
-                                  Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                  Operand: 
-                                    IOperation:  (OperationKind.None) (Syntax: 'x1')
-                              Right: 
-                                ILiteralExpression (OperationKind.LiteralExpression, Type: System.String, Constant: "":"") (Syntax: '"":""')
-                          Right: 
-                            IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'g.ToString()')
-                              Instance Receiver: 
-                                IOperation:  (OperationKind.None) (Syntax: 'g')
-                              Arguments(0)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: outer) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from x1 in c1')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from x1 in c1')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: inner) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c2')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: IdentifierName, 'c2')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c2')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: outerKeySelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'x1')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'x1')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'x1')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'x1')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'x1')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: innerKeySelector) ([3] OperationKind.Argument, IsImplicit) (Syntax: DivideExpression, 'x2 / 10')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: DivideExpression, 'x2 / 10')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: DivideExpression, 'x2 / 10')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: DivideExpression, 'x2 / 10')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: DivideExpression, 'x2 / 10')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Divide) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: DivideExpression, 'x2 / 10')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x2')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([4] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'x1 + "":"" + g.ToString()')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>, System.String>, IsImplicit) (Syntax: AddExpression, 'x1 + "":"" + g.ToString()')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'x1 + "":"" + g.ToString()')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'x1 + "":"" + g.ToString()')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'x1 + "":"" + g.ToString()')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: AddExpression, 'x1 + "":"" + g.ToString()')
+                        Left: 
+                          IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: AddExpression, 'x1 + "":""')
+                            Left: 
+                              IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Object, IsImplicit) (Syntax: IdentifierName, 'x1')
+                                Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                Operand: 
+                                  IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x1')
+                            Right: 
+                              ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.String, Constant: "":"") (Syntax: StringLiteralExpression, '"":""')
+                        Right: 
+                          IInvocationExpression (virtual System.String System.Object.ToString()) ([1] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'g.ToString()')
+                            Instance Receiver: 
+                              IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'g')
+                            Arguments(0)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -817,46 +817,46 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from x in c ... elect x + y')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from x in c ... elect x + y') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.SelectMany<System.Int32, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<System.Int32, System.Int32, System.Int32> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from y in c2')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.SelectMany<System.Int32, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<System.Int32, System.Int32, System.Int32> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from y in c2')
       Instance Receiver: 
         null
       Arguments(3):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from x in c1')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from x in c1')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'c2')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: 'c2')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'c2')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'c2')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'c2')
-                      ReturnedValue: 
-                        IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'c2')
-                          Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                          Operand: 
-                            ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c2')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x + y')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, System.Int32>, IsImplicit) (Syntax: 'x + y')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x + y')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x + y')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x + y')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'x')
-                          Right: 
-                            IOperation:  (OperationKind.None) (Syntax: 'y')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from x in c1')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from x in c1')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c2')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: IdentifierName, 'c2')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'c2')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'c2')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'c2')
+                    ReturnedValue: 
+                      IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: IdentifierName, 'c2')
+                        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                        Operand: 
+                          ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c2')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'x + y')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, System.Int32>, IsImplicit) (Syntax: AddExpression, 'x + y')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'x + y')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'x + y')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'x + y')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x')
+                        Right: 
+                          IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'y')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -923,108 +923,108 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from int x  ... elect x + z')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from int x  ... elect x + z') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, System.Int32>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>> source, System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select x + z')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, System.Int32>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>> source, System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select x + z')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'let z = g + x*100')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>> System.Linq.Enumerable.Select<<anonymous type: System.Int32 x, System.Int32 g>, <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>>(this System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 g>> source, System.Func<<anonymous type: System.Int32 x, System.Int32 g>, <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: 'let z = g + x*100')
-              Instance Receiver: 
-                null
-              Arguments(2):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'let g = x * 10')
-                    IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 g>> System.Linq.Enumerable.Select<System.Int32, <anonymous type: System.Int32 x, System.Int32 g>>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, <anonymous type: System.Int32 x, System.Int32 g>> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 g>>, IsImplicit) (Syntax: 'let g = x * 10')
-                      Instance Receiver: 
-                        null
-                      Arguments(2):
-                          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int x in c1')
-                            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from int x in c1')
-                              Instance Receiver: 
-                                null
-                              Arguments(1):
-                                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c1')
-                                    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c1')
-                                      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                                      Operand: 
-                                        ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c1')
-                                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: LetClause, 'let z = g + x*100')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>> System.Linq.Enumerable.Select<<anonymous type: System.Int32 x, System.Int32 g>, <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>>(this System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 g>> source, System.Func<<anonymous type: System.Int32 x, System.Int32 g>, <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: LetClause, 'let z = g + x*100')
+            Instance Receiver: 
+              null
+            Arguments(2):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: LetClause, 'let g = x * 10')
+                IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 g>> System.Linq.Enumerable.Select<System.Int32, <anonymous type: System.Int32 x, System.Int32 g>>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, <anonymous type: System.Int32 x, System.Int32 g>> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 g>>, IsImplicit) (Syntax: LetClause, 'let g = x * 10')
+                  Instance Receiver: 
+                    null
+                  Arguments(2):
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int x in c1')
+                      IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from int x in c1')
+                        Instance Receiver: 
+                          null
+                        Arguments(1):
+                          IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c1')
+                            IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c1')
+                              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                              Operand: 
+                                ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c1')
                             InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                             OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'x * 10')
-                            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, <anonymous type: System.Int32 x, System.Int32 g>>, IsImplicit) (Syntax: 'x * 10')
-                              Target: 
-                                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x * 10')
-                                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x * 10')
-                                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x * 10')
-                                      ReturnedValue: 
-                                        IObjectCreationExpression (Constructor: <anonymous type: System.Int32 x, System.Int32 g>..ctor(System.Int32 x, System.Int32 g)) (OperationKind.ObjectCreationExpression, Type: <anonymous type: System.Int32 x, System.Int32 g>, IsImplicit) (Syntax: 'let g = x * 10')
-                                          Arguments(2):
-                                              IArgument (ArgumentKind.Explicit, Matching Parameter: x) (OperationKind.Argument, IsImplicit) (Syntax: 'let g = x * 10')
-                                                IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: 'let g = x * 10')
-                                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                              IArgument (ArgumentKind.Explicit, Matching Parameter: g) (OperationKind.Argument, IsImplicit) (Syntax: 'x * 10')
-                                                IBinaryOperatorExpression (BinaryOperatorKind.Multiply) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x * 10')
-                                                  Left: 
-                                                    IOperation:  (OperationKind.None) (Syntax: 'x')
-                                                  Right: 
-                                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-                                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                          Initializer: 
-                                            null
-                            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'g + x*100')
-                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 g>, <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: 'g + x*100')
-                      Target: 
-                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'g + x*100')
-                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'g + x*100')
-                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'g + x*100')
-                              ReturnedValue: 
-                                IObjectCreationExpression (Constructor: <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>..ctor(<anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z)) (OperationKind.ObjectCreationExpression, Type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, IsImplicit) (Syntax: 'let z = g + x*100')
-                                  Arguments(2):
-                                      IArgument (ArgumentKind.Explicit, Matching Parameter: <>h__TransparentIdentifier0) (OperationKind.Argument, IsImplicit) (Syntax: 'let z = g + x*100')
-                                        IParameterReferenceExpression: <>h__TransparentIdentifier0 (OperationKind.ParameterReferenceExpression, Type: <anonymous type: System.Int32 x, System.Int32 g>, IsImplicit) (Syntax: 'let z = g + x*100')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: MultiplyExpression, 'x * 10')
+                      IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, <anonymous type: System.Int32 x, System.Int32 g>>, IsImplicit) (Syntax: MultiplyExpression, 'x * 10')
+                        Target: 
+                          IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: MultiplyExpression, 'x * 10')
+                            IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: MultiplyExpression, 'x * 10')
+                              IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: MultiplyExpression, 'x * 10')
+                                ReturnedValue: 
+                                  IObjectCreationExpression (Constructor: <anonymous type: System.Int32 x, System.Int32 g>..ctor(System.Int32 x, System.Int32 g)) ([0] OperationKind.ObjectCreationExpression, Type: <anonymous type: System.Int32 x, System.Int32 g>, IsImplicit) (Syntax: LetClause, 'let g = x * 10')
+                                    Arguments(2):
+                                      IArgument (ArgumentKind.Explicit, Matching Parameter: x) ([0] OperationKind.Argument, IsImplicit) (Syntax: LetClause, 'let g = x * 10')
+                                        IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: LetClause, 'let g = x * 10')
                                         InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                                         OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                      IArgument (ArgumentKind.Explicit, Matching Parameter: z) (OperationKind.Argument, IsImplicit) (Syntax: 'g + x*100')
-                                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'g + x*100')
+                                      IArgument (ArgumentKind.Explicit, Matching Parameter: g) ([1] OperationKind.Argument, IsImplicit) (Syntax: MultiplyExpression, 'x * 10')
+                                        IBinaryOperatorExpression (BinaryOperatorKind.Multiply) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: MultiplyExpression, 'x * 10')
                                           Left: 
-                                            IOperation:  (OperationKind.None) (Syntax: 'g')
+                                            IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x')
                                           Right: 
-                                            IBinaryOperatorExpression (BinaryOperatorKind.Multiply) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x*100')
-                                              Left: 
-                                                IOperation:  (OperationKind.None) (Syntax: 'x')
-                                              Right: 
-                                                ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 100) (Syntax: '100')
+                                            ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
                                         InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                                         OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                  Initializer: 
-                                    null
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'x + z')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, System.Int32>, IsImplicit) (Syntax: 'x + z')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x + z')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x + z')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x + z')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + z')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'x')
-                          Right: 
-                            IOperation:  (OperationKind.None) (Syntax: 'z')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                    Initializer: 
+                                      null
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'g + x*100')
+                IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 g>, <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: AddExpression, 'g + x*100')
+                  Target: 
+                    IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'g + x*100')
+                      IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'g + x*100')
+                        IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'g + x*100')
+                          ReturnedValue: 
+                            IObjectCreationExpression (Constructor: <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>..ctor(<anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z)) ([0] OperationKind.ObjectCreationExpression, Type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, IsImplicit) (Syntax: LetClause, 'let z = g + x*100')
+                              Arguments(2):
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: <>h__TransparentIdentifier0) ([0] OperationKind.Argument, IsImplicit) (Syntax: LetClause, 'let z = g + x*100')
+                                  IParameterReferenceExpression: <>h__TransparentIdentifier0 ([0] OperationKind.ParameterReferenceExpression, Type: <anonymous type: System.Int32 x, System.Int32 g>, IsImplicit) (Syntax: LetClause, 'let z = g + x*100')
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: z) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'g + x*100')
+                                  IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'g + x*100')
+                                    Left: 
+                                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'g')
+                                    Right: 
+                                      IBinaryOperatorExpression (BinaryOperatorKind.Multiply) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: MultiplyExpression, 'x*100')
+                                        Left: 
+                                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x')
+                                        Right: 
+                                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 100) (Syntax: NumericLiteralExpression, '100')
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                              Initializer: 
+                                null
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'x + z')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 g> <>h__TransparentIdentifier0, System.Int32 z>, System.Int32>, IsImplicit) (Syntax: AddExpression, 'x + z')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'x + z')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'x + z')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'x + z')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + z')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x')
+                        Right: 
+                          IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'z')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -1084,205 +1084,205 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from int x  ... select g')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from int x  ... select g') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Int32>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> source, System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select g')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Int32>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> source, System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select g')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'where (x +  ...  / 100) < 6')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> System.Linq.Enumerable.Where<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> source, System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Boolean> predicate)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>, IsImplicit) (Syntax: 'where (x +  ...  / 100) < 6')
-              Instance Receiver: 
-                null
-              Arguments(2):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'let g = x + y + z')
-                    IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> System.Linq.Enumerable.Select<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>> source, System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>, IsImplicit) (Syntax: 'let g = x + y + z')
-                      Instance Receiver: 
-                        null
-                      Arguments(2):
-                          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int z in c3')
-                            IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>> System.Linq.Enumerable.SelectMany<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>>(this System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> source, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: 'from int z in c3')
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: WhereClause, 'where (x +  ...  / 100) < 6')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> System.Linq.Enumerable.Where<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> source, System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Boolean> predicate)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>, IsImplicit) (Syntax: WhereClause, 'where (x +  ...  / 100) < 6')
+            Instance Receiver: 
+              null
+            Arguments(2):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: LetClause, 'let g = x + y + z')
+                IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> System.Linq.Enumerable.Select<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>(this System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>> source, System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>, IsImplicit) (Syntax: LetClause, 'let g = x + y + z')
+                  Instance Receiver: 
+                    null
+                  Arguments(2):
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                      IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>> System.Linq.Enumerable.SelectMany<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>>(this System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> source, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                        Instance Receiver: 
+                          null
+                        Arguments(3):
+                          IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                            IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> System.Linq.Enumerable.SelectMany<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: FromClause, 'from int y in c2')
                               Instance Receiver: 
                                 null
                               Arguments(3):
-                                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-                                    IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> System.Linq.Enumerable.SelectMany<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: 'from int y in c2')
-                                      Instance Receiver: 
-                                        null
-                                      Arguments(3):
-                                          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int x in c1')
-                                            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from int x in c1')
-                                              Instance Receiver: 
-                                                null
-                                              Arguments(1):
-                                                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c1')
-                                                    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c1')
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int x in c1')
+                                  IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from int x in c1')
+                                    Instance Receiver: 
+                                      null
+                                    Arguments(1):
+                                      IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c1')
+                                        IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c1')
+                                          Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                                          Operand: 
+                                            ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c1')
+                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                  IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                    Target: 
+                                      IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                        IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                          IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                            ReturnedValue: 
+                                              IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                                Instance Receiver: 
+                                                  null
+                                                Arguments(1):
+                                                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                                    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c2')
                                                       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
                                                       Operand: 
-                                                        ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c1')
+                                                        ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c2')
                                                     InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                                                     OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                          IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'c2')
-                                            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: 'c2')
-                                              Target: 
-                                                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'c2')
-                                                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'c2')
-                                                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'c2')
-                                                      ReturnedValue: 
-                                                        IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'c2')
-                                                          Instance Receiver: 
-                                                            null
-                                                          Arguments(1):
-                                                              IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c2')
-                                                                IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c2')
-                                                                  Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                                                                  Operand: 
-                                                                    ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c2')
-                                                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                          IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-                                            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: 'from int y in c2')
-                                              Target: 
-                                                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'from int y in c2')
-                                                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'from int y in c2')
-                                                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'from int y in c2')
-                                                      ReturnedValue: 
-                                                        IObjectCreationExpression (Constructor: <anonymous type: System.Int32 x, System.Int32 y>..ctor(System.Int32 x, System.Int32 y)) (OperationKind.ObjectCreationExpression, Type: <anonymous type: System.Int32 x, System.Int32 y>, IsImplicit) (Syntax: 'from int y in c2')
-                                                          Arguments(2):
-                                                              IArgument (ArgumentKind.Explicit, Matching Parameter: x) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-                                                                IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: 'from int y in c2')
-                                                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                              IArgument (ArgumentKind.Explicit, Matching Parameter: y) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-                                                                IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: 'from int y in c2')
-                                                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                          Initializer: 
-                                                            null
-                                            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                  IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'c3')
-                                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: 'c3')
-                                      Target: 
-                                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'c3')
-                                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'c3')
-                                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'c3')
-                                              ReturnedValue: 
-                                                IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'c3')
-                                                  Instance Receiver: 
-                                                    null
-                                                  Arguments(1):
-                                                      IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c3')
-                                                        IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c3')
-                                                          Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                                                          Operand: 
-                                                            ILocalReferenceExpression: c3 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c3')
-                                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                  IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'from int z in c3')
-                                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: 'from int z in c3')
-                                      Target: 
-                                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'from int z in c3')
-                                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'from int z in c3')
-                                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'from int z in c3')
-                                              ReturnedValue: 
-                                                IObjectCreationExpression (Constructor: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>..ctor(<anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z)) (OperationKind.ObjectCreationExpression, Type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, IsImplicit) (Syntax: 'from int z in c3')
-                                                  Arguments(2):
-                                                      IArgument (ArgumentKind.Explicit, Matching Parameter: <>h__TransparentIdentifier0) (OperationKind.Argument, IsImplicit) (Syntax: 'from int z in c3')
-                                                        IParameterReferenceExpression: <>h__TransparentIdentifier0 (OperationKind.ParameterReferenceExpression, Type: <anonymous type: System.Int32 x, System.Int32 y>, IsImplicit) (Syntax: 'from int z in c3')
-                                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                      IArgument (ArgumentKind.Explicit, Matching Parameter: z) (OperationKind.Argument, IsImplicit) (Syntax: 'from int z in c3')
-                                                        IParameterReferenceExpression: z (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: 'from int z in c3')
-                                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                  Initializer: 
-                                                    null
-                                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                  IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                    Target: 
+                                      IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                        IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                          IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                            ReturnedValue: 
+                                              IObjectCreationExpression (Constructor: <anonymous type: System.Int32 x, System.Int32 y>..ctor(System.Int32 x, System.Int32 y)) ([0] OperationKind.ObjectCreationExpression, Type: <anonymous type: System.Int32 x, System.Int32 y>, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                                Arguments(2):
+                                                  IArgument (ArgumentKind.Explicit, Matching Parameter: x) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                                    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                                  IArgument (ArgumentKind.Explicit, Matching Parameter: y) ([1] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                                    IParameterReferenceExpression: y ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                                Initializer: 
+                                                  null
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                             InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                             OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'x + y + z')
-                            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>, IsImplicit) (Syntax: 'x + y + z')
+                          IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c3')
+                            IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: IdentifierName, 'c3')
                               Target: 
-                                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x + y + z')
-                                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x + y + z')
-                                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x + y + z')
+                                IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'c3')
+                                  IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'c3')
+                                    IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'c3')
                                       ReturnedValue: 
-                                        IObjectCreationExpression (Constructor: <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>..ctor(<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g)) (OperationKind.ObjectCreationExpression, Type: <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, IsImplicit) (Syntax: 'let g = x + y + z')
+                                        IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: IdentifierName, 'c3')
+                                          Instance Receiver: 
+                                            null
+                                          Arguments(1):
+                                            IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c3')
+                                              IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c3')
+                                                Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                                                Operand: 
+                                                  ILocalReferenceExpression: c3 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c3')
+                                              InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                              OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                          IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                            IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>>, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                              Target: 
+                                IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                                  IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                                    IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                                      ReturnedValue: 
+                                        IObjectCreationExpression (Constructor: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>..ctor(<anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z)) ([0] OperationKind.ObjectCreationExpression, Type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, IsImplicit) (Syntax: FromClause, 'from int z in c3')
                                           Arguments(2):
-                                              IArgument (ArgumentKind.Explicit, Matching Parameter: <>h__TransparentIdentifier1) (OperationKind.Argument, IsImplicit) (Syntax: 'let g = x + y + z')
-                                                IParameterReferenceExpression: <>h__TransparentIdentifier1 (OperationKind.ParameterReferenceExpression, Type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, IsImplicit) (Syntax: 'let g = x + y + z')
-                                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                              IArgument (ArgumentKind.Explicit, Matching Parameter: g) (OperationKind.Argument, IsImplicit) (Syntax: 'x + y + z')
-                                                IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y + z')
-                                                  Left: 
-                                                    IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y')
-                                                      Left: 
-                                                        IOperation:  (OperationKind.None) (Syntax: 'x')
-                                                      Right: 
-                                                        IOperation:  (OperationKind.None) (Syntax: 'y')
-                                                  Right: 
-                                                    IOperation:  (OperationKind.None) (Syntax: 'z')
-                                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                            IArgument (ArgumentKind.Explicit, Matching Parameter: <>h__TransparentIdentifier0) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                                              IParameterReferenceExpression: <>h__TransparentIdentifier0 ([0] OperationKind.ParameterReferenceExpression, Type: <anonymous type: System.Int32 x, System.Int32 y>, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                                              InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                              OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                            IArgument (ArgumentKind.Explicit, Matching Parameter: z) ([1] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                                              IParameterReferenceExpression: z ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: FromClause, 'from int z in c3')
+                                              InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                              OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                                           Initializer: 
                                             null
                             InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                             OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: predicate) (OperationKind.Argument, IsImplicit) (Syntax: '(x + y / 10 ...  / 100) < 6')
-                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Boolean>, IsImplicit) (Syntax: '(x + y / 10 ...  / 100) < 6')
-                      Target: 
-                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: '(x + y / 10 ...  / 100) < 6')
-                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: '(x + y / 10 ...  / 100) < 6')
-                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: '(x + y / 10 ...  / 100) < 6')
-                              ReturnedValue: 
-                                IBinaryOperatorExpression (BinaryOperatorKind.LessThan) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: '(x + y / 10 ...  / 100) < 6')
-                                  Left: 
-                                    IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y / 10 + z / 100')
-                                      Left: 
-                                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y / 10')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                      IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>>, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                        Target: 
+                          IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                            IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                              IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                                ReturnedValue: 
+                                  IObjectCreationExpression (Constructor: <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>..ctor(<anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g)) ([0] OperationKind.ObjectCreationExpression, Type: <anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, IsImplicit) (Syntax: LetClause, 'let g = x + y + z')
+                                    Arguments(2):
+                                      IArgument (ArgumentKind.Explicit, Matching Parameter: <>h__TransparentIdentifier1) ([0] OperationKind.Argument, IsImplicit) (Syntax: LetClause, 'let g = x + y + z')
+                                        IParameterReferenceExpression: <>h__TransparentIdentifier1 ([0] OperationKind.ParameterReferenceExpression, Type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z>, IsImplicit) (Syntax: LetClause, 'let g = x + y + z')
+                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                      IArgument (ArgumentKind.Explicit, Matching Parameter: g) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                                        IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y + z')
                                           Left: 
-                                            IOperation:  (OperationKind.None) (Syntax: 'x')
-                                          Right: 
-                                            IBinaryOperatorExpression (BinaryOperatorKind.Divide) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'y / 10')
+                                            IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y')
                                               Left: 
-                                                IOperation:  (OperationKind.None) (Syntax: 'y')
+                                                IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x')
                                               Right: 
-                                                ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: '10')
-                                      Right: 
-                                        IBinaryOperatorExpression (BinaryOperatorKind.Divide) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'z / 100')
-                                          Left: 
-                                            IOperation:  (OperationKind.None) (Syntax: 'z')
+                                                IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'y')
                                           Right: 
-                                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 100) (Syntax: '100')
+                                            IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'z')
+                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                    Initializer: 
+                                      null
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: predicate) ([1] OperationKind.Argument, IsImplicit) (Syntax: LessThanExpression, '(x + y / 10 ...  / 100) < 6')
+                IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Boolean>, IsImplicit) (Syntax: LessThanExpression, '(x + y / 10 ...  / 100) < 6')
+                  Target: 
+                    IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: LessThanExpression, '(x + y / 10 ...  / 100) < 6')
+                      IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: LessThanExpression, '(x + y / 10 ...  / 100) < 6')
+                        IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: LessThanExpression, '(x + y / 10 ...  / 100) < 6')
+                          ReturnedValue: 
+                            IBinaryOperatorExpression (BinaryOperatorKind.LessThan) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: LessThanExpression, '(x + y / 10 ...  / 100) < 6')
+                              Left: 
+                                IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y / 10 + z / 100')
+                                  Left: 
+                                    IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y / 10')
+                                      Left: 
+                                        IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x')
+                                      Right: 
+                                        IBinaryOperatorExpression (BinaryOperatorKind.Divide) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: DivideExpression, 'y / 10')
+                                          Left: 
+                                            IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'y')
+                                          Right: 
+                                            ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 10) (Syntax: NumericLiteralExpression, '10')
                                   Right: 
-                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 6) (Syntax: '6')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'g')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Int32>, IsImplicit) (Syntax: 'g')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'g')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'g')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'g')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'g')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                    IBinaryOperatorExpression (BinaryOperatorKind.Divide) ([1] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: DivideExpression, 'z / 100')
+                                      Left: 
+                                        IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'z')
+                                      Right: 
+                                        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 100) (Syntax: NumericLiteralExpression, '100')
+                              Right: 
+                                ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 6) (Syntax: NumericLiteralExpression, '6')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'g')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: <anonymous type: <anonymous type: System.Int32 x, System.Int32 y> <>h__TransparentIdentifier0, System.Int32 z> <>h__TransparentIdentifier1, System.Int32 g>, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'g')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'g')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'g')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'g')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'g')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -1455,112 +1455,112 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from int x  ... t x + y + z')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from int x  ... t x + y + z') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.SelectMany<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> source, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, System.Int32> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from int z in c3')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.SelectMany<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> source, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, System.Int32> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from int z in c3')
       Instance Receiver: 
         null
       Arguments(3):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> System.Linq.Enumerable.SelectMany<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: 'from int y in c2')
-              Instance Receiver: 
-                null
-              Arguments(3):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from int x in c1')
-                    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from int x in c1')
-                      Instance Receiver: 
-                        null
-                      Arguments(1):
-                          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c1')
-                            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c1')
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>> System.Linq.Enumerable.SelectMany<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>> collectionSelector, System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<<anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+            Instance Receiver: 
+              null
+            Arguments(3):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int x in c1')
+                IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from int x in c1')
+                  Instance Receiver: 
+                    null
+                  Arguments(1):
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c1')
+                      IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c1')
+                        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                        Operand: 
+                          ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c1')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c2')
+                IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: IdentifierName, 'c2')
+                  Target: 
+                    IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'c2')
+                      IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'c2')
+                        IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'c2')
+                          ReturnedValue: 
+                            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: IdentifierName, 'c2')
+                              Instance Receiver: 
+                                null
+                              Arguments(1):
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                  IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c2')
+                                    Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+                                    Operand: 
+                                      ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c2')
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                  Target: 
+                    IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                      IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                        IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                          ReturnedValue: 
+                            IObjectCreationExpression (Constructor: <anonymous type: System.Int32 x, System.Int32 y>..ctor(System.Int32 x, System.Int32 y)) ([0] OperationKind.ObjectCreationExpression, Type: <anonymous type: System.Int32 x, System.Int32 y>, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                              Arguments(2):
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: x) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                  IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                IArgument (ArgumentKind.Explicit, Matching Parameter: y) ([1] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                  IParameterReferenceExpression: y ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: FromClause, 'from int y in c2')
+                                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                              Initializer: 
+                                null
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) ([1] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c3')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: IdentifierName, 'c3')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'c3')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'c3')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'c3')
+                    ReturnedValue: 
+                      IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: IdentifierName, 'c3')
+                        Instance Receiver: 
+                          null
+                        Arguments(1):
+                          IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'c3')
+                            IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c3')
                               Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
                               Operand: 
-                                ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c1')
+                                ILocalReferenceExpression: c3 ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c3')
                             InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                             OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'c2')
-                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: 'c2')
-                      Target: 
-                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'c2')
-                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'c2')
-                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'c2')
-                              ReturnedValue: 
-                                IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'c2')
-                                  Instance Receiver: 
-                                    null
-                                  Arguments(1):
-                                      IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c2')
-                                        IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c2')
-                                          Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                                          Operand: 
-                                            ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c2')
-                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-                    IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, <anonymous type: System.Int32 x, System.Int32 y>>, IsImplicit) (Syntax: 'from int y in c2')
-                      Target: 
-                        IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'from int y in c2')
-                          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'from int y in c2')
-                            IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'from int y in c2')
-                              ReturnedValue: 
-                                IObjectCreationExpression (Constructor: <anonymous type: System.Int32 x, System.Int32 y>..ctor(System.Int32 x, System.Int32 y)) (OperationKind.ObjectCreationExpression, Type: <anonymous type: System.Int32 x, System.Int32 y>, IsImplicit) (Syntax: 'from int y in c2')
-                                  Arguments(2):
-                                      IArgument (ArgumentKind.Explicit, Matching Parameter: x) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-                                        IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: 'from int y in c2')
-                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                      IArgument (ArgumentKind.Explicit, Matching Parameter: y) (OperationKind.Argument, IsImplicit) (Syntax: 'from int y in c2')
-                                        IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsImplicit) (Syntax: 'from int y in c2')
-                                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                  Initializer: 
-                                    null
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: collectionSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'c3')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Collections.Generic.IEnumerable<System.Int32>>, IsImplicit) (Syntax: 'c3')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'c3')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'c3')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'c3')
-                      ReturnedValue: 
-                        IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Cast<System.Int32>(this System.Collections.IEnumerable source)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'c3')
-                          Instance Receiver: 
-                            null
-                          Arguments(1):
-                              IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'c3')
-                                IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c3')
-                                  Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-                                  Operand: 
-                                    ILocalReferenceExpression: c3 (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c3')
-                                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'x + y + z')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, System.Int32>, IsImplicit) (Syntax: 'x + y + z')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'x + y + z')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'x + y + z')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'x + y + z')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y + z')
-                          Left: 
-                            IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'x + y')
-                              Left: 
-                                IOperation:  (OperationKind.None) (Syntax: 'x')
-                              Right: 
-                                IOperation:  (OperationKind.None) (Syntax: 'y')
-                          Right: 
-                            IOperation:  (OperationKind.None) (Syntax: 'z')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<<anonymous type: System.Int32 x, System.Int32 y>, System.Int32, System.Int32>, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'x + y + z')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y + z')
+                        Left: 
+                          IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'x + y')
+                            Left: 
+                              IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'x')
+                            Right: 
+                              IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'y')
+                        Right: 
+                          IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'z')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -1951,76 +1951,76 @@ class Program
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from a in E ... select a')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from a in E ... select a') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Join<System.Int32, System.Int32, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> outer, System.Collections.Generic.IEnumerable<System.Int32> inner, System.Func<System.Int32, System.Int32> outerKeySelector, System.Func<System.Int32, System.Int32> innerKeySelector, System.Func<System.Int32, System.Int32, System.Int32> resultSelector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'join b in E ...  a equals b')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Join<System.Int32, System.Int32, System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> outer, System.Collections.Generic.IEnumerable<System.Int32> inner, System.Func<System.Int32, System.Int32> outerKeySelector, System.Func<System.Int32, System.Int32> innerKeySelector, System.Func<System.Int32, System.Int32, System.Int32> resultSelector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: JoinClause, 'join b in E ...  a equals b')
       Instance Receiver: 
         null
       Arguments(5):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: outer) (OperationKind.Argument, IsImplicit) (Syntax: 'Enumerable.Range(1, 13)')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Range(System.Int32 start, System.Int32 count)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'Enumerable.Range(1, 13)')
-              Instance Receiver: 
-                null
-              Arguments(2):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: start) (OperationKind.Argument) (Syntax: '1')
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: count) (OperationKind.Argument) (Syntax: '13')
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 13) (Syntax: '13')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: inner) (OperationKind.Argument, IsImplicit) (Syntax: 'Enumerable.Range(1, 13)')
-            IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Range(System.Int32 start, System.Int32 count)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'Enumerable.Range(1, 13)')
-              Instance Receiver: 
-                null
-              Arguments(2):
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: start) (OperationKind.Argument) (Syntax: '1')
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  IArgument (ArgumentKind.Explicit, Matching Parameter: count) (OperationKind.Argument) (Syntax: '13')
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 13) (Syntax: '13')
-                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: outerKeySelector) (OperationKind.Argument, IsImplicit) (Syntax: '4 * a')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: '4 * a')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: '4 * a')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: '4 * a')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: '4 * a')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Multiply) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: '4 * a')
-                          Left: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 4) (Syntax: '4')
-                          Right: 
-                            IOperation:  (OperationKind.None) (Syntax: 'a')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: innerKeySelector) (OperationKind.Argument, IsImplicit) (Syntax: 'b')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'b')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'b')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'b')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'b')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'b')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) (OperationKind.Argument, IsImplicit) (Syntax: 'a')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, System.Int32>, IsImplicit) (Syntax: 'a')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'a')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'a')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'a')
-                      ReturnedValue: 
-                        IOperation:  (OperationKind.None) (Syntax: 'a')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: outer) ([0] OperationKind.Argument, IsImplicit) (Syntax: InvocationExpression, 'Enumerable.Range(1, 13)')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Range(System.Int32 start, System.Int32 count)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: InvocationExpression, 'Enumerable.Range(1, 13)')
+            Instance Receiver: 
+              null
+            Arguments(2):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: start) ([0] OperationKind.Argument) (Syntax: Argument, '1')
+                ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: count) ([1] OperationKind.Argument) (Syntax: Argument, '13')
+                ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 13) (Syntax: NumericLiteralExpression, '13')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: inner) ([1] OperationKind.Argument, IsImplicit) (Syntax: InvocationExpression, 'Enumerable.Range(1, 13)')
+          IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Range(System.Int32 start, System.Int32 count)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: InvocationExpression, 'Enumerable.Range(1, 13)')
+            Instance Receiver: 
+              null
+            Arguments(2):
+              IArgument (ArgumentKind.Explicit, Matching Parameter: start) ([0] OperationKind.Argument) (Syntax: Argument, '1')
+                ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: count) ([1] OperationKind.Argument) (Syntax: Argument, '13')
+                ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 13) (Syntax: NumericLiteralExpression, '13')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: outerKeySelector) ([2] OperationKind.Argument, IsImplicit) (Syntax: MultiplyExpression, '4 * a')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: MultiplyExpression, '4 * a')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: MultiplyExpression, '4 * a')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: MultiplyExpression, '4 * a')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: MultiplyExpression, '4 * a')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Multiply) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: MultiplyExpression, '4 * a')
+                        Left: 
+                          ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 4) (Syntax: NumericLiteralExpression, '4')
+                        Right: 
+                          IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, 'a')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: innerKeySelector) ([3] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'b')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'b')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'b')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'b')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'b')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'b')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: resultSelector) ([4] OperationKind.Argument, IsImplicit) (Syntax: IdentifierName, 'a')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32, System.Int32>, IsImplicit) (Syntax: IdentifierName, 'a')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: IdentifierName, 'a')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: IdentifierName, 'a')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: IdentifierName, 'a')
+                    ReturnedValue: 
+                      IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'a')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -4113,33 +4113,33 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from i in c select i + 1')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from i in c select i + 1') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select i + 1')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select i + 1')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from i in c')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from i in c')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'i + 1')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i + 1')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i + 1')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i + 1')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i + 1')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'i + 1')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'i')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from i in c')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from i in c')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'i + 1')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: AddExpression, 'i + 1')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'i + 1')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'i + 1')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'i + 1')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'i + 1')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -4165,33 +4165,33 @@ class Query
 
 ";
             string expectedOperationTree = @"
-ITranslatedQueryExpression (OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: 'from i in c select i + 1')
+ITranslatedQueryExpression ([0] OperationKind.TranslatedQueryExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>) (Syntax: QueryExpression, 'from i in c select i + 1') (Parent: VariableInitializer)
   Expression: 
-    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) (OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'select i + 1')
+    IInvocationExpression (System.Collections.Generic.IEnumerable<System.Int32> System.Linq.Enumerable.Select<System.Int32, System.Int32>(this System.Collections.Generic.IEnumerable<System.Int32> source, System.Func<System.Int32, System.Int32> selector)) ([0] OperationKind.InvocationExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: SelectClause, 'select i + 1')
       Instance Receiver: 
         null
       Arguments(2):
-          IArgument (ArgumentKind.Explicit, Matching Parameter: source) (OperationKind.Argument, IsImplicit) (Syntax: 'from i in c')
-            IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: 'from i in c')
-              Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
-              Operand: 
-                ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: 'c')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-          IArgument (ArgumentKind.Explicit, Matching Parameter: selector) (OperationKind.Argument, IsImplicit) (Syntax: 'i + 1')
-            IDelegateCreationExpression (OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: 'i + 1')
-              Target: 
-                IAnonymousFunctionExpression (Symbol: lambda expression) (OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: 'i + 1')
-                  IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'i + 1')
-                    IReturnStatement (OperationKind.ReturnStatement, IsImplicit) (Syntax: 'i + 1')
-                      ReturnedValue: 
-                        IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: 'i + 1')
-                          Left: 
-                            IOperation:  (OperationKind.None) (Syntax: 'i')
-                          Right: 
-                            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: source) ([0] OperationKind.Argument, IsImplicit) (Syntax: FromClause, 'from i in c')
+          IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.Generic.IEnumerable<System.Int32>, IsImplicit) (Syntax: FromClause, 'from i in c')
+            Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
+            Operand: 
+              ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List<System.Int32>) (Syntax: IdentifierName, 'c')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+        IArgument (ArgumentKind.Explicit, Matching Parameter: selector) ([1] OperationKind.Argument, IsImplicit) (Syntax: AddExpression, 'i + 1')
+          IDelegateCreationExpression ([0] OperationKind.DelegateCreationExpression, Type: System.Func<System.Int32, System.Int32>, IsImplicit) (Syntax: AddExpression, 'i + 1')
+            Target: 
+              IAnonymousFunctionExpression (Symbol: lambda expression) ([0] OperationKind.AnonymousFunctionExpression, Type: null, IsImplicit) (Syntax: AddExpression, 'i + 1')
+                IBlockStatement (1 statements) ([0] OperationKind.BlockStatement, IsImplicit) (Syntax: AddExpression, 'i + 1')
+                  IReturnStatement ([0] OperationKind.ReturnStatement, IsImplicit) (Syntax: AddExpression, 'i + 1')
+                    ReturnedValue: 
+                      IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.Int32) (Syntax: AddExpression, 'i + 1')
+                        Left: 
+                          IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i')
+                        Right: 
+                          ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -4216,7 +4216,7 @@ class Query
 }
 ";
             string expectedOperationTree = @"
-IOperation:  (OperationKind.None) (Syntax: 'i')
+IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'i') (Parent: BinaryOperatorExpression)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 

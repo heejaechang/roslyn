@@ -27,9 +27,9 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IAwaitExpression (OperationKind.AwaitExpression, Type: System.Void) (Syntax: 'await M2()')
+IAwaitExpression ([0] OperationKind.AwaitExpression, Type: System.Void) (Syntax: AwaitExpression, 'await M2()') (Parent: ExpressionStatement)
   Expression: 
-    IInvocationExpression (System.Threading.Tasks.Task C.M2()) (OperationKind.InvocationExpression, Type: System.Threading.Tasks.Task) (Syntax: 'M2()')
+    IInvocationExpression (System.Threading.Tasks.Task C.M2()) ([0] OperationKind.InvocationExpression, Type: System.Threading.Tasks.Task) (Syntax: InvocationExpression, 'M2()')
       Instance Receiver: 
         null
       Arguments(0)
@@ -55,9 +55,9 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IAwaitExpression (OperationKind.AwaitExpression, Type: System.Void) (Syntax: 'await t')
+IAwaitExpression ([0] OperationKind.AwaitExpression, Type: System.Void) (Syntax: AwaitExpression, 'await t') (Parent: ExpressionStatement)
   Expression: 
-    IParameterReferenceExpression: t (OperationKind.ParameterReferenceExpression, Type: System.Threading.Tasks.Task) (Syntax: 't')
+    IParameterReferenceExpression: t ([0] OperationKind.ParameterReferenceExpression, Type: System.Threading.Tasks.Task) (Syntax: IdentifierName, 't')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -82,9 +82,9 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IAwaitExpression (OperationKind.AwaitExpression, Type: System.Int32) (Syntax: 'await t')
+IAwaitExpression ([0] OperationKind.AwaitExpression, Type: System.Int32) (Syntax: AwaitExpression, 'await t') (Parent: ExpressionStatement)
   Expression: 
-    IParameterReferenceExpression: t (OperationKind.ParameterReferenceExpression, Type: System.Threading.Tasks.Task<System.Int32>) (Syntax: 't')
+    IParameterReferenceExpression: t ([0] OperationKind.ParameterReferenceExpression, Type: System.Threading.Tasks.Task<System.Int32>) (Syntax: IdentifierName, 't')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -108,9 +108,9 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IAwaitExpression (OperationKind.AwaitExpression, Type: ?, IsInvalid) (Syntax: 'await UndefinedTask')
+IAwaitExpression ([0] OperationKind.AwaitExpression, Type: ?, IsInvalid) (Syntax: AwaitExpression, 'await UndefinedTask') (Parent: ExpressionStatement)
   Expression: 
-    IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'UndefinedTask')
+    IInvalidExpression ([0] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: IdentifierName, 'UndefinedTask')
       Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -139,9 +139,9 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IAwaitExpression (OperationKind.AwaitExpression, Type: ?, IsInvalid) (Syntax: 'await i')
+IAwaitExpression ([0] OperationKind.AwaitExpression, Type: ?, IsInvalid) (Syntax: AwaitExpression, 'await i') (Parent: ExpressionStatement)
   Expression: 
-    IParameterReferenceExpression: i (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsInvalid) (Syntax: 'i')
+    IParameterReferenceExpression: i ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsInvalid) (Syntax: IdentifierName, 'i')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1061: 'int' does not contain a definition for 'GetAwaiter' and no extension method 'GetAwaiter' accepting a first argument of type 'int' could be found (are you missing a using directive or an assembly reference?)
@@ -169,9 +169,9 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IAwaitExpression (OperationKind.AwaitExpression, Type: ?, IsInvalid) (Syntax: 'await /*</bind>*/')
+IAwaitExpression ([0] OperationKind.AwaitExpression, Type: ?, IsInvalid) (Syntax: AwaitExpression, 'await /*</bind>*/') (Parent: ExpressionStatement)
   Expression: 
-    IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
+    IInvalidExpression ([0] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
       Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -200,8 +200,8 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement, IsInvalid) (Syntax: 'await t;')
-  IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration, IsInvalid) (Syntax: 't')
+IVariableDeclarationStatement (1 declarations) ([0] OperationKind.VariableDeclarationStatement, IsInvalid) (Syntax: LocalDeclarationStatement, 'await t;') (Parent: BlockStatement)
+  IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration, IsInvalid) (Syntax: VariableDeclarator, 't')
     Variables: Local_1: await t
     Initializer: 
       null

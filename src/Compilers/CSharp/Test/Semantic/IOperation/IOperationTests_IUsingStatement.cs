@@ -31,32 +31,32 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (var  ... }')
+IUsingStatement ([0] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (var  ... }') (Parent: BlockStatement)
   Resources: 
-    IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement) (Syntax: 'var c = new C()')
-      IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c = new C()')
+    IVariableDeclarationStatement (1 declarations) ([0] OperationKind.VariableDeclarationStatement) (Syntax: VariableDeclaration, 'var c = new C()')
+      IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c = new C()')
         Variables: Local_1: C c
         Initializer: 
-          IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-            IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+          IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+            IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
               Arguments(0)
               Initializer: 
                 null
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+    IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
         Expression: 
-          IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+          IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c.ToString()')
-                  IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c.ToString()')
-                    Instance Receiver: 
-                      ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c')
-                    Arguments(0)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c.ToString()')
+                IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c.ToString()')
+                  Instance Receiver: 
+                    ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
+                  Arguments(0)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -87,40 +87,40 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (C c1 ... }')
+IUsingStatement ([0] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (C c1 ... }') (Parent: BlockStatement)
   Resources: 
-    IVariableDeclarationStatement (2 declarations) (OperationKind.VariableDeclarationStatement) (Syntax: 'C c1 = new  ... 2 = new C()')
-      IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c1 = new C()')
+    IVariableDeclarationStatement (2 declarations) ([0] OperationKind.VariableDeclarationStatement) (Syntax: VariableDeclaration, 'C c1 = new  ... 2 = new C()')
+      IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c1 = new C()')
         Variables: Local_1: C c1
         Initializer: 
-          IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-            IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+          IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+            IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
               Arguments(0)
               Initializer: 
                 null
-      IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c2 = new C()')
+      IVariableDeclaration (1 variables) ([1] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c2 = new C()')
         Variables: Local_1: C c2
         Initializer: 
-          IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-            IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+          IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+            IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
               Arguments(0)
               Initializer: 
                 null
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+    IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
         Expression: 
-          IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+          IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c1.ToString()')
-                  IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c1.ToString()')
-                    Instance Receiver: 
-                      ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
-                    Arguments(0)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c1.ToString()')
+                IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c1.ToString()')
+                  Instance Receiver: 
+                    ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
+                  Arguments(0)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -151,24 +151,24 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (c) ... }')
+IUsingStatement ([1] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (c) ... }') (Parent: BlockStatement)
   Resources: 
-    ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c')
+    ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+    IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
         Expression: 
-          IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+          IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c.ToString()')
-                  IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c.ToString()')
-                    Instance Receiver: 
-                      ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c')
-                    Arguments(0)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c.ToString()')
+                IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c.ToString()')
+                  Instance Receiver: 
+                    ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
+                  Arguments(0)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -199,51 +199,51 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (var  ... }')
+IUsingStatement ([0] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (var  ... }') (Parent: BlockStatement)
   Resources: 
-    IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement) (Syntax: 'var c1 = new C()')
-      IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c1 = new C()')
+    IVariableDeclarationStatement (1 declarations) ([0] OperationKind.VariableDeclarationStatement) (Syntax: VariableDeclaration, 'var c1 = new C()')
+      IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c1 = new C()')
         Variables: Local_1: C c1
         Initializer: 
-          IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-            IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+          IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+            IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
               Arguments(0)
               Initializer: 
                 null
   Body: 
-    IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (var  ... }')
+    IUsingStatement ([1] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (var  ... }')
       Resources: 
-        IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement) (Syntax: 'var c2 = new C()')
-          IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c2 = new C()')
+        IVariableDeclarationStatement (1 declarations) ([0] OperationKind.VariableDeclarationStatement) (Syntax: VariableDeclaration, 'var c2 = new C()')
+          IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c2 = new C()')
             Variables: Local_1: C c2
             Initializer: 
-              IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-                IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+              IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+                IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
                   Arguments(0)
                   Initializer: 
                     null
       Body: 
-        IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-          IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+        IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+          IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
             Expression: 
-              IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+              IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
                 Instance Receiver: 
                   null
                 Arguments(1):
-                    IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c1.ToString ... .ToString()')
-                      IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'c1.ToString ... .ToString()')
-                        Left: 
-                          IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c1.ToString()')
-                            Instance Receiver: 
-                              ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
-                            Arguments(0)
-                        Right: 
-                          IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c2.ToString()')
-                            Instance Receiver: 
-                              ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c2')
-                            Arguments(0)
-                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                  IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c1.ToString ... .ToString()')
+                    IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: AddExpression, 'c1.ToString ... .ToString()')
+                      Left: 
+                        IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c1.ToString()')
+                          Instance Receiver: 
+                            ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
+                          Arguments(0)
+                      Right: 
+                        IInvocationExpression (virtual System.String System.Object.ToString()) ([1] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c2.ToString()')
+                          Instance Receiver: 
+                            ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c2')
+                          Arguments(0)
+                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -276,35 +276,35 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (c1) ... }')
+IUsingStatement ([2] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (c1) ... }') (Parent: BlockStatement)
   Resources: 
-    ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
+    ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
   Body: 
-    IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (c2) ... }')
+    IUsingStatement ([1] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (c2) ... }')
       Resources: 
-        ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c2')
+        ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c2')
       Body: 
-        IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-          IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+        IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+          IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
             Expression: 
-              IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+              IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
                 Instance Receiver: 
                   null
                 Arguments(1):
-                    IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c1.ToString ... .ToString()')
-                      IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'c1.ToString ... .ToString()')
-                        Left: 
-                          IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c1.ToString()')
-                            Instance Receiver: 
-                              ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
-                            Arguments(0)
-                        Right: 
-                          IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c2.ToString()')
-                            Instance Receiver: 
-                              ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c2')
-                            Arguments(0)
-                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                  IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c1.ToString ... .ToString()')
+                    IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: AddExpression, 'c1.ToString ... .ToString()')
+                      Left: 
+                        IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c1.ToString()')
+                          Instance Receiver: 
+                            ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
+                          Arguments(0)
+                      Right: 
+                        IInvocationExpression (virtual System.String System.Object.ToString()) ([1] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c2.ToString()')
+                          Instance Receiver: 
+                            ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c2')
+                          Arguments(0)
+                    InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -334,47 +334,47 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement, IsInvalid) (Syntax: 'using (var  ... }')
+IUsingStatement ([0] OperationKind.UsingStatement, IsInvalid) (Syntax: UsingStatement, 'using (var  ... }') (Parent: BlockStatement)
   Resources: 
-    IVariableDeclarationStatement (2 declarations) (OperationKind.VariableDeclarationStatement, IsInvalid) (Syntax: 'var c1 = ne ... 2 = new C()')
-      IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration, IsInvalid) (Syntax: 'c1 = new C()')
+    IVariableDeclarationStatement (2 declarations) ([0] OperationKind.VariableDeclarationStatement, IsInvalid) (Syntax: VariableDeclaration, 'var c1 = ne ... 2 = new C()')
+      IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration, IsInvalid) (Syntax: VariableDeclarator, 'c1 = new C()')
         Variables: Local_1: C c1
         Initializer: 
-          IVariableInitializer (OperationKind.VariableInitializer, IsInvalid) (Syntax: '= new C()')
-            IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C, IsInvalid) (Syntax: 'new C()')
+          IVariableInitializer ([0] OperationKind.VariableInitializer, IsInvalid) (Syntax: EqualsValueClause, '= new C()')
+            IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C, IsInvalid) (Syntax: ObjectCreationExpression, 'new C()')
               Arguments(0)
               Initializer: 
                 null
-      IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration, IsInvalid) (Syntax: 'c2 = new C()')
+      IVariableDeclaration (1 variables) ([1] OperationKind.VariableDeclaration, IsInvalid) (Syntax: VariableDeclarator, 'c2 = new C()')
         Variables: Local_1: C c2
         Initializer: 
-          IVariableInitializer (OperationKind.VariableInitializer, IsInvalid) (Syntax: '= new C()')
-            IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C, IsInvalid) (Syntax: 'new C()')
+          IVariableInitializer ([0] OperationKind.VariableInitializer, IsInvalid) (Syntax: EqualsValueClause, '= new C()')
+            IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C, IsInvalid) (Syntax: ObjectCreationExpression, 'new C()')
               Arguments(0)
               Initializer: 
                 null
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+    IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
         Expression: 
-          IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+          IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c1.ToString ... .ToString()')
-                  IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'c1.ToString ... .ToString()')
-                    Left: 
-                      IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c1.ToString()')
-                        Instance Receiver: 
-                          ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
-                        Arguments(0)
-                    Right: 
-                      IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c2.ToString()')
-                        Instance Receiver: 
-                          ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c2')
-                        Arguments(0)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c1.ToString ... .ToString()')
+                IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: AddExpression, 'c1.ToString ... .ToString()')
+                  Left: 
+                    IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c1.ToString()')
+                      Instance Receiver: 
+                        ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
+                      Arguments(0)
+                  Right: 
+                    IInvocationExpression (virtual System.String System.Object.ToString()) ([1] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c2.ToString()')
+                      Instance Receiver: 
+                        ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c2')
+                      Arguments(0)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0819: Implicitly-typed variables cannot have multiple declarators
@@ -412,59 +412,59 @@ class C : IDisposable
             // Capturing the whole block here, to show that the using statement is actually being bound as a using statement, followed by
             // an expression and a separate block, rather than being bound as a using statement with an invalid expression as the resources
             string expectedOperationTree = @"
-IBlockStatement (5 statements, 2 locals) (OperationKind.BlockStatement, IsInvalid) (Syntax: '{ ... }')
+IBlockStatement (5 statements, 2 locals) ([Root] OperationKind.BlockStatement, IsInvalid) (Syntax: Block, '{ ... }') (Parent: )
   Locals: Local_1: C c1
     Local_2: C c2
-  IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement) (Syntax: 'var c1 = new C();')
-    IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c1 = new C()')
+  IVariableDeclarationStatement (1 declarations) ([0] OperationKind.VariableDeclarationStatement) (Syntax: LocalDeclarationStatement, 'var c1 = new C();')
+    IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c1 = new C()')
       Variables: Local_1: C c1
       Initializer: 
-        IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-          IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+        IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+          IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
             Arguments(0)
             Initializer: 
               null
-  IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement) (Syntax: 'var c2 = new C();')
-    IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c2 = new C()')
+  IVariableDeclarationStatement (1 declarations) ([1] OperationKind.VariableDeclarationStatement) (Syntax: LocalDeclarationStatement, 'var c2 = new C();')
+    IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c2 = new C()')
       Variables: Local_1: C c2
       Initializer: 
-        IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-          IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+        IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+          IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
             Arguments(0)
             Initializer: 
               null
-  IUsingStatement (OperationKind.UsingStatement, IsInvalid) (Syntax: 'using (c1')
+  IUsingStatement ([2] OperationKind.UsingStatement, IsInvalid) (Syntax: UsingStatement, 'using (c1')
     Resources: 
-      ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C, IsInvalid) (Syntax: 'c1')
+      ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C, IsInvalid) (Syntax: IdentifierName, 'c1')
     Body: 
-      IExpressionStatement (OperationKind.ExpressionStatement, IsInvalid) (Syntax: '')
+      IExpressionStatement ([1] OperationKind.ExpressionStatement, IsInvalid) (Syntax: ExpressionStatement, '')
         Expression: 
-          IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
+          IInvalidExpression ([0] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
             Children(0)
-  IExpressionStatement (OperationKind.ExpressionStatement, IsInvalid) (Syntax: 'c2')
+  IExpressionStatement ([3] OperationKind.ExpressionStatement, IsInvalid) (Syntax: ExpressionStatement, 'c2')
     Expression: 
-      ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: C, IsInvalid) (Syntax: 'c2')
-  IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-    IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+      ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: C, IsInvalid) (Syntax: IdentifierName, 'c2')
+  IBlockStatement (1 statements) ([4] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+    IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
       Expression: 
-        IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+        IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
           Instance Receiver: 
             null
           Arguments(1):
-              IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c1.ToString ... .ToString()')
-                IBinaryOperatorExpression (BinaryOperatorKind.Add) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'c1.ToString ... .ToString()')
-                  Left: 
-                    IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c1.ToString()')
-                      Instance Receiver: 
-                        ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
-                      Arguments(0)
-                  Right: 
-                    IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c2.ToString()')
-                      Instance Receiver: 
-                        ILocalReferenceExpression: c2 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c2')
-                      Arguments(0)
-                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+            IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c1.ToString ... .ToString()')
+              IBinaryOperatorExpression (BinaryOperatorKind.Add) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: AddExpression, 'c1.ToString ... .ToString()')
+                Left: 
+                  IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c1.ToString()')
+                    Instance Receiver: 
+                      ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
+                    Arguments(0)
+                Right: 
+                  IInvocationExpression (virtual System.String System.Object.ToString()) ([1] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c2.ToString()')
+                    Instance Receiver: 
+                      ILocalReferenceExpression: c2 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c2')
+                    Arguments(0)
+              InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1026: ) expected
@@ -510,32 +510,32 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement, IsInvalid) (Syntax: 'using (var  ... }')
+IUsingStatement ([0] OperationKind.UsingStatement, IsInvalid) (Syntax: UsingStatement, 'using (var  ... }') (Parent: BlockStatement)
   Resources: 
-    IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement, IsInvalid) (Syntax: 'var c1 = new C()')
-      IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration, IsInvalid) (Syntax: 'c1 = new C()')
+    IVariableDeclarationStatement (1 declarations) ([0] OperationKind.VariableDeclarationStatement, IsInvalid) (Syntax: VariableDeclaration, 'var c1 = new C()')
+      IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration, IsInvalid) (Syntax: VariableDeclarator, 'c1 = new C()')
         Variables: Local_1: C c1
         Initializer: 
-          IVariableInitializer (OperationKind.VariableInitializer, IsInvalid) (Syntax: '= new C()')
-            IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C, IsInvalid) (Syntax: 'new C()')
+          IVariableInitializer ([0] OperationKind.VariableInitializer, IsInvalid) (Syntax: EqualsValueClause, '= new C()')
+            IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C, IsInvalid) (Syntax: ObjectCreationExpression, 'new C()')
               Arguments(0)
               Initializer: 
                 null
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+    IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
         Expression: 
-          IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+          IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c1.ToString()')
-                  IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c1.ToString()')
-                    Instance Receiver: 
-                      ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
-                    Arguments(0)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c1.ToString()')
+                IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c1.ToString()')
+                  Instance Receiver: 
+                    ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
+                  Arguments(0)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1674: 'C': type used in a using statement must be implicitly convertible to 'System.IDisposable'
@@ -567,24 +567,24 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement, IsInvalid) (Syntax: 'using (c1) ... }')
+IUsingStatement ([1] OperationKind.UsingStatement, IsInvalid) (Syntax: UsingStatement, 'using (c1) ... }') (Parent: BlockStatement)
   Resources: 
-    ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C, IsInvalid) (Syntax: 'c1')
+    ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C, IsInvalid) (Syntax: IdentifierName, 'c1')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+    IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
         Expression: 
-          IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+          IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c1.ToString()')
-                  IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c1.ToString()')
-                    Instance Receiver: 
-                      ILocalReferenceExpression: c1 (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c1')
-                    Arguments(0)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c1.ToString()')
+                IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c1.ToString()')
+                  Instance Receiver: 
+                    ILocalReferenceExpression: c1 ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c1')
+                  Arguments(0)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1674: 'C': type used in a using statement must be implicitly convertible to 'System.IDisposable'
@@ -614,12 +614,12 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement, IsInvalid) (Syntax: 'using () ... }')
+IUsingStatement ([0] OperationKind.UsingStatement, IsInvalid) (Syntax: UsingStatement, 'using () ... }') (Parent: BlockStatement)
   Resources: 
-    IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
+    IInvalidExpression ([0] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
       Children(0)
   Body: 
-    IBlockStatement (0 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
+    IBlockStatement (0 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1525: Invalid expression term ')'
@@ -654,14 +654,14 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (GetC ... }')
+IUsingStatement ([0] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (GetC ... }') (Parent: BlockStatement)
   Resources: 
-    IInvocationExpression (C C.GetC()) (OperationKind.InvocationExpression, Type: C) (Syntax: 'GetC()')
+    IInvocationExpression (C C.GetC()) ([0] OperationKind.InvocationExpression, Type: C) (Syntax: InvocationExpression, 'GetC()')
       Instance Receiver: 
         null
       Arguments(0)
   Body: 
-    IBlockStatement (0 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
+    IBlockStatement (0 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -692,21 +692,21 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (d) ... }')
+IUsingStatement ([1] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (d) ... }') (Parent: BlockStatement)
   Resources: 
-    ILocalReferenceExpression: d (OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: 'd')
+    ILocalReferenceExpression: d ([0] OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.WriteLine(d);')
+    IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.WriteLine(d);')
         Expression: 
-          IDynamicInvocationExpression (OperationKind.DynamicInvocationExpression, Type: dynamic) (Syntax: 'Console.WriteLine(d)')
+          IDynamicInvocationExpression ([0] OperationKind.DynamicInvocationExpression, Type: dynamic) (Syntax: InvocationExpression, 'Console.WriteLine(d)')
             Expression: 
-              IDynamicMemberReferenceExpression (Member Name: ""WriteLine"", Containing Type: null) (OperationKind.DynamicMemberReferenceExpression, Type: null) (Syntax: 'Console.WriteLine')
+              IDynamicMemberReferenceExpression (Member Name: ""WriteLine"", Containing Type: null) ([0] OperationKind.DynamicMemberReferenceExpression, Type: null) (Syntax: SimpleMemberAccessExpression, 'Console.WriteLine')
                 Type Arguments(0)
                 Instance Receiver: 
-                  IOperation:  (OperationKind.None) (Syntax: 'Console')
+                  IOperation:  ([0] OperationKind.None) (Syntax: IdentifierName, 'Console')
             Arguments(1):
-                ILocalReferenceExpression: d (OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: 'd')
+              ILocalReferenceExpression: d ([1] OperationKind.LocalReferenceExpression, Type: dynamic) (Syntax: IdentifierName, 'd')
             ArgumentNames(0)
             ArgumentRefKinds(0)
 ";
@@ -733,11 +733,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IUsingStatement (OperationKind.UsingStatement) (Syntax: 'using (null ... }')
+IUsingStatement ([0] OperationKind.UsingStatement) (Syntax: UsingStatement, 'using (null ... }') (Parent: BlockStatement)
   Resources: 
-    ILiteralExpression (OperationKind.LiteralExpression, Type: null, Constant: null) (Syntax: 'null')
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: null, Constant: null) (Syntax: NullLiteralExpression, 'null')
   Body: 
-    IBlockStatement (0 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
+    IBlockStatement (0 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -767,12 +767,12 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IVariableDeclarationStatement (1 declarations) (OperationKind.VariableDeclarationStatement) (Syntax: 'var c = new C()')
-  IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c = new C()')
+IVariableDeclarationStatement (1 declarations) ([0] OperationKind.VariableDeclarationStatement) (Syntax: VariableDeclaration, 'var c = new C()') (Parent: UsingStatement)
+  IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c = new C()')
     Variables: Local_1: C c
     Initializer: 
-      IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-        IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+      IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+        IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
           Arguments(0)
           Initializer: 
             null
@@ -805,20 +805,20 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: '{ ... }')
-  IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... oString());')
+IBlockStatement (1 statements) ([1] OperationKind.BlockStatement) (Syntax: Block, '{ ... }') (Parent: UsingStatement)
+  IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... oString());')
     Expression: 
-      IInvocationExpression (void System.Console.WriteLine(System.String value)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ToString())')
+      IInvocationExpression (void System.Console.WriteLine(System.String value)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ToString())')
         Instance Receiver: 
           null
         Arguments(1):
-            IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'c.ToString()')
-              IInvocationExpression (virtual System.String System.Object.ToString()) (OperationKind.InvocationExpression, Type: System.String) (Syntax: 'c.ToString()')
-                Instance Receiver: 
-                  ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c')
-                Arguments(0)
-              InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-              OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+          IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: Argument, 'c.ToString()')
+            IInvocationExpression (virtual System.String System.Object.ToString()) ([0] OperationKind.InvocationExpression, Type: System.String) (Syntax: InvocationExpression, 'c.ToString()')
+              Instance Receiver: 
+                ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
+              Arguments(0)
+            InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+            OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -849,7 +849,7 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-ILocalReferenceExpression: c (OperationKind.LocalReferenceExpression, Type: C) (Syntax: 'c')
+ILocalReferenceExpression: c ([0] OperationKind.LocalReferenceExpression, Type: C) (Syntax: IdentifierName, 'c') (Parent: UsingStatement)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -880,11 +880,11 @@ class C : IDisposable
 }
 ";
             string expectedOperationTree = @"
-IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'c1 = new C()')
+IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'c1 = new C()') (Parent: VariableDeclarationStatement)
   Variables: Local_1: C c1
   Initializer: 
-    IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= new C()')
-      IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+    IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= new C()')
+      IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
         Arguments(0)
         Initializer: 
           null

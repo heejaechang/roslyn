@@ -803,14 +803,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: '(x, y) = new C()')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: SimpleAssignmentExpression, '(x, y) = new C()') (Parent: InvocationExpression)
   Left: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: '(x, y)')
+    ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: TupleExpression, '(x, y)')
       Elements(2):
-          ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
-          ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'y')
+        ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
+        ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'y')
   Right: 
-    IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+    IObjectCreationExpression (Constructor: C..ctor()) ([1] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
       Arguments(0)
       Initializer: 
         null
@@ -967,20 +967,20 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32, System.Int32)) (Syntax: '(M(), M()) = new C()')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32, System.Int32)) (Syntax: SimpleAssignmentExpression, '(M(), M()) = new C()') (Parent: ExpressionStatement)
   Left: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: '(M(), M())')
+    ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: TupleExpression, '(M(), M())')
       Elements(2):
-          IInvocationExpression (ref System.Int32 C.M()) (OperationKind.InvocationExpression, Type: System.Int32) (Syntax: 'M()')
-            Instance Receiver: 
-              null
-            Arguments(0)
-          IInvocationExpression (ref System.Int32 C.M()) (OperationKind.InvocationExpression, Type: System.Int32) (Syntax: 'M()')
-            Instance Receiver: 
-              null
-            Arguments(0)
+        IInvocationExpression (ref System.Int32 C.M()) ([0] OperationKind.InvocationExpression, Type: System.Int32) (Syntax: InvocationExpression, 'M()')
+          Instance Receiver: 
+            null
+          Arguments(0)
+        IInvocationExpression (ref System.Int32 C.M()) ([1] OperationKind.InvocationExpression, Type: System.Int32) (Syntax: InvocationExpression, 'M()')
+          Instance Receiver: 
+            null
+          Arguments(0)
   Right: 
-    IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+    IObjectCreationExpression (Constructor: C..ctor()) ([1] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
       Arguments(0)
       Initializer: 
         null
@@ -1287,17 +1287,17 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: '(x, y) = (1, 2)')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: SimpleAssignmentExpression, '(x, y) = (1, 2)') (Parent: ExpressionStatement)
   Left: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: '(x, y)')
+    ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int32 x, System.Int32 y)) (Syntax: TupleExpression, '(x, y)')
       Elements(2):
-          ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
-          ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'y')
+        ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
+        ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'y')
   Right: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: '(1, 2)')
+    ITupleExpression ([1] OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: TupleExpression, '(1, 2)')
       Elements(2):
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 2) (Syntax: '2')
+        ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
+        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 2) (Syntax: NumericLiteralExpression, '2')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -1681,14 +1681,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64 x, System.String y)) (Syntax: '(x, y) = new C()')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64 x, System.String y)) (Syntax: SimpleAssignmentExpression, '(x, y) = new C()') (Parent: VariableInitializer)
   Left: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int64 x, System.String y)) (Syntax: '(x, y)')
+    ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int64 x, System.String y)) (Syntax: TupleExpression, '(x, y)')
       Elements(2):
-          ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-          ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'y')
+        ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+        ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 'y')
   Right: 
-    IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+    IObjectCreationExpression (Constructor: C..ctor()) ([1] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
       Arguments(0)
       Initializer: 
         null
@@ -1749,23 +1749,23 @@ class C
 
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: ((System.Int64 x1, System.String x2), System.Int32 x3)) (Syntax: '((x1, x2),  ... new C(), 3)')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: ((System.Int64 x1, System.String x2), System.Int32 x3)) (Syntax: SimpleAssignmentExpression, '((x1, x2),  ... new C(), 3)') (Parent: VariableInitializer)
   Left: 
-    ITupleExpression (OperationKind.TupleExpression, Type: ((System.Int64 x1, System.String x2), System.Int32 x3)) (Syntax: '((x1, x2), x3)')
+    ITupleExpression ([0] OperationKind.TupleExpression, Type: ((System.Int64 x1, System.String x2), System.Int32 x3)) (Syntax: TupleExpression, '((x1, x2), x3)')
       Elements(2):
-          ITupleExpression (OperationKind.TupleExpression, Type: (System.Int64 x1, System.String x2)) (Syntax: '(x1, x2)')
-            Elements(2):
-                ILocalReferenceExpression: x1 (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x1')
-                ILocalReferenceExpression: x2 (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'x2')
-          ILocalReferenceExpression: x3 (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x3')
+        ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int64 x1, System.String x2)) (Syntax: TupleExpression, '(x1, x2)')
+          Elements(2):
+            ILocalReferenceExpression: x1 ([0] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x1')
+            ILocalReferenceExpression: x2 ([1] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 'x2')
+        ILocalReferenceExpression: x3 ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x3')
   Right: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (C, System.Int32)) (Syntax: '(new C(), 3)')
+    ITupleExpression ([1] OperationKind.TupleExpression, Type: (C, System.Int32)) (Syntax: TupleExpression, '(new C(), 3)')
       Elements(2):
-          IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
-            Arguments(0)
-            Initializer: 
-              null
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 3) (Syntax: '3')
+        IObjectCreationExpression (Constructor: C..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
+          Arguments(0)
+          Initializer: 
+            null
+        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 3) (Syntax: NumericLiteralExpression, '3')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -1828,25 +1828,25 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IVariableDeclaration (1 variables) (OperationKind.VariableDeclaration) (Syntax: 'y = (x, x,  ... ) = new C()')
+IVariableDeclaration (1 variables) ([0] OperationKind.VariableDeclaration) (Syntax: VariableDeclarator, 'y = (x, x,  ... ) = new C()') (Parent: VariableDeclarationStatement)
   Variables: Local_1: (System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64) y
   Initializer: 
-    IVariableInitializer (OperationKind.VariableInitializer) (Syntax: '= (x, x, x, ... ) = new C()')
-      IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64)) (Syntax: '(x, x, x, x ... ) = new C()')
+    IVariableInitializer ([0] OperationKind.VariableInitializer) (Syntax: EqualsValueClause, '= (x, x, x, ... ) = new C()')
+      IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64)) (Syntax: SimpleAssignmentExpression, '(x, x, x, x ... ) = new C()')
         Left: 
-          ITupleExpression (OperationKind.TupleExpression, Type: (System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64)) (Syntax: '(x, x, x, x ... x, x, x, x)')
+          ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64, System.Int64)) (Syntax: TupleExpression, '(x, x, x, x ... x, x, x, x)')
             Elements(9):
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
-                ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x')
+              ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([2] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([3] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([4] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([5] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([6] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([7] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
+              ILocalReferenceExpression: x ([8] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x')
         Right: 
-          IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+          IObjectCreationExpression (Constructor: C..ctor()) ([1] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
             Arguments(0)
             Initializer: 
               null
@@ -1928,21 +1928,21 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64, System.Int64)) (Syntax: '(x1, x1) =  ... ) = new C()')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64, System.Int64)) (Syntax: SimpleAssignmentExpression, '(x1, x1) =  ... ) = new C()') (Parent: VariableInitializer)
   Left: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int64, System.Int64)) (Syntax: '(x1, x1)')
+    ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int64, System.Int64)) (Syntax: TupleExpression, '(x1, x1)')
       Elements(2):
-          ILocalReferenceExpression: x1 (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x1')
-          ILocalReferenceExpression: x1 (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x1')
+        ILocalReferenceExpression: x1 ([0] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x1')
+        ILocalReferenceExpression: x1 ([1] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x1')
   Right: 
-    IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64, System.Int64)) (Syntax: '(x2, x2) = new C()')
+    IDeconstructionAssignmentExpression ([1] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int64, System.Int64)) (Syntax: SimpleAssignmentExpression, '(x2, x2) = new C()')
       Left: 
-        ITupleExpression (OperationKind.TupleExpression, Type: (System.Int64, System.Int64)) (Syntax: '(x2, x2)')
+        ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int64, System.Int64)) (Syntax: TupleExpression, '(x2, x2)')
           Elements(2):
-              ILocalReferenceExpression: x2 (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x2')
-              ILocalReferenceExpression: x2 (OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: 'x2')
+            ILocalReferenceExpression: x2 ([0] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x2')
+            ILocalReferenceExpression: x2 ([1] OperationKind.LocalReferenceExpression, Type: System.Int64) (Syntax: IdentifierName, 'x2')
       Right: 
-        IObjectCreationExpression (Constructor: C..ctor()) (OperationKind.ObjectCreationExpression, Type: C) (Syntax: 'new C()')
+        IObjectCreationExpression (Constructor: C..ctor()) ([1] OperationKind.ObjectCreationExpression, Type: C) (Syntax: ObjectCreationExpression, 'new C()')
           Arguments(0)
           Initializer: 
             null
@@ -6127,18 +6127,18 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32, System.Int32)) (Syntax: 'var (_, _) = (0, 0)')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32, System.Int32)) (Syntax: SimpleAssignmentExpression, 'var (_, _) = (0, 0)') (Parent: ExpressionStatement)
   Left: 
-    IDeclarationExpression (OperationKind.DeclarationExpression, Type: (System.Int32, System.Int32)) (Syntax: 'var (_, _)')
-      ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: '(_, _)')
+    IDeclarationExpression ([0] OperationKind.DeclarationExpression, Type: (System.Int32, System.Int32)) (Syntax: DeclarationExpression, 'var (_, _)')
+      ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: ParenthesizedVariableDesignation, '(_, _)')
         Elements(2):
-            IOperation:  (OperationKind.None) (Syntax: '_')
-            IOperation:  (OperationKind.None) (Syntax: '_')
+          IOperation:  ([0] OperationKind.None) (Syntax: DiscardDesignation, '_')
+          IOperation:  ([1] OperationKind.None) (Syntax: DiscardDesignation, '_')
   Right: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: '(0, 0)')
+    ITupleExpression ([1] OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: TupleExpression, '(0, 0)')
       Elements(2):
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+        ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -6160,17 +6160,17 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IDeconstructionAssignmentExpression (OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32 x, System.Int32)) (Syntax: '(x, _) = (0, 0)')
+IDeconstructionAssignmentExpression ([0] OperationKind.DeconstructionAssignmentExpression, Type: (System.Int32 x, System.Int32)) (Syntax: SimpleAssignmentExpression, '(x, _) = (0, 0)') (Parent: ExpressionStatement)
   Left: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32 x, System.Int32)) (Syntax: '(x, _)')
+    ITupleExpression ([0] OperationKind.TupleExpression, Type: (System.Int32 x, System.Int32)) (Syntax: TupleExpression, '(x, _)')
       Elements(2):
-          ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
-          IOperation:  (OperationKind.None) (Syntax: '_')
+        ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
+        IOperation:  ([1] OperationKind.None) (Syntax: IdentifierName, '_')
   Right: 
-    ITupleExpression (OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: '(0, 0)')
+    ITupleExpression ([1] OperationKind.TupleExpression, Type: (System.Int32, System.Int32)) (Syntax: TupleExpression, '(0, 0)')
       Elements(2):
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+        ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -6196,7 +6196,7 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IOperation:  (OperationKind.None) (Syntax: 'var _')
+IOperation:  ([0] OperationKind.None) (Syntax: DeclarationExpression, 'var _') (Parent: Argument)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 

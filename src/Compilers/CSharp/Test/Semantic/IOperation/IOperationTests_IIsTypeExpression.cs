@@ -30,9 +30,9 @@ namespace TestIsOperator
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'o is string')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 'o is string') (Parent: VariableInitializer)
   Operand: 
-    ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+    ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   IsType: System.String
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -62,9 +62,9 @@ namespace TestIsOperator
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'myInt is int')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 'myInt is int') (Parent: VariableInitializer)
   Operand: 
-    ILocalReferenceExpression: myInt (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'myInt')
+    ILocalReferenceExpression: myInt ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'myInt')
   IsType: System.Int32
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -99,9 +99,9 @@ namespace TestIsOperator
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'o is TestType')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 'o is TestType') (Parent: VariableInitializer)
   Operand: 
-    ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+    ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   IsType: TestIsOperator.TestType
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -132,9 +132,9 @@ namespace TestIsOperator
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'null is TestType')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 'null is TestType') (Parent: VariableInitializer)
   Operand: 
-    ILiteralExpression (OperationKind.LiteralExpression, Type: null, Constant: null) (Syntax: 'null')
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: null, Constant: null) (Syntax: NullLiteralExpression, 'null')
   IsType: TestIsOperator.TestType
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -163,9 +163,9 @@ enum color
 { }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: '1 is color')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, '1 is color') (Parent: VariableInitializer)
   Operand: 
-    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
   IsType: color
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -196,9 +196,9 @@ namespace TestIsOperatorGeneric
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 't is int')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 't is int') (Parent: VariableInitializer)
   Operand: 
-    IParameterReferenceExpression: t (OperationKind.ParameterReferenceExpression, Type: T) (Syntax: 't')
+    IParameterReferenceExpression: t ([0] OperationKind.ParameterReferenceExpression, Type: T) (Syntax: IdentifierName, 't')
   IsType: System.Int32
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -225,9 +225,9 @@ namespace TestIsOperatorGeneric
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'u is object')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 'u is object') (Parent: VariableInitializer)
   Operand: 
-    IParameterReferenceExpression: u (OperationKind.ParameterReferenceExpression, Type: U) (Syntax: 'u')
+    IParameterReferenceExpression: u ([0] OperationKind.ParameterReferenceExpression, Type: U) (Syntax: IdentifierName, 'u')
   IsType: System.Object
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -254,9 +254,9 @@ namespace TestIsOperatorGeneric
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 't is U')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 't is U') (Parent: VariableInitializer)
   Operand: 
-    IParameterReferenceExpression: t (OperationKind.ParameterReferenceExpression, Type: T) (Syntax: 't')
+    IParameterReferenceExpression: t ([0] OperationKind.ParameterReferenceExpression, Type: T) (Syntax: IdentifierName, 't')
   IsType: U
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -283,9 +283,9 @@ namespace TestIsOperatorGeneric
 }
 ";
             string expectedOperationTree = @"
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 't is T')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: IsExpression, 't is T') (Parent: VariableInitializer)
   Operand: 
-    IParameterReferenceExpression: t (OperationKind.ParameterReferenceExpression, Type: T) (Syntax: 't')
+    IParameterReferenceExpression: t ([0] OperationKind.ParameterReferenceExpression, Type: T) (Syntax: IdentifierName, 't')
   IsType: T
 ";
             var expectedDiagnostics = DiagnosticDescription.None;

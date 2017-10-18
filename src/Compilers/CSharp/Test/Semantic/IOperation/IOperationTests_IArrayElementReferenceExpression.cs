@@ -23,11 +23,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[0]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[0]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -48,11 +48,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[x]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[x]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'x')
+    IParameterReferenceExpression: x ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -75,14 +75,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'F2()[0]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'F2()[0]') (Parent: VariableInitializer)
   Array reference: 
-    IInvocationExpression ( System.String[] C.F2()) (OperationKind.InvocationExpression, Type: System.String[]) (Syntax: 'F2()')
+    IInvocationExpression ( System.String[] C.F2()) ([0] OperationKind.InvocationExpression, Type: System.String[]) (Syntax: InvocationExpression, 'F2()')
       Instance Receiver: 
-        IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: 'F2')
+        IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: IdentifierName, 'F2')
       Arguments(0)
   Indices(1):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -103,12 +103,12 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[0, 1]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[0, 1]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: IdentifierName, 'args')
   Indices(2):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+    ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -129,12 +129,12 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[x, y]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[x, y]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: IdentifierName, 'args')
   Indices(2):
-      IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'x')
-      IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'y')
+    IParameterReferenceExpression: x ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
+    IParameterReferenceExpression: y ([2] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'y')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -158,15 +158,15 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[x, F2()]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[x, F2()]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: IdentifierName, 'args')
   Indices(2):
-      ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
-      IInvocationExpression ( System.Int32 C.F2()) (OperationKind.InvocationExpression, Type: System.Int32) (Syntax: 'F2()')
-        Instance Receiver: 
-          IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: 'F2')
-        Arguments(0)
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
+    IInvocationExpression ( System.Int32 C.F2()) ([2] OperationKind.InvocationExpression, Type: System.Int32) (Syntax: InvocationExpression, 'F2()')
+      Instance Receiver: 
+        IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: IdentifierName, 'F2')
+      Arguments(0)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -187,15 +187,15 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[0][0]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[0][0]') (Parent: VariableInitializer)
   Array reference: 
-    IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String[]) (Syntax: 'args[0]')
+    IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String[]) (Syntax: ElementAccessExpression, 'args[0]')
       Array reference: 
-        IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[][]) (Syntax: 'args')
+        IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[][]) (Syntax: IdentifierName, 'args')
       Indices(1):
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
   Indices(1):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -219,18 +219,18 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[F2()][x]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[F2()][x]') (Parent: VariableInitializer)
   Array reference: 
-    IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String[]) (Syntax: 'args[F2()]')
+    IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String[]) (Syntax: ElementAccessExpression, 'args[F2()]')
       Array reference: 
-        IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[][]) (Syntax: 'args')
+        IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[][]) (Syntax: IdentifierName, 'args')
       Indices(1):
-          IInvocationExpression ( System.Int32 C.F2()) (OperationKind.InvocationExpression, Type: System.Int32) (Syntax: 'F2()')
-            Instance Receiver: 
-              IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: 'F2')
-            Arguments(0)
+        IInvocationExpression ( System.Int32 C.F2()) ([1] OperationKind.InvocationExpression, Type: System.Int32) (Syntax: InvocationExpression, 'F2()')
+          Instance Receiver: 
+            IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: IdentifierName, 'F2')
+          Arguments(0)
   Indices(1):
-      ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -254,19 +254,19 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[x][0, F2()]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[x][0, F2()]') (Parent: VariableInitializer)
   Array reference: 
-    IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String[,]) (Syntax: 'args[x]')
+    IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String[,]) (Syntax: ElementAccessExpression, 'args[x]')
       Array reference: 
-        IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[][,]) (Syntax: 'args')
+        IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[][,]) (Syntax: IdentifierName, 'args')
       Indices(1):
-          ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
+        ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
   Indices(2):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-      IInvocationExpression ( System.Int32 C.F2()) (OperationKind.InvocationExpression, Type: System.Int32) (Syntax: 'F2()')
-        Instance Receiver: 
-          IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: 'F2')
-        Arguments(0)
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+    IInvocationExpression ( System.Int32 C.F2()) ([2] OperationKind.InvocationExpression, Type: System.Int32) (Syntax: InvocationExpression, 'F2()')
+      Instance Receiver: 
+        IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: IdentifierName, 'F2')
+      Arguments(0)
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -287,14 +287,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[b]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[b]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Int32, IsImplicit) (Syntax: 'b')
-        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: True, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-        Operand: 
-          IParameterReferenceExpression: b (OperationKind.ParameterReferenceExpression, Type: System.Byte) (Syntax: 'b')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([1] OperationKind.ConversionExpression, Type: System.Int32, IsImplicit) (Syntax: IdentifierName, 'b')
+      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: True, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      Operand: 
+        IParameterReferenceExpression: b ([0] OperationKind.ParameterReferenceExpression, Type: System.Byte) (Syntax: IdentifierName, 'b')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -315,14 +315,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[(int)d]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[(int)d]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IConversionExpression (Explicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Int32) (Syntax: '(int)d')
-        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: True, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-        Operand: 
-          IParameterReferenceExpression: d (OperationKind.ParameterReferenceExpression, Type: System.Double) (Syntax: 'd')
+    IConversionExpression (Explicit, TryCast: False, Unchecked) ([1] OperationKind.ConversionExpression, Type: System.Int32) (Syntax: CastExpression, '(int)d')
+      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: True, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      Operand: 
+        IParameterReferenceExpression: d ([0] OperationKind.ParameterReferenceExpression, Type: System.Double) (Syntax: IdentifierName, 'd')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -348,14 +348,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[c]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[c]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IConversionExpression (Implicit, TryCast: False, Unchecked) (OperatorMethod: System.Int32 C.op_Implicit(C c)) (OperationKind.ConversionExpression, Type: System.Int32, IsImplicit) (Syntax: 'c')
-        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: True) (MethodSymbol: System.Int32 C.op_Implicit(C c))
-        Operand: 
-          IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C) (Syntax: 'c')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperatorMethod: System.Int32 C.op_Implicit(C c)) ([1] OperationKind.ConversionExpression, Type: System.Int32, IsImplicit) (Syntax: IdentifierName, 'c')
+      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: True) (MethodSymbol: System.Int32 C.op_Implicit(C c))
+      Operand: 
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -381,14 +381,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[(int)c]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[(int)c]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IConversionExpression (Explicit, TryCast: False, Unchecked) (OperatorMethod: System.Int32 C.op_Explicit(C c)) (OperationKind.ConversionExpression, Type: System.Int32) (Syntax: '(int)c')
-        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: True) (MethodSymbol: System.Int32 C.op_Explicit(C c))
-        Operand: 
-          IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C) (Syntax: 'c')
+    IConversionExpression (Explicit, TryCast: False, Unchecked) (OperatorMethod: System.Int32 C.op_Explicit(C c)) ([1] OperationKind.ConversionExpression, Type: System.Int32) (Syntax: CastExpression, '(int)c')
+      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: True) (MethodSymbol: System.Int32 C.op_Explicit(C c))
+      Operand: 
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -414,14 +414,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: '((string[])c)[x]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, '((string[])c)[x]') (Parent: VariableInitializer)
   Array reference: 
-    IConversionExpression (Explicit, TryCast: False, Unchecked) (OperatorMethod: System.String[] C.op_Explicit(C c)) (OperationKind.ConversionExpression, Type: System.String[]) (Syntax: '(string[])c')
+    IConversionExpression (Explicit, TryCast: False, Unchecked) (OperatorMethod: System.String[] C.op_Explicit(C c)) ([0] OperationKind.ConversionExpression, Type: System.String[]) (Syntax: CastExpression, '(string[])c')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: True) (MethodSymbol: System.String[] C.op_Explicit(C c))
       Operand: 
-        IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C) (Syntax: 'c')
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
   Indices(1):
-      IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'x')
+    IParameterReferenceExpression: x ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
 
@@ -442,14 +442,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[c]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[c]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Int32, IsInvalid, IsImplicit) (Syntax: 'c')
-        Conversion: CommonConversion (Exists: False, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-        Operand: 
-          IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C, IsInvalid) (Syntax: 'c')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([1] OperationKind.ConversionExpression, Type: System.Int32, IsInvalid, IsImplicit) (Syntax: IdentifierName, 'c')
+      Conversion: CommonConversion (Exists: False, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      Operand: 
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: C, IsInvalid) (Syntax: IdentifierName, 'c')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0029: Cannot implicitly convert type 'C' to 'int'
@@ -479,14 +479,14 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[c]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[c]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IConversionExpression (Implicit, TryCast: False, Unchecked) (OperatorMethod: System.Int32 C.op_Explicit(C c)) (OperationKind.ConversionExpression, Type: System.Int32, IsInvalid, IsImplicit) (Syntax: 'c')
-        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: True) (MethodSymbol: System.Int32 C.op_Explicit(C c))
-        Operand: 
-          IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C, IsInvalid) (Syntax: 'c')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperatorMethod: System.Int32 C.op_Explicit(C c)) ([1] OperationKind.ConversionExpression, Type: System.Int32, IsInvalid, IsImplicit) (Syntax: IdentifierName, 'c')
+      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: True) (MethodSymbol: System.Int32 C.op_Explicit(C c))
+      Operand: 
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: C, IsInvalid) (Syntax: IdentifierName, 'c')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0266: Cannot implicitly convert type 'C' to 'int'. An explicit conversion exists (are you missing a cast?)
@@ -513,11 +513,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: '[0]')
+IInvalidExpression ([0] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: ElementAccessExpression, '[0]') (Parent: VariableInitializer)
   Children(2):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: '0')
-      IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
-        Children(0)
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: NumericLiteralExpression, '0')
+    IInvalidExpression ([1] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
+      Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1525: Invalid expression term '['
@@ -542,12 +542,12 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
-        Children(0)
+    IInvalidExpression ([1] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
+      Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0443: Syntax error; value expected
@@ -574,10 +574,10 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'c[0]')
+IInvalidExpression ([0] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: ElementAccessExpression, 'c[0]') (Parent: VariableInitializer)
   Children(2):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: '0')
-      IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C, IsInvalid) (Syntax: 'c')
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: NumericLiteralExpression, '0')
+    IParameterReferenceExpression: c ([1] OperationKind.ParameterReferenceExpression, Type: C, IsInvalid) (Syntax: IdentifierName, 'c')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0021: Cannot apply indexing with [] to an expression of type 'C'
@@ -602,12 +602,12 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[0, 0]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[0, 0]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: IdentifierName, 'args')
   Indices(2):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: '0')
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: '0')
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: NumericLiteralExpression, '0')
+    ILiteralExpression ([2] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0022: Wrong number of indices inside []; expected 1
@@ -632,15 +632,15 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvalidExpression (OperationKind.InvalidExpression, Type: System.Char, IsInvalid) (Syntax: 'args[0][]')
+IInvalidExpression ([0] OperationKind.InvalidExpression, Type: System.Char, IsInvalid) (Syntax: ElementAccessExpression, 'args[0][]') (Parent: VariableInitializer)
   Children(2):
-      IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[0]')
-        Array reference: 
-          IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
-        Indices(1):
-            ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-      IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
-        Children(0)
+    IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[0]')
+      Array reference: 
+        IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
+      Indices(1):
+        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+    IInvalidExpression ([1] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
+      Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0443: Syntax error; value expected
@@ -665,11 +665,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'ErrorExpression[0]')
+IInvalidExpression ([0] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: ElementAccessExpression, 'ErrorExpression[0]') (Parent: VariableInitializer)
   Children(2):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-      IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'ErrorExpression')
-        Children(0)
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+    IInvalidExpression ([1] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: IdentifierName, 'ErrorExpression')
+      Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0103: The name 'ErrorExpression' does not exist in the current context
@@ -694,15 +694,15 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[ErrorExpression]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[ErrorExpression]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Int32, IsInvalid, IsImplicit) (Syntax: 'ErrorExpression')
-        Conversion: CommonConversion (Exists: False, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-        Operand: 
-          IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'ErrorExpression')
-            Children(0)
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([1] OperationKind.ConversionExpression, Type: System.Int32, IsInvalid, IsImplicit) (Syntax: IdentifierName, 'ErrorExpression')
+      Conversion: CommonConversion (Exists: False, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      Operand: 
+        IInvalidExpression ([0] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: IdentifierName, 'ErrorExpression')
+          Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0103: The name 'ErrorExpression' does not exist in the current context
@@ -727,13 +727,13 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[0,]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[0,]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(2):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
-      IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
-        Children(0)
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
+    IInvalidExpression ([2] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
+      Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0443: Syntax error; value expected
@@ -758,9 +758,9 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[/*</bind>*/')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[/*</bind>*/') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: IdentifierName, 'args')
   Indices(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -789,11 +789,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[0/*</bind>*/')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[0/*</bind>*/') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1003: Syntax error, ']' expected
@@ -818,26 +818,26 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'args[y][][][][x]')
+IInvalidExpression ([0] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: ElementAccessExpression, 'args[y][][][][x]') (Parent: VariableInitializer)
   Children(2):
-      IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'x')
-      IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'args[y][][][]')
-        Children(2):
-            IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
+    IParameterReferenceExpression: x ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
+    IInvalidExpression ([1] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: ElementAccessExpression, 'args[y][][][]')
+      Children(2):
+        IInvalidExpression ([0] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
+          Children(0)
+        IInvalidExpression ([1] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: ElementAccessExpression, 'args[y][][]')
+          Children(2):
+            IInvalidExpression ([0] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
               Children(0)
-            IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'args[y][][]')
+            IInvalidExpression ([1] OperationKind.InvalidExpression, Type: System.Char, IsInvalid) (Syntax: ElementAccessExpression, 'args[y][]')
               Children(2):
-                  IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
-                    Children(0)
-                  IInvalidExpression (OperationKind.InvalidExpression, Type: System.Char, IsInvalid) (Syntax: 'args[y][]')
-                    Children(2):
-                        IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[y]')
-                          Array reference: 
-                            IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
-                          Indices(1):
-                              IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: 'y')
-                        IInvalidExpression (OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: '')
-                          Children(0)
+                IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[y]')
+                  Array reference: 
+                    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
+                  Indices(1):
+                    IParameterReferenceExpression: y ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'y')
+                IInvalidExpression ([1] OperationKind.InvalidExpression, Type: null, IsInvalid) (Syntax: IdentifierName, '')
+                  Children(0)
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0443: Syntax error; value expected
@@ -868,11 +868,11 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[name: 0]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[name: 0]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[], IsInvalid) (Syntax: IdentifierName, 'args')
   Indices(1):
-      ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: '0')
+    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0, IsInvalid) (Syntax: NumericLiteralExpression, '0')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1742: An array access may not have a named argument specifier
@@ -897,12 +897,12 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: 'args[ref x, out y]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String, IsInvalid) (Syntax: ElementAccessExpression, 'args[ref x, out y]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[,]) (Syntax: IdentifierName, 'args')
   Indices(2):
-      IParameterReferenceExpression: x (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsInvalid) (Syntax: 'x')
-      IParameterReferenceExpression: y (OperationKind.ParameterReferenceExpression, Type: System.Int32, IsInvalid) (Syntax: 'y')
+    IParameterReferenceExpression: x ([1] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsInvalid) (Syntax: IdentifierName, 'x')
+    IParameterReferenceExpression: y ([2] OperationKind.ParameterReferenceExpression, Type: System.Int32, IsInvalid) (Syntax: IdentifierName, 'y')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1615: Argument 1 may not be passed with the 'ref' keyword
@@ -933,13 +933,13 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IArrayElementReferenceExpression (OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: 'args[-1]')
+IArrayElementReferenceExpression ([0] OperationKind.ArrayElementReferenceExpression, Type: System.String) (Syntax: ElementAccessExpression, 'args[-1]') (Parent: VariableInitializer)
   Array reference: 
-    IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: 'args')
+    IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.String[]) (Syntax: IdentifierName, 'args')
   Indices(1):
-      IUnaryOperatorExpression (UnaryOperatorKind.Minus) (OperationKind.UnaryOperatorExpression, Type: System.Int32, Constant: -1) (Syntax: '-1')
-        Operand: 
-          ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: '1')
+    IUnaryOperatorExpression (UnaryOperatorKind.Minus) ([1] OperationKind.UnaryOperatorExpression, Type: System.Int32, Constant: -1) (Syntax: UnaryMinusExpression, '-1')
+      Operand: 
+        ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 1) (Syntax: NumericLiteralExpression, '1')
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS0251: Indexing an array with a negative index (array indices always start at zero)

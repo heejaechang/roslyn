@@ -28,27 +28,27 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each s  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([3] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each s  ... Next') (Parent: BlockStatement)
   Locals: Local_1: s As System.String
   LoopControlVariable: 
-    ILocalReferenceExpression: s (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 's As String')
+    ILocalReferenceExpression: s ([1] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: VariableDeclarator, 's As String')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'arr')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'arr')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILocalReferenceExpression: arr (OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: 'arr')
+        ILocalReferenceExpression: arr ([0] OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: IdentifierName, 'arr')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each s  ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.WriteLine(s)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each s  ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.WriteLine(s)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.String)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.WriteLine(s)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.String)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.WriteLine(s)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 's')
-                  ILocalReferenceExpression: s (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 's')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 's')
+                ILocalReferenceExpression: s ([0] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 's')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -74,24 +74,24 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each it ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([4] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each it ... Next') (Parent: BlockStatement)
   Locals: Local_1: item As System.String
   LoopControlVariable: 
-    ILocalReferenceExpression: item (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'item As String')
+    ILocalReferenceExpression: item ([1] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: VariableDeclarator, 'item As String')
   Collection: 
-    ILocalReferenceExpression: list (OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List(Of System.String)) (Syntax: 'list')
+    ILocalReferenceExpression: list ([0] OperationKind.LocalReferenceExpression, Type: System.Collections.Generic.List(Of System.String)) (Syntax: IdentifierName, 'list')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each it ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... eLine(item)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each it ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... eLine(item)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.String)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... eLine(item)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.String)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... eLine(item)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'item')
-                  ILocalReferenceExpression: item (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'item')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'item')
+                ILocalReferenceExpression: item ([0] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 'item')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -120,36 +120,36 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each y  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each y  ... Next') (Parent: BlockStatement)
   Locals: Local_1: y As System.Char
   LoopControlVariable: 
-    ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y As Char')
+    ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: VariableDeclarator, 'y As Char')
   Collection: 
-    ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'x')
+    ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 'x')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each y  ... Next')
-      IIfStatement (OperationKind.IfStatement) (Syntax: 'If y = "B"c ... End If')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each y  ... Next')
+      IIfStatement ([0] OperationKind.IfStatement) (Syntax: MultiLineIfBlock, 'If y = "B"c ... End If')
         Condition: 
-          IBinaryOperatorExpression (BinaryOperatorKind.Equals, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'y = "B"c')
+          IBinaryOperatorExpression (BinaryOperatorKind.Equals, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: EqualsExpression, 'y = "B"c')
             Left: 
-              ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
+              ILocalReferenceExpression: y ([0] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
             Right: 
-              ILiteralExpression (OperationKind.LiteralExpression, Type: System.Char, Constant: B) (Syntax: '"B"c')
+              ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Char, Constant: B) (Syntax: CharacterLiteralExpression, '"B"c')
         IfTrue: 
-          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'If y = "B"c ... End If')
-            IBranchStatement (BranchKind.Break, Label: exit) (OperationKind.BranchStatement) (Syntax: 'Exit For')
+          IBlockStatement (1 statements) ([1] OperationKind.BlockStatement, IsImplicit) (Syntax: MultiLineIfBlock, 'If y = "B"c ... End If')
+            IBranchStatement (BranchKind.Break, Label: exit) ([0] OperationKind.BranchStatement) (Syntax: ExitForStatement, 'Exit For')
         IfFalse: 
-          IBlockStatement (1 statements) (OperationKind.BlockStatement) (Syntax: 'Else ... riteLine(y)')
-            IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(y)')
+          IBlockStatement (1 statements) ([2] OperationKind.BlockStatement) (Syntax: ElseBlock, 'Else ... riteLine(y)')
+            IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(y)')
               Expression: 
-                IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(y)')
+                IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(y)')
                   Instance Receiver: 
                     null
                   Arguments(1):
-                      IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'y')
-                        ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
-                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'y')
+                      ILocalReferenceExpression: y ([0] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -176,50 +176,50 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each x  ... Next y, x')
+IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each x  ... Next y, x') (Parent: BlockStatement)
   Locals: Local_1: x As System.String
   LoopControlVariable: 
-    ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'x As String')
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: VariableDeclarator, 'x As String')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'S')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'S')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILocalReferenceExpression: S (OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: 'S')
+        ILocalReferenceExpression: S ([0] OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: IdentifierName, 'S')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each x  ... Next y, x')
-      IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each y  ... Next y, x')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each x  ... Next y, x')
+      IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each y  ... Next y, x')
         Locals: Local_1: y As System.Char
         LoopControlVariable: 
-          ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y As Char')
+          ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: VariableDeclarator, 'y As Char')
         Collection: 
-          ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'x')
+          ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 'x')
         Body: 
-          IBlockStatement (2 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each y  ... Next y, x')
-            IIfStatement (OperationKind.IfStatement) (Syntax: 'If y = "B"c ... End If')
+          IBlockStatement (2 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each y  ... Next y, x')
+            IIfStatement ([0] OperationKind.IfStatement) (Syntax: MultiLineIfBlock, 'If y = "B"c ... End If')
               Condition: 
-                IBinaryOperatorExpression (BinaryOperatorKind.Equals, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'y = "B"c')
+                IBinaryOperatorExpression (BinaryOperatorKind.Equals, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: EqualsExpression, 'y = "B"c')
                   Left: 
-                    ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
+                    ILocalReferenceExpression: y ([0] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
                   Right: 
-                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Char, Constant: B) (Syntax: '"B"c')
+                    ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.Char, Constant: B) (Syntax: CharacterLiteralExpression, '"B"c')
               IfTrue: 
-                IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'If y = "B"c ... End If')
-                  IBranchStatement (BranchKind.Continue, Label: continue) (OperationKind.BranchStatement) (Syntax: 'Continue For')
+                IBlockStatement (1 statements) ([1] OperationKind.BlockStatement, IsImplicit) (Syntax: MultiLineIfBlock, 'If y = "B"c ... End If')
+                  IBranchStatement (BranchKind.Continue, Label: continue) ([0] OperationKind.BranchStatement) (Syntax: ContinueForStatement, 'Continue For')
               IfFalse: 
                 null
-            IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(y)')
+            IExpressionStatement ([1] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(y)')
               Expression: 
-                IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(y)')
+                IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(y)')
                   Instance Receiver: 
                     null
                   Arguments(1):
-                      IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'y')
-                        ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
-                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'y')
+                      ILocalReferenceExpression: y ([0] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
         NextVariables(2):
-            ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
-            ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'x')
+          ILocalReferenceExpression: y ([3] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
+          ILocalReferenceExpression: x ([4] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 'x')
   NextVariables(0)
 ]]>.Value
 
@@ -248,27 +248,27 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each y  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each y  ... Next') (Parent: BlockStatement)
   Locals: Local_1: y As System.Int32
   LoopControlVariable: 
-    ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'y As Integer')
+    ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: VariableDeclarator, 'y As Integer')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'x')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'x')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32()) (Syntax: 'x')
+        ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Int32()) (Syntax: IdentifierName, 'x')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each y  ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(y)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each y  ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(y)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(y)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(y)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'y')
-                  ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'y')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'y')
+                ILocalReferenceExpression: y ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'y')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -293,35 +293,35 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each x  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each x  ... Next') (Parent: BlockStatement)
   Locals: Local_1: x As System.String
   LoopControlVariable: 
-    ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'x As String')
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: VariableDeclarator, 'x As String')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'S')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'S')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILocalReferenceExpression: S (OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: 'S')
+        ILocalReferenceExpression: S ([0] OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: IdentifierName, 'S')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each x  ... Next')
-      IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each y  ... Next')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each x  ... Next')
+      IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each y  ... Next')
         Locals: Local_1: y As System.Char
         LoopControlVariable: 
-          ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y As Char')
+          ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: VariableDeclarator, 'y As Char')
         Collection: 
-          ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 'x')
+          ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 'x')
         Body: 
-          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each y  ... Next')
-            IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(y)')
+          IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each y  ... Next')
+            IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(y)')
               Expression: 
-                IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(y)')
+                IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(y)')
                   Instance Receiver: 
                     null
                   Arguments(1):
-                      IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'y')
-                        ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
-                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'y')
+                      ILocalReferenceExpression: y ([0] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
         NextVariables(0)
   NextVariables(0)
 ]]>.Value
@@ -356,30 +356,30 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each x  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each x  ... Next') (Parent: BlockStatement)
   Locals: Local_1: x As System.Object
   LoopControlVariable: 
-    ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'x')
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'x')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'New Enumerable()')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: ObjectCreationExpression, 'New Enumerable()')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        IObjectCreationExpression (Constructor: Sub Enumerable..ctor()) (OperationKind.ObjectCreationExpression, Type: Enumerable) (Syntax: 'New Enumerable()')
+        IObjectCreationExpression (Constructor: Sub Enumerable..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: Enumerable) (Syntax: ObjectCreationExpression, 'New Enumerable()')
           Arguments(0)
           Initializer: 
             null
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each x  ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(x)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each x  ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(x)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Object)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(x)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Object)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(x)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'x')
-                  ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'x')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'x')
+                ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'x')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -402,24 +402,24 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each y  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each y  ... Next') (Parent: BlockStatement)
   Locals: Local_1: y As System.Char
   LoopControlVariable: 
-    ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
+    ILocalReferenceExpression: y ([1] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
   Collection: 
-    ILocalReferenceExpression: s (OperationKind.LocalReferenceExpression, Type: System.String, Constant: null) (Syntax: 's')
+    ILocalReferenceExpression: s ([0] OperationKind.LocalReferenceExpression, Type: System.String, Constant: null) (Syntax: IdentifierName, 's')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each y  ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(y)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each y  ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(y)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(y)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Char)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(y)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'y')
-                  ILocalReferenceExpression: y (OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: 'y')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'y')
+                ILocalReferenceExpression: y ([0] OperationKind.LocalReferenceExpression, Type: System.Char) (Syntax: IdentifierName, 'y')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -448,30 +448,30 @@ End Structure
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each x  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each x  ... Next') (Parent: BlockStatement)
   Locals: Local_1: x As System.Object
   LoopControlVariable: 
-    ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'x')
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'x')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'New Enumerable()')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: ObjectCreationExpression, 'New Enumerable()')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        IObjectCreationExpression (Constructor: Sub Enumerable..ctor()) (OperationKind.ObjectCreationExpression, Type: Enumerable) (Syntax: 'New Enumerable()')
+        IObjectCreationExpression (Constructor: Sub Enumerable..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: Enumerable) (Syntax: ObjectCreationExpression, 'New Enumerable()')
           Arguments(0)
           Initializer: 
             null
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each x  ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(x)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each x  ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(x)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Object)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(x)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Object)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(x)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'x')
-                  ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'x')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'x')
+                ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'x')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -529,75 +529,75 @@ End Class
 ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each co ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([2] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each co ... Next') (Parent: BlockStatement)
   Locals: Local_1: country As <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>
   LoopControlVariable: 
-    ILocalReferenceExpression: country (OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: 'country')
+    ILocalReferenceExpression: country ([1] OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: IdentifierName, 'country')
   Collection: 
-    ILocalReferenceExpression: countries (OperationKind.LocalReferenceExpression, Type: System.Linq.IOrderedEnumerable(Of <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>)) (Syntax: 'countries')
+    ILocalReferenceExpression: countries ([0] OperationKind.LocalReferenceExpression, Type: System.Linq.IOrderedEnumerable(Of <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>)) (Syntax: IdentifierName, 'countries')
   Body: 
-    IBlockStatement (2 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each co ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Debug.Write ... ntry.Count)')
+    IBlockStatement (2 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each co ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Debug.Write ... ntry.Count)')
         Expression: 
-          IInvocationExpression (Sub System.Diagnostics.Debug.WriteLine(message As System.String)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Debug.Write ... ntry.Count)')
+          IInvocationExpression (Sub System.Diagnostics.Debug.WriteLine(message As System.String)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Debug.Write ... ntry.Count)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: message) (OperationKind.Argument) (Syntax: 'country.Cou ... untry.Count')
-                  IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'country.Cou ... untry.Count')
-                    Left: 
-                      IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: 'country.Cou ... & " count="')
-                        Left: 
-                          IPropertyReferenceExpression: ReadOnly Property <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>.CountryName As System.String (OperationKind.PropertyReferenceExpression, Type: System.String) (Syntax: 'country.CountryName')
-                            Instance Receiver: 
-                              ILocalReferenceExpression: country (OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: 'country')
-                        Right: 
-                          ILiteralExpression (OperationKind.LiteralExpression, Type: System.String, Constant: " count=") (Syntax: '" count="')
-                    Right: 
-                      IConversionExpression (Explicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.String) (Syntax: 'country.Count')
-                        Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                        Operand: 
-                          IPropertyReferenceExpression: ReadOnly Property <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>.Count As System.Int32 (OperationKind.PropertyReferenceExpression, Type: System.Int32) (Syntax: 'country.Count')
-                            Instance Receiver: 
-                              ILocalReferenceExpression: country (OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: 'country')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-      IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each cu ... Next')
+              IArgument (ArgumentKind.Explicit, Matching Parameter: message) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'country.Cou ... untry.Count')
+                IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: ConcatenateExpression, 'country.Cou ... untry.Count')
+                  Left: 
+                    IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: ConcatenateExpression, 'country.Cou ... & " count="')
+                      Left: 
+                        IPropertyReferenceExpression: ReadOnly Property <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>.CountryName As System.String ([0] OperationKind.PropertyReferenceExpression, Type: System.String) (Syntax: SimpleMemberAccessExpression, 'country.CountryName')
+                          Instance Receiver: 
+                            ILocalReferenceExpression: country ([0] OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: IdentifierName, 'country')
+                      Right: 
+                        ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.String, Constant: " count=") (Syntax: StringLiteralExpression, '" count="')
+                  Right: 
+                    IConversionExpression (Explicit, TryCast: False, Unchecked) ([1] OperationKind.ConversionExpression, Type: System.String) (Syntax: SimpleMemberAccessExpression, 'country.Count')
+                      Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      Operand: 
+                        IPropertyReferenceExpression: ReadOnly Property <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>.Count As System.Int32 ([0] OperationKind.PropertyReferenceExpression, Type: System.Int32) (Syntax: SimpleMemberAccessExpression, 'country.Count')
+                          Instance Receiver: 
+                            ILocalReferenceExpression: country ([0] OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: IdentifierName, 'country')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each cu ... Next')
         Locals: Local_1: customer As Customer
         LoopControlVariable: 
-          ILocalReferenceExpression: customer (OperationKind.LocalReferenceExpression, Type: Customer) (Syntax: 'customer')
+          ILocalReferenceExpression: customer ([1] OperationKind.LocalReferenceExpression, Type: Customer) (Syntax: IdentifierName, 'customer')
         Collection: 
-          IPropertyReferenceExpression: ReadOnly Property <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>.CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer) (OperationKind.PropertyReferenceExpression, Type: System.Collections.Generic.IEnumerable(Of Customer)) (Syntax: 'country.Cus ... rsInCountry')
+          IPropertyReferenceExpression: ReadOnly Property <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>.CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer) ([0] OperationKind.PropertyReferenceExpression, Type: System.Collections.Generic.IEnumerable(Of Customer)) (Syntax: SimpleMemberAccessExpression, 'country.Cus ... rsInCountry')
             Instance Receiver: 
-              ILocalReferenceExpression: country (OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: 'country')
+              ILocalReferenceExpression: country ([0] OperationKind.LocalReferenceExpression, Type: <anonymous type: Key CountryName As System.String, Key CustomersInCountry As System.Collections.Generic.IEnumerable(Of Customer), Key Count As System.Int32>) (Syntax: IdentifierName, 'country')
         Body: 
-          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each cu ... Next')
-            IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Debug.Write ... tomer.City)')
+          IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each cu ... Next')
+            IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Debug.Write ... tomer.City)')
               Expression: 
-                IInvocationExpression (Sub System.Diagnostics.Debug.WriteLine(message As System.String)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Debug.Write ... tomer.City)')
+                IInvocationExpression (Sub System.Diagnostics.Debug.WriteLine(message As System.String)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Debug.Write ... tomer.City)')
                   Instance Receiver: 
                     null
                   Arguments(1):
-                      IArgument (ArgumentKind.Explicit, Matching Parameter: message) (OperationKind.Argument) (Syntax: '"   " & cus ... stomer.City')
-                        IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: '"   " & cus ... stomer.City')
-                          Left: 
-                            IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: '"   " & cus ... Name & "  "')
-                              Left: 
-                                IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) (OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: '"   " & cus ... CompanyName')
-                                  Left: 
-                                    ILiteralExpression (OperationKind.LiteralExpression, Type: System.String, Constant: "   ") (Syntax: '"   "')
-                                  Right: 
-                                    IPropertyReferenceExpression: Property Customer.CompanyName As System.String (OperationKind.PropertyReferenceExpression, Type: System.String) (Syntax: 'customer.CompanyName')
-                                      Instance Receiver: 
-                                        ILocalReferenceExpression: customer (OperationKind.LocalReferenceExpression, Type: Customer) (Syntax: 'customer')
-                              Right: 
-                                ILiteralExpression (OperationKind.LiteralExpression, Type: System.String, Constant: "  ") (Syntax: '"  "')
-                          Right: 
-                            IPropertyReferenceExpression: Property Customer.City As System.String (OperationKind.PropertyReferenceExpression, Type: System.String) (Syntax: 'customer.City')
-                              Instance Receiver: 
-                                ILocalReferenceExpression: customer (OperationKind.LocalReferenceExpression, Type: Customer) (Syntax: 'customer')
-                        InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                        OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: message) ([0] OperationKind.Argument) (Syntax: SimpleArgument, '"   " & cus ... stomer.City')
+                      IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: ConcatenateExpression, '"   " & cus ... stomer.City')
+                        Left: 
+                          IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: ConcatenateExpression, '"   " & cus ... Name & "  "')
+                            Left: 
+                              IBinaryOperatorExpression (BinaryOperatorKind.Concatenate, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.String) (Syntax: ConcatenateExpression, '"   " & cus ... CompanyName')
+                                Left: 
+                                  ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.String, Constant: "   ") (Syntax: StringLiteralExpression, '"   "')
+                                Right: 
+                                  IPropertyReferenceExpression: Property Customer.CompanyName As System.String ([1] OperationKind.PropertyReferenceExpression, Type: System.String) (Syntax: SimpleMemberAccessExpression, 'customer.CompanyName')
+                                    Instance Receiver: 
+                                      ILocalReferenceExpression: customer ([0] OperationKind.LocalReferenceExpression, Type: Customer) (Syntax: IdentifierName, 'customer')
+                            Right: 
+                              ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.String, Constant: "  ") (Syntax: StringLiteralExpression, '"  "')
+                        Right: 
+                          IPropertyReferenceExpression: Property Customer.City As System.String ([1] OperationKind.PropertyReferenceExpression, Type: System.String) (Syntax: SimpleMemberAccessExpression, 'customer.City')
+                            Instance Receiver: 
+                              ILocalReferenceExpression: customer ([0] OperationKind.LocalReferenceExpression, Type: Customer) (Syntax: IdentifierName, 'customer')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
         NextVariables(0)
   NextVariables(0)
 ]]>.Value
@@ -635,59 +635,59 @@ End Module
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each [C ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each [C ... Next') (Parent: BlockStatement)
   Locals: Local_1: Custom As System.Int32
   LoopControlVariable: 
-    ILocalReferenceExpression: Custom (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: '[Custom]')
+    ILocalReferenceExpression: Custom ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, '[Custom]')
   Collection: 
-    ILocalReferenceExpression: k (OperationKind.LocalReferenceExpression, Type: System.Int32(,)) (Syntax: 'k')
+    ILocalReferenceExpression: k ([0] OperationKind.LocalReferenceExpression, Type: System.Int32(,)) (Syntax: IdentifierName, 'k')
   Body: 
-    IBlockStatement (3 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each [C ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... (Integer)))')
+    IBlockStatement (3 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each [C ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... (Integer)))')
         Expression: 
-          IInvocationExpression (Sub System.Console.Write(value As System.Boolean)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... (Integer)))')
+          IInvocationExpression (Sub System.Console.Write(value As System.Boolean)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... (Integer)))')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'VerifyStati ... e(Integer))')
-                  IInvocationExpression (Function Program.VerifyStaticType(Of System.Int32)(x As System.Int32, y As System.Type) As System.Boolean) (OperationKind.InvocationExpression, Type: System.Boolean) (Syntax: 'VerifyStati ... e(Integer))')
-                    Instance Receiver: 
-                      null
-                    Arguments(2):
-                        IArgument (ArgumentKind.Explicit, Matching Parameter: x) (OperationKind.Argument) (Syntax: '[Custom]')
-                          ILocalReferenceExpression: Custom (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: '[Custom]')
-                          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                        IArgument (ArgumentKind.Explicit, Matching Parameter: y) (OperationKind.Argument) (Syntax: 'GetType(Integer)')
-                          ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type) (Syntax: 'GetType(Integer)')
-                            TypeOperand: System.Int32
-                          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... e(Object)))')
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'VerifyStati ... e(Integer))')
+                IInvocationExpression (Function Program.VerifyStaticType(Of System.Int32)(x As System.Int32, y As System.Type) As System.Boolean) ([0] OperationKind.InvocationExpression, Type: System.Boolean) (Syntax: InvocationExpression, 'VerifyStati ... e(Integer))')
+                  Instance Receiver: 
+                    null
+                  Arguments(2):
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: x) ([0] OperationKind.Argument) (Syntax: SimpleArgument, '[Custom]')
+                      ILocalReferenceExpression: Custom ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, '[Custom]')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: y) ([1] OperationKind.Argument) (Syntax: SimpleArgument, 'GetType(Integer)')
+                      ITypeOfExpression ([0] OperationKind.TypeOfExpression, Type: System.Type) (Syntax: GetTypeExpression, 'GetType(Integer)')
+                        TypeOperand: System.Int32
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      IExpressionStatement ([1] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... e(Object)))')
         Expression: 
-          IInvocationExpression (Sub System.Console.Write(value As System.Boolean)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... e(Object)))')
+          IInvocationExpression (Sub System.Console.Write(value As System.Boolean)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... e(Object)))')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'VerifyStati ... pe(Object))')
-                  IInvocationExpression (Function Program.VerifyStaticType(Of System.Int32)(x As System.Int32, y As System.Type) As System.Boolean) (OperationKind.InvocationExpression, Type: System.Boolean) (Syntax: 'VerifyStati ... pe(Object))')
-                    Instance Receiver: 
-                      null
-                    Arguments(2):
-                        IArgument (ArgumentKind.Explicit, Matching Parameter: x) (OperationKind.Argument) (Syntax: '[Custom]')
-                          ILocalReferenceExpression: Custom (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: '[Custom]')
-                          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                        IArgument (ArgumentKind.Explicit, Matching Parameter: y) (OperationKind.Argument) (Syntax: 'GetType(Object)')
-                          ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type) (Syntax: 'GetType(Object)')
-                            TypeOperand: System.Object
-                          InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                          OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-      IBranchStatement (BranchKind.Break, Label: exit) (OperationKind.BranchStatement) (Syntax: 'Exit For')
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'VerifyStati ... pe(Object))')
+                IInvocationExpression (Function Program.VerifyStaticType(Of System.Int32)(x As System.Int32, y As System.Type) As System.Boolean) ([0] OperationKind.InvocationExpression, Type: System.Boolean) (Syntax: InvocationExpression, 'VerifyStati ... pe(Object))')
+                  Instance Receiver: 
+                    null
+                  Arguments(2):
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: x) ([0] OperationKind.Argument) (Syntax: SimpleArgument, '[Custom]')
+                      ILocalReferenceExpression: Custom ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, '[Custom]')
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                    IArgument (ArgumentKind.Explicit, Matching Parameter: y) ([1] OperationKind.Argument) (Syntax: SimpleArgument, 'GetType(Object)')
+                      ITypeOfExpression ([0] OperationKind.TypeOfExpression, Type: System.Type) (Syntax: GetTypeExpression, 'GetType(Object)')
+                        TypeOperand: System.Object
+                      InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                      OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+      IBranchStatement (BranchKind.Break, Label: exit) ([2] OperationKind.BranchStatement) (Syntax: ExitForStatement, 'Exit For')
   NextVariables(0)
 ]]>.Value
 
@@ -712,27 +712,27 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each x  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each x  ... Next') (Parent: BlockStatement)
   Locals: Local_1: x As System.Object
   LoopControlVariable: 
-    ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'x')
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'x')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'o')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'o')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+        ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each x  ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.WriteLine(x)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each x  ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.WriteLine(x)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Object)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.WriteLine(x)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Object)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.WriteLine(x)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'x')
-                  ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'x')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'x')
+                ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'x')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -772,27 +772,27 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each x  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each x  ... Next') (Parent: BlockStatement)
   Locals: Local_1: x As System.Int32
   LoopControlVariable: 
-    ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
+    ILocalReferenceExpression: x ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
   Collection: 
-    IObjectCreationExpression (Constructor: Sub Enumerable..ctor()) (OperationKind.ObjectCreationExpression, Type: Enumerable) (Syntax: 'New Enumerable()')
+    IObjectCreationExpression (Constructor: Sub Enumerable..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: Enumerable) (Syntax: ObjectCreationExpression, 'New Enumerable()')
       Arguments(0)
       Initializer: 
         null
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each x  ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'System.Cons ... riteLine(x)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each x  ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'System.Cons ... riteLine(x)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'System.Cons ... riteLine(x)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'System.Cons ... riteLine(x)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'x')
-                  ILocalReferenceExpression: x (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'x')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'x')
+                ILocalReferenceExpression: x ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'x')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -837,28 +837,28 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each el ... ambda_local')
+IForEachLoopStatement (LoopKind.ForEach) ([1] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each el ... ambda_local') (Parent: BlockStatement)
   LoopControlVariable: 
-    ILocalReferenceExpression: element_lambda_local (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'element_lambda_local')
+    ILocalReferenceExpression: element_lambda_local ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'element_lambda_local')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'arr')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'arr')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILocalReferenceExpression: arr (OperationKind.LocalReferenceExpression, Type: System.Int32()) (Syntax: 'arr')
+        ILocalReferenceExpression: arr ([0] OperationKind.LocalReferenceExpression, Type: System.Int32()) (Syntax: IdentifierName, 'arr')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each el ... ambda_local')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... mbda_local)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each el ... ambda_local')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... mbda_local)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... mbda_local)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... mbda_local)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'element_lambda_local')
-                  ILocalReferenceExpression: element_lambda_local (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'element_lambda_local')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'element_lambda_local')
+                ILocalReferenceExpression: element_lambda_local ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'element_lambda_local')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(1):
-      ILocalReferenceExpression: element_lambda_local (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'element_lambda_local')
+    ILocalReferenceExpression: element_lambda_local ([3] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'element_lambda_local')
 ]]>.Value
 
             VerifyOperationTreeForTest(Of ForEachBlockSyntax)(source, expectedOperationTree)
@@ -880,24 +880,24 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement, IsInvalid) (Syntax: 'For Each el ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement, IsInvalid) (Syntax: ForEachBlock, 'For Each el ... Next') (Parent: BlockStatement)
   Locals: Local_1: element As System.Int32
   LoopControlVariable: 
-    ILocalReferenceExpression: element (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'element As Integer')
+    ILocalReferenceExpression: element ([1] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: VariableDeclarator, 'element As Integer')
   Collection: 
-    ILiteralExpression (OperationKind.LiteralExpression, Type: System.String, Constant: "Hello World.", IsInvalid) (Syntax: '"Hello World."')
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.String, Constant: "Hello World.", IsInvalid) (Syntax: StringLiteralExpression, '"Hello World."')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsInvalid, IsImplicit) (Syntax: 'For Each el ... Next')
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.Wri ... ne(element)')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsInvalid, IsImplicit) (Syntax: ForEachBlock, 'For Each el ... Next')
+      IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.Wri ... ne(element)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.Wri ... ne(element)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.Int32)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.Wri ... ne(element)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 'element')
-                  ILocalReferenceExpression: element (OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: 'element')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 'element')
+                ILocalReferenceExpression: element ([0] OperationKind.LocalReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'element')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -925,47 +925,47 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each s  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([3] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each s  ... Next') (Parent: BlockStatement)
   Locals: Local_1: s As System.String
   LoopControlVariable: 
-    ILocalReferenceExpression: s (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 's As String')
+    ILocalReferenceExpression: s ([1] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: VariableDeclarator, 's As String')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'arr')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'arr')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILocalReferenceExpression: arr (OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: 'arr')
+        ILocalReferenceExpression: arr ([0] OperationKind.LocalReferenceExpression, Type: System.String()) (Syntax: IdentifierName, 'arr')
   Body: 
-    IBlockStatement (2 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each s  ... Next')
-      IIfStatement (OperationKind.IfStatement) (Syntax: 'If (s = "on ... End If')
+    IBlockStatement (2 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each s  ... Next')
+      IIfStatement ([0] OperationKind.IfStatement) (Syntax: MultiLineIfBlock, 'If (s = "on ... End If')
         Condition: 
-          IParenthesizedExpression (OperationKind.ParenthesizedExpression, Type: System.Boolean) (Syntax: '(s = "one")')
+          IParenthesizedExpression ([0] OperationKind.ParenthesizedExpression, Type: System.Boolean) (Syntax: ParenthesizedExpression, '(s = "one")')
             Operand: 
-              IBinaryOperatorExpression (BinaryOperatorKind.Equals, Checked) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 's = "one"')
+              IBinaryOperatorExpression (BinaryOperatorKind.Equals, Checked) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: EqualsExpression, 's = "one"')
                 Left: 
-                  ILocalReferenceExpression: s (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 's')
+                  ILocalReferenceExpression: s ([0] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 's')
                 Right: 
-                  ILiteralExpression (OperationKind.LiteralExpression, Type: System.String, Constant: "one") (Syntax: '"one"')
+                  ILiteralExpression ([1] OperationKind.LiteralExpression, Type: System.String, Constant: "one") (Syntax: StringLiteralExpression, '"one"')
         IfTrue: 
-          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'If (s = "on ... End If')
-            IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Throw New Exception')
+          IBlockStatement (1 statements) ([1] OperationKind.BlockStatement, IsImplicit) (Syntax: MultiLineIfBlock, 'If (s = "on ... End If')
+            IExpressionStatement ([0] OperationKind.ExpressionStatement) (Syntax: ThrowStatement, 'Throw New Exception')
               Expression: 
-                IThrowExpression (OperationKind.ThrowExpression, Type: System.Exception) (Syntax: 'Throw New Exception')
-                  IObjectCreationExpression (Constructor: Sub System.Exception..ctor()) (OperationKind.ObjectCreationExpression, Type: System.Exception) (Syntax: 'New Exception')
+                IThrowExpression ([0] OperationKind.ThrowExpression, Type: System.Exception) (Syntax: ThrowStatement, 'Throw New Exception')
+                  IObjectCreationExpression (Constructor: Sub System.Exception..ctor()) ([0] OperationKind.ObjectCreationExpression, Type: System.Exception) (Syntax: ObjectCreationExpression, 'New Exception')
                     Arguments(0)
                     Initializer: 
                       null
         IfFalse: 
           null
-      IExpressionStatement (OperationKind.ExpressionStatement) (Syntax: 'Console.WriteLine(s)')
+      IExpressionStatement ([1] OperationKind.ExpressionStatement) (Syntax: ExpressionStatement, 'Console.WriteLine(s)')
         Expression: 
-          IInvocationExpression (Sub System.Console.WriteLine(value As System.String)) (OperationKind.InvocationExpression, Type: System.Void) (Syntax: 'Console.WriteLine(s)')
+          IInvocationExpression (Sub System.Console.WriteLine(value As System.String)) ([0] OperationKind.InvocationExpression, Type: System.Void) (Syntax: InvocationExpression, 'Console.WriteLine(s)')
             Instance Receiver: 
               null
             Arguments(1):
-                IArgument (ArgumentKind.Explicit, Matching Parameter: value) (OperationKind.Argument) (Syntax: 's')
-                  ILocalReferenceExpression: s (OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: 's')
-                  InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
-                  OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+              IArgument (ArgumentKind.Explicit, Matching Parameter: value) ([0] OperationKind.Argument) (Syntax: SimpleArgument, 's')
+                ILocalReferenceExpression: s ([0] OperationKind.LocalReferenceExpression, Type: System.String) (Syntax: IdentifierName, 's')
+                InConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
+                OutConversion: CommonConversion (Exists: True, IsIdentity: True, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
   NextVariables(0)
 ]]>.Value
 
@@ -988,32 +988,32 @@ End Class
     ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each o  ... Next')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each o  ... Next') (Parent: BlockStatement)
   Locals: Local_1: o As System.Object
   LoopControlVariable: 
-    ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+    ILocalReferenceExpression: o ([1] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'c')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'c')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: System.Object()) (Syntax: 'c')
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: System.Object()) (Syntax: IdentifierName, 'c')
   Body: 
-    IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each o  ... Next')
-      IIfStatement (OperationKind.IfStatement) (Syntax: 'If o IsNot  ... Return True')
+    IBlockStatement (1 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each o  ... Next')
+      IIfStatement ([0] OperationKind.IfStatement) (Syntax: SingleLineIfStatement, 'If o IsNot  ... Return True')
         Condition: 
-          IBinaryOperatorExpression (BinaryOperatorKind.NotEquals) (OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: 'o IsNot Nothing')
+          IBinaryOperatorExpression (BinaryOperatorKind.NotEquals) ([0] OperationKind.BinaryOperatorExpression, Type: System.Boolean) (Syntax: IsNotExpression, 'o IsNot Nothing')
             Left: 
-              ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+              ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
             Right: 
-              IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Object, Constant: null, IsImplicit) (Syntax: 'Nothing')
+              IConversionExpression (Implicit, TryCast: False, Unchecked) ([1] OperationKind.ConversionExpression, Type: System.Object, Constant: null, IsImplicit) (Syntax: NothingLiteralExpression, 'Nothing')
                 Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
                 Operand: 
-                  ILiteralExpression (OperationKind.LiteralExpression, Type: null, Constant: null) (Syntax: 'Nothing')
+                  ILiteralExpression ([0] OperationKind.LiteralExpression, Type: null, Constant: null) (Syntax: NothingLiteralExpression, 'Nothing')
         IfTrue: 
-          IBlockStatement (1 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'If o IsNot  ... Return True')
-            IReturnStatement (OperationKind.ReturnStatement) (Syntax: 'Return True')
+          IBlockStatement (1 statements) ([1] OperationKind.BlockStatement, IsImplicit) (Syntax: SingleLineIfStatement, 'If o IsNot  ... Return True')
+            IReturnStatement ([0] OperationKind.ReturnStatement) (Syntax: ReturnStatement, 'Return True')
               ReturnedValue: 
-                ILiteralExpression (OperationKind.LiteralExpression, Type: System.Boolean, Constant: True) (Syntax: 'True')
+                ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Boolean, Constant: True) (Syntax: TrueLiteralExpression, 'True')
         IfFalse: 
           null
   NextVariables(0)
@@ -1039,22 +1039,22 @@ Class C
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each X  ... Next X')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each X  ... Next X') (Parent: BlockStatement)
   LoopControlVariable: 
-    IFieldReferenceExpression: C.X As System.Int32 (OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: 'X')
+    IFieldReferenceExpression: C.X As System.Int32 ([1] OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'X')
       Instance Receiver: 
-        IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: 'X')
+        IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: IdentifierName, 'X')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'args')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'args')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.Int32()) (Syntax: 'args')
+        IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32()) (Syntax: IdentifierName, 'args')
   Body: 
-    IBlockStatement (0 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each X  ... Next X')
+    IBlockStatement (0 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each X  ... Next X')
   NextVariables(1):
-      IFieldReferenceExpression: C.X As System.Int32 (OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: 'X')
-        Instance Receiver: 
-          IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: 'X')
+    IFieldReferenceExpression: C.X As System.Int32 ([3] OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: IdentifierName, 'X')
+      Instance Receiver: 
+        IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: C, IsImplicit) (Syntax: IdentifierName, 'X')
 ]]>.Value
 
             Dim expectedDiagnostics = String.Empty
@@ -1079,22 +1079,22 @@ Class C
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IForEachLoopStatement (LoopKind.ForEach) (OperationKind.LoopStatement) (Syntax: 'For Each c. ... Next c.X')
+IForEachLoopStatement (LoopKind.ForEach) ([0] OperationKind.LoopStatement) (Syntax: ForEachBlock, 'For Each c. ... Next c.X') (Parent: BlockStatement)
   LoopControlVariable: 
-    IFieldReferenceExpression: C.X As System.Int32 (OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: 'c.X')
+    IFieldReferenceExpression: C.X As System.Int32 ([1] OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: SimpleMemberAccessExpression, 'c.X')
       Instance Receiver: 
-        IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C) (Syntax: 'c')
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
   Collection: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: 'args')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Collections.IEnumerable, IsImplicit) (Syntax: IdentifierName, 'args')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: False, IsReference: True, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        IParameterReferenceExpression: args (OperationKind.ParameterReferenceExpression, Type: System.Int32()) (Syntax: 'args')
+        IParameterReferenceExpression: args ([0] OperationKind.ParameterReferenceExpression, Type: System.Int32()) (Syntax: IdentifierName, 'args')
   Body: 
-    IBlockStatement (0 statements) (OperationKind.BlockStatement, IsImplicit) (Syntax: 'For Each c. ... Next c.X')
+    IBlockStatement (0 statements) ([2] OperationKind.BlockStatement, IsImplicit) (Syntax: ForEachBlock, 'For Each c. ... Next c.X')
   NextVariables(1):
-      IFieldReferenceExpression: C.X As System.Int32 (OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: 'c.X')
-        Instance Receiver: 
-          IParameterReferenceExpression: c (OperationKind.ParameterReferenceExpression, Type: C) (Syntax: 'c')
+    IFieldReferenceExpression: C.X As System.Int32 ([3] OperationKind.FieldReferenceExpression, Type: System.Int32) (Syntax: SimpleMemberAccessExpression, 'c.X')
+      Instance Receiver: 
+        IParameterReferenceExpression: c ([0] OperationKind.ParameterReferenceExpression, Type: C) (Syntax: IdentifierName, 'c')
 ]]>.Value
 
             Dim expectedDiagnostics = String.Empty

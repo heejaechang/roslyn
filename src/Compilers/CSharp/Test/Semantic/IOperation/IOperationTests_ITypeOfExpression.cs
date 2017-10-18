@@ -24,7 +24,7 @@ class C
 }
 ";
             string expectedOperationTree = @"
-ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type) (Syntax: 'typeof(int)')
+ITypeOfExpression ([1] OperationKind.TypeOfExpression, Type: System.Type) (Syntax: TypeOfExpression, 'typeof(int)') (Parent: SimpleAssignmentExpression)
   TypeOperand: System.Int32
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -48,7 +48,7 @@ class C
 }
 ";
             string expectedOperationTree = @"
-ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type) (Syntax: 'typeof(C)')
+ITypeOfExpression ([1] OperationKind.TypeOfExpression, Type: System.Type) (Syntax: TypeOfExpression, 'typeof(C)') (Parent: SimpleAssignmentExpression)
   TypeOperand: C
 ";
             var expectedDiagnostics = DiagnosticDescription.None;
@@ -72,7 +72,7 @@ class C
 }
 ";
             string expectedOperationTree = @"
-ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: 'typeof(UndefinedType)')
+ITypeOfExpression ([1] OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: TypeOfExpression, 'typeof(UndefinedType)') (Parent: SimpleAssignmentExpression)
   TypeOperand: UndefinedType
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -100,7 +100,7 @@ class C
 }
 ";
             string expectedOperationTree = @"
-ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: 'typeof(t)')
+ITypeOfExpression ([1] OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: TypeOfExpression, 'typeof(t)') (Parent: SimpleAssignmentExpression)
   TypeOperand: t
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
@@ -130,10 +130,10 @@ class C
 }
 ";
             string expectedOperationTree = @"
-IInvalidExpression (OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: 'typeof(M2()')
+IInvalidExpression ([0] OperationKind.InvalidExpression, Type: ?, IsInvalid) (Syntax: InvocationExpression, 'typeof(M2()') (Parent: ConversionExpression)
   Children(1):
-      ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: 'typeof(M2')
-        TypeOperand: M2
+    ITypeOfExpression ([0] OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: TypeOfExpression, 'typeof(M2')
+      TypeOperand: M2
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {
                 // CS1026: ) expected
@@ -169,7 +169,7 @@ class C
 }
 ";
             string expectedOperationTree = @"
-ITypeOfExpression (OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: 'typeof()')
+ITypeOfExpression ([1] OperationKind.TypeOfExpression, Type: System.Type, IsInvalid) (Syntax: TypeOfExpression, 'typeof()') (Parent: SimpleAssignmentExpression)
   TypeOperand: ?
 ";
             var expectedDiagnostics = new DiagnosticDescription[] {

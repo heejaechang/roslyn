@@ -20,7 +20,7 @@ Class C
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IReturnStatement (OperationKind.ReturnStatement) (Syntax: 'Return')
+IReturnStatement ([0] OperationKind.ReturnStatement) (Syntax: ReturnStatement, 'Return') (Parent: BlockStatement)
   ReturnedValue: 
     null
 ]]>.Value
@@ -41,9 +41,9 @@ Class C
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IReturnStatement (OperationKind.ReturnStatement) (Syntax: 'Return True')
+IReturnStatement ([0] OperationKind.ReturnStatement) (Syntax: ReturnStatement, 'Return True') (Parent: BlockStatement)
   ReturnedValue: 
-    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Boolean, Constant: True) (Syntax: 'True')
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Boolean, Constant: True) (Syntax: TrueLiteralExpression, 'True')
 ]]>.Value
 
             Dim expectedDiagnostics = String.Empty
@@ -62,9 +62,9 @@ Class C
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IReturnStatement (OperationKind.YieldReturnStatement) (Syntax: 'Yield 0')
+IReturnStatement ([0] OperationKind.YieldReturnStatement) (Syntax: YieldStatement, 'Yield 0') (Parent: BlockStatement)
   ReturnedValue: 
-    ILiteralExpression (OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: '0')
+    ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Int32, Constant: 0) (Syntax: NumericLiteralExpression, '0')
 ]]>.Value
 
             Dim expectedDiagnostics = String.Empty
@@ -84,7 +84,7 @@ Class C
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IReturnStatement (OperationKind.ReturnStatement) (Syntax: 'Return')
+IReturnStatement ([1] OperationKind.ReturnStatement) (Syntax: ReturnStatement, 'Return') (Parent: BlockStatement)
   ReturnedValue: 
     null
 ]]>.Value
@@ -107,12 +107,12 @@ End Class
 ]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IReturnStatement (OperationKind.ReturnStatement, IsInvalid) (Syntax: 'Return 0.0')
+IReturnStatement ([0] OperationKind.ReturnStatement, IsInvalid) (Syntax: ReturnStatement, 'Return 0.0') (Parent: BlockStatement)
   ReturnedValue: 
-    IConversionExpression (Implicit, TryCast: False, Unchecked) (OperationKind.ConversionExpression, Type: System.Byte, Constant: 0, IsInvalid, IsImplicit) (Syntax: '0.0')
+    IConversionExpression (Implicit, TryCast: False, Unchecked) ([0] OperationKind.ConversionExpression, Type: System.Byte, Constant: 0, IsInvalid, IsImplicit) (Syntax: NumericLiteralExpression, '0.0')
       Conversion: CommonConversion (Exists: True, IsIdentity: False, IsNumeric: True, IsReference: False, IsUserDefined: False) (MethodSymbol: null)
       Operand: 
-        ILiteralExpression (OperationKind.LiteralExpression, Type: System.Double, Constant: 0, IsInvalid) (Syntax: '0.0')
+        ILiteralExpression ([0] OperationKind.LiteralExpression, Type: System.Double, Constant: 0, IsInvalid) (Syntax: NumericLiteralExpression, '0.0')
 ]]>.Value
 
             Dim expectedDiagnostics = <![CDATA[

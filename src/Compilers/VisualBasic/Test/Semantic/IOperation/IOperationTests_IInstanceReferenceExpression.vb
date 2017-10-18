@@ -27,7 +27,7 @@ Public Class C2
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: C1) (Syntax: 'MyBase')
+IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: C1) (Syntax: MyBaseExpression, 'MyBase') (Parent: InvocationExpression)
 ]]>.Value
 
             Dim expectedDiagnostics = String.Empty
@@ -48,7 +48,7 @@ Public Class C1
 End Class]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IInstanceReferenceExpression (OperationKind.InstanceReferenceExpression, Type: System.Object, IsInvalid) (Syntax: 'MyBase')
+IInstanceReferenceExpression ([0] OperationKind.InstanceReferenceExpression, Type: System.Object, IsInvalid) (Syntax: MyBaseExpression, 'MyBase') (Parent: InvalidExpression)
 ]]>.Value
 
             Dim expectedDiagnostics = <![CDATA[

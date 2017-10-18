@@ -1279,9 +1279,9 @@ Module S1
 End Module]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IAnonymousObjectCreationExpression (OperationKind.AnonymousObjectCreationExpression, Type: <anonymous type: x2 As T>) (Syntax: 'New With {x2}')
+IAnonymousObjectCreationExpression ([0] OperationKind.AnonymousObjectCreationExpression, Type: <anonymous type: x2 As T>) (Syntax: AnonymousObjectCreationExpression, 'New With {x2}') (Parent: ConversionExpression)
   Initializers(1):
-      ILocalReferenceExpression: x2 (OperationKind.LocalReferenceExpression, Type: T) (Syntax: 'x2')
+    ILocalReferenceExpression: x2 ([0] OperationKind.LocalReferenceExpression, Type: T) (Syntax: IdentifierName, 'x2')
 ]]>.Value
 
             Dim expectedDiagnostics = String.Empty

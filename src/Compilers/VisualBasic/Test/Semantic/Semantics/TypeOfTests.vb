@@ -587,9 +587,9 @@ Module Program
 End Module]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'TypeOf o Is ... terSequence')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: TypeOfIsExpression, 'TypeOf o Is ... terSequence') (Parent: VariableInitializer)
   Operand: 
-    ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+    ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   IsType: System.String
 ]]>.Value
 
@@ -618,9 +618,9 @@ Module Program
 End Module]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IIsTypeExpression (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'TypeOf o Is HRESULT')
+IIsTypeExpression ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: TypeOfIsExpression, 'TypeOf o Is HRESULT') (Parent: VariableInitializer)
   Operand: 
-    ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+    ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   IsType: System.Int32
 ]]>.Value
 
@@ -649,9 +649,9 @@ Module Program
 End Module]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IIsTypeExpression (IsNotExpression) (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'TypeOf o Is ... terSequence')
+IIsTypeExpression (IsNotExpression) ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: TypeOfIsNotExpression, 'TypeOf o Is ... terSequence') (Parent: VariableInitializer)
   Operand: 
-    ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+    ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   IsType: System.String
 ]]>.Value
 
@@ -680,9 +680,9 @@ Module Program
 End Module]]>.Value
 
             Dim expectedOperationTree = <![CDATA[
-IIsTypeExpression (IsNotExpression) (OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: 'TypeOf o IsNot HRESULT')
+IIsTypeExpression (IsNotExpression) ([0] OperationKind.IsTypeExpression, Type: System.Boolean) (Syntax: TypeOfIsNotExpression, 'TypeOf o IsNot HRESULT') (Parent: VariableInitializer)
   Operand: 
-    ILocalReferenceExpression: o (OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: 'o')
+    ILocalReferenceExpression: o ([0] OperationKind.LocalReferenceExpression, Type: System.Object) (Syntax: IdentifierName, 'o')
   IsType: System.Int32
 ]]>.Value
 
