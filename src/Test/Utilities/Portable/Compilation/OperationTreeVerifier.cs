@@ -345,22 +345,29 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
         internal void VisitSymbolArrayElement(ISymbol element)
         {
+            Indent();
             LogSymbol(element, header: "Symbol");
             LogNewLine();
+            Unindent();
         }
 
         internal void VisitStringArrayElement(string element)
         {
             var valueStr = element != null ? element.ToString() : "null";
             valueStr = @"""" + valueStr + @"""";
+
+            Indent();
             LogString(valueStr);
             LogNewLine();
+            Unindent();
         }
 
         internal void VisitRefKindArrayElement(RefKind element)
         {
+            Indent();
             LogString(element.ToString());
             LogNewLine();
+            Unindent();
         }
 
         private void VisitChildren(IOperation operation)
