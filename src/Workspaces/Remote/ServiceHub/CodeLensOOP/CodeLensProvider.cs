@@ -31,16 +31,14 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
         private class MyResult : IAsyncCodeLensDataPoint
         {
-            private CodeLensDescriptor _descriptor;
-
             public MyResult(CodeLensDescriptor descriptor)
             {
-                this._descriptor = descriptor;
+                this.Descriptor = descriptor;
             }
 
             public event AsyncEventHandler InvalidatedAsync;
 
-            public CodeLensDescriptor Descriptor => _descriptor;
+            public CodeLensDescriptor Descriptor { get; }
 
             public Task<CodeLensDataPointDescriptor> GetDataAsync(CancellationToken token)
             {
@@ -48,10 +46,8 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                 {
                     Description = "CodeLensDataPointDescriptor description",
                     IntValue = 10,
-                    ProviderUniqueId = "CodeLensDataPointDescriptor providerUniqueId",
                     TooltipText = "CodeLensDataPointDescriptor tooltipText",
-                    ImageId = null,
-                    Data = null,
+                    ImageId = null
                 });
             }
 
@@ -59,7 +55,6 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             {
                 return Task.FromResult(new CodeLensDetailsDescriptor()
                 {
-                    DetailsData = null,
                     Headers = new[]
                     {
                         new CodeLensDetailHeaderDescriptor()
@@ -67,8 +62,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                             DisplayName = "CodeLensDetailHeaderDescriptor DisplayName",
                             IsVisible = true,
                             UniqueName = "CodeLensDetailHeaderDescriptor UniqueName",
-                            Width = 20,
-                            Tag = null,
+                            Width = 20
                         }
                     },
                     Entries = new[]
@@ -81,11 +75,9 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                                 new CodeLensDetailEntryField()
                                 {
                                     Text = "CodeLensDetailEntryField Text",
-                                    FieldData = null,
                                     ImageId = null
                                 }
                             },
-                            EntryData = null,
                             NavigationCommand = null,
                             NavigationCommandArgs = null,
                         }
