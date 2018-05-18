@@ -27,6 +27,7 @@
     <Reference Include="System.Core" />
     <PackageReference Include="Microsoft.VisualStudio.CoreUtility" Version="15.8.336-preview" />
     <PackageReference Include="Microsoft.VisualStudio.Language" Version="15.8.336-preview" />
+    <PackageReference Include="Microsoft.ServiceHub.Client" Version="$(MicrosoftServiceHubClientVersion)" />
     <PackageReference Include="StreamJsonRpc" Version="$(StreamJsonRpcVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="$(MicrosoftVisualStudioTelemetryVersion)" />

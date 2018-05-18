@@ -7,7 +7,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
     /// <summary>
     /// Holds information required to display and navigate to individual references
     /// </summary>
-    internal sealed class ReferenceLocationDescriptor
+    internal class ReferenceLocationDescriptor
     {
         public int LineNumber { get; }
 
@@ -16,6 +16,8 @@ namespace Microsoft.CodeAnalysis.CodeLens
         public Guid ProjectGuid { get; }
 
         public Guid DocumentGuid { get; }
+
+        public string FilePath { get; }
 
         /// <summary>
         /// Language of the reference location
@@ -67,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
         /// </summary>
         public string AfterReferenceText2 { get; }
 
-        public ReferenceLocationDescriptor(string longDescription, string language, Glyph? glyph, int lineNumber, int columnNumber, Guid projectGuid, Guid documentGuid, string referenceLineText, int referenceStart, int referenceLength, string beforeReferenceText1, string beforeReferenceText2, string afterReferenceText1, string afterReferenceText2)
+        public ReferenceLocationDescriptor(string longDescription, string language, Glyph? glyph, int lineNumber, int columnNumber, Guid projectGuid, Guid documentGuid, string filePath, string referenceLineText, int referenceStart, int referenceLength, string beforeReferenceText1, string beforeReferenceText2, string afterReferenceText1, string afterReferenceText2)
         {
             LongDescription = longDescription;
             Language = language;
@@ -77,6 +79,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
             // We want to keep track of the location's document if it comes from a file in your solution.
             ProjectGuid = projectGuid;
             DocumentGuid = documentGuid;
+            FilePath = filePath;
             ReferenceLineText = referenceLineText;
             ReferenceStart = referenceStart;
             ReferenceLength = referenceLength;

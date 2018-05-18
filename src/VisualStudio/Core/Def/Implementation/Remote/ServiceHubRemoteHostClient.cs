@@ -77,7 +77,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
                 // let each client to have unique id so that we can distinguish different clients when service is restarted
                 var currentInstanceId = Interlocked.Add(ref s_instanceId, 1);
 
-                var current = $"VS ({Process.GetCurrentProcess().Id}) ({currentInstanceId})";
+                // var current = $"VS ({Process.GetCurrentProcess().Id}) ({currentInstanceId})";
+
+                var current = $"VS Test";
 
                 var hostGroup = new HostGroup(current);
                 var remoteHostStream = await Connections.RequestServiceAsync(workspace, primary, WellKnownRemoteHostServices.RemoteHostService, hostGroup, timeout, cancellationToken).ConfigureAwait(false);

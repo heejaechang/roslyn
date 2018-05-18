@@ -137,6 +137,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
                 startLinePosition.Character,
                 documentId.ProjectId.Id,
                 documentId.Id,
+                document.FilePath,
                 line.TrimEnd(),
                 referenceSpan.Start,
                 referenceSpan.Length,
