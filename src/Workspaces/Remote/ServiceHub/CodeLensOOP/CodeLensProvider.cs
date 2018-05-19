@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeLens;
@@ -103,16 +104,9 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
             public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CancellationToken token)
             {
-                var referenceLocationDescriptor = await _rpc.InvokeWithCancellationAsync<ReferenceLocationDescriptor>(
+                var referenceLocationDescriptors = await _rpc.InvokeWithCancellationAsync<IEnumerable<ReferenceLocationDescriptor>>(
                     "FindReferenceLocations2Async",
                     new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan() }, token).ConfigureAwait(false);
-
-                ImageId imageId = default;
-                if (referenceLocationDescriptor.Glyph.HasValue)
-                {
-                    var moniker = GetImageMoniker(referenceLocationDescriptor.Glyph.Value);
-                    imageId = new ImageId(moniker.Guid, moniker.Id);
-                }
 
                 CodeLensDetailsDescriptor details = new CodeLensDetailsDescriptor();
 
@@ -132,9 +126,17 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                     new CodeLensDetailHeaderDescriptor() { UniqueName = ReferenceEntryFieldNames.TextAfterReference2 },
                 };
 
-                details.Entries = new List<CodeLensDetailEntryDescriptor>()
+
+                details.Entries = referenceLocationDescriptors.SelectAsArray(referenceLocationDescriptor =>
                 {
-                    new CodeLensDetailEntryDescriptor()
+                    ImageId imageId = default;
+                    if (referenceLocationDescriptor.Glyph.HasValue)
+                    {
+                        var moniker = GetImageMoniker(referenceLocationDescriptor.Glyph.Value);
+                        imageId = new ImageId(moniker.Guid, moniker.Id);
+                    }
+
+                    return new CodeLensDetailEntryDescriptor()
                     {
                         NavigationCommand = null,
                         NavigationCommandArgs = null,
@@ -166,8 +168,8 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                             // text after reference 2
                             new CodeLensDetailEntryField() { Text = referenceLocationDescriptor.AfterReferenceText2 }
                         },
-                    },
-                };
+                    };
+                }).ToList();
 
                 details.PaneNavigationCommands = null;
 
