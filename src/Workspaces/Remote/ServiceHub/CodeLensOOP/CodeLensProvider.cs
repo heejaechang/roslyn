@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.Language.CodeLens.Remoting;
 using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.LanguageServices.Remote;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
@@ -22,7 +23,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
     [ContentType("code")]
     [LocalizedName(typeof(WorkspacesResources), "CodeLensProvider")]
     [Priority(100)]
-    //[DetailsTemplateName("mygittemplate")]
+    [DetailsTemplateName("references")]
     internal class CodeLensProvider : IAsyncCodeLensDataPointProvider
     {
         private const string Id = "RoslynCodeLensTest";
@@ -42,7 +43,9 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
         private async Task<JsonRpc> GetConnectionAsync(CancellationToken cancellationToken)
         {
-            var rpc = JsonRpc.Attach(await _client.RequestServiceAsync(_serviceDescriptor, cancellationToken).ConfigureAwait(false));
+            var stream = await _client.RequestServiceAsync(_serviceDescriptor, cancellationToken).ConfigureAwait(false);
+            var rpc = new JsonRpc(new JsonRpcMessageHandler(stream, stream), null);
+
             rpc.JsonSerializer.Converters.Add(AggregateJsonConverter.Instance);
             rpc.StartListening();
 
