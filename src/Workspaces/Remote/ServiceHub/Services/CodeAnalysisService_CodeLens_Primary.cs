@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis.Remote
 {
     internal partial class CodeAnalysisService
     {
-        public Task<ReferenceCount> GetReferenceCountAsync(string filePath, TextSpan textSpan, int maxResultCount, CancellationToken cancellationToken)
+        public Task<ReferenceCount> GetReferenceCount2Async(string filePath, TextSpan textSpan, int maxResultCount, CancellationToken cancellationToken)
         {
             return RunServiceAsync(async token =>
             {
@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Remote
             }, cancellationToken);
         }
 
-        public Task<IEnumerable<ReferenceLocationDescriptor>> FindReferenceLocationsAsync(string filePath, TextSpan textSpan, CancellationToken cancellationToken)
+        public Task<IEnumerable<ReferenceLocationDescriptor>> FindReferenceLocations2Async(string filePath, TextSpan textSpan, CancellationToken cancellationToken)
         {
             return RunServiceAsync(async token =>
             {

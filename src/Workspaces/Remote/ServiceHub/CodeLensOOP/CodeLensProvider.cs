@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             public async Task<CodeLensDataPointDescriptor> GetDataAsync(CancellationToken token)
             {
                 var referenceCount = await _rpc.InvokeAsync<ReferenceCount>(
-                    nameof(IRemoteCodeLensReferencesService.GetReferenceCountAsync),
+                    "GetReferenceCount2Async",
                     new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan, 99 }, token).ConfigureAwait(false);
 
                 var referenceCountString = $"{ referenceCount.Count }{ (referenceCount.IsCapped ? "+" : string.Empty)}";
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CancellationToken token)
             {
                 var referenceLocationDescriptor = await _rpc.InvokeAsync<ReferenceLocationDescriptor>(
-                    nameof(IRemoteCodeLensReferencesService.FindReferenceLocationsAsync),
+                    "FindReferenceLocations2Async",
                     new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan, 99 }, token).ConfigureAwait(false);
 
                 ImageId imageId = default;
