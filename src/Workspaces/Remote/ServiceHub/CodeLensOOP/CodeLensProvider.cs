@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
             public async Task<CodeLensDataPointDescriptor> GetDataAsync(CancellationToken token)
             {
-                var referenceCount = await _rpc.InvokeAsync<ReferenceCount>(
+                var referenceCount = await _rpc.InvokeWithCancellationAsync<ReferenceCount>(
                     "GetReferenceCount2Async",
                     new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan, 99 }, token).ConfigureAwait(false);
 
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
             public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CancellationToken token)
             {
-                var referenceLocationDescriptor = await _rpc.InvokeAsync<ReferenceLocationDescriptor>(
+                var referenceLocationDescriptor = await _rpc.InvokeWithCancellationAsync<ReferenceLocationDescriptor>(
                     "FindReferenceLocations2Async",
                     new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan, 99 }, token).ConfigureAwait(false);
 
