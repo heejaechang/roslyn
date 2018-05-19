@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeLens;
+using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.ServiceHub.Client;
 using Microsoft.VisualStudio.Core.Imaging;
 using Microsoft.VisualStudio.Imaging;
@@ -54,6 +55,11 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
         public Task<bool> CanCreateDataPointAsync(CodeLensDescriptor descriptor, CancellationToken token)
         {
+            if (!descriptor.ApplicableToSpan.HasValue)
+            {
+                return SpecializedTasks.False;
+            }
+
             // all for now
             return SpecializedTasks.True;
         }
@@ -82,7 +88,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             {
                 var referenceCount = await _rpc.InvokeWithCancellationAsync<ReferenceCount>(
                     "GetReferenceCount2Async",
-                    new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan, 99 }, token).ConfigureAwait(false);
+                    new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan(), 99 }, token).ConfigureAwait(false);
 
                 var referenceCountString = $"{ referenceCount.Count }{ (referenceCount.IsCapped ? "+" : string.Empty)}";
 
@@ -99,7 +105,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             {
                 var referenceLocationDescriptor = await _rpc.InvokeWithCancellationAsync<ReferenceLocationDescriptor>(
                     "FindReferenceLocations2Async",
-                    new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan, 99 }, token).ConfigureAwait(false);
+                    new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan() }, token).ConfigureAwait(false);
 
                 ImageId imageId = default;
                 if (referenceLocationDescriptor.Glyph.HasValue)
