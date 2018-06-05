@@ -495,15 +495,6 @@ namespace Microsoft.CodeAnalysis {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CodeLensProvider.
-        /// </summary>
-        internal static string CodeLensProvider {
-            get {
-                return ResourceManager.GetString("CodeLensProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not find location to generation symbol into..
         /// </summary>
         internal static string Could_not_find_location_to_generation_symbol_into {

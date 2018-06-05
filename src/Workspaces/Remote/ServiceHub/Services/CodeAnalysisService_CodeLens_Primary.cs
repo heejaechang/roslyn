@@ -8,12 +8,13 @@ using Microsoft.CodeAnalysis.Text;
 using System.Threading;
 using System.Linq;
 using System;
+using Microsoft.CodeAnalysis.Remote.CodeLensOOP;
 
 namespace Microsoft.CodeAnalysis.Remote
 {
-    internal partial class CodeAnalysisService
+    internal partial class CodeAnalysisService : IRemoteCodeLensReferencesForPrimaryWorkspaceService
     {
-        public Task<ReferenceCount> GetReferenceCount2Async(string filePath, TextSpan textSpan, int maxResultCount, CancellationToken cancellationToken)
+        public Task<ReferenceCount> GetReferenceCountAsync(string filePath, TextSpan textSpan, int maxResultCount, CancellationToken cancellationToken)
         {
             return RunServiceAsync(async token =>
             {
@@ -33,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Remote
             }, cancellationToken);
         }
 
-        public Task<IEnumerable<ReferenceLocationDescriptor>> FindReferenceLocations2Async(string filePath, TextSpan textSpan, CancellationToken cancellationToken)
+        public Task<IEnumerable<ReferenceLocationDescriptor>> FindReferenceLocationsAsync(string filePath, TextSpan textSpan, CancellationToken cancellationToken)
         {
             return RunServiceAsync(async token =>
             {
@@ -48,46 +49,6 @@ namespace Microsoft.CodeAnalysis.Remote
 
                     var syntaxNode = (await solution.GetDocument(documentId).GetSyntaxRootAsync().ConfigureAwait(false)).FindNode(textSpan);
                     return await CodeLensReferencesServiceFactory.Instance.FindReferenceLocationsAsync(solution, documentId,
-                        syntaxNode, token).ConfigureAwait(false);
-                }
-            }, cancellationToken);
-        }
-
-        public Task<IEnumerable<ReferenceMethodDescriptor>> FindReferenceMethodsAsync(string filePath, TextSpan textSpan, CancellationToken cancellationToken)
-        {
-            return RunServiceAsync(async token =>
-            {
-                using (Internal.Log.Logger.LogBlock(FunctionId.CodeAnalysisService_FindReferenceMethodsAsync, filePath, token))
-                {
-                    var solution = SolutionService.PrimaryWorkspace.CurrentSolution;
-                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
-                    if (documentId == null)
-                    {
-                        return Array.Empty<ReferenceMethodDescriptor>();
-                    }
-
-                    var syntaxNode = (await solution.GetDocument(documentId).GetSyntaxRootAsync().ConfigureAwait(false)).FindNode(textSpan);
-                    return await CodeLensReferencesServiceFactory.Instance.FindReferenceMethodsAsync(solution, documentId,
-                        syntaxNode, token).ConfigureAwait(false);
-                }
-            }, cancellationToken);
-        }
-
-        public Task<string> GetFullyQualifiedName(string filePath, TextSpan textSpan, CancellationToken cancellationToken)
-        {
-            return RunServiceAsync(async token =>
-            {
-                using (Internal.Log.Logger.LogBlock(FunctionId.CodeAnalysisService_GetFullyQualifiedName, filePath, token))
-                {
-                    var solution = SolutionService.PrimaryWorkspace.CurrentSolution;
-                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
-                    if (documentId == null)
-                    {
-                        return null;
-                    }
-
-                    var syntaxNode = (await solution.GetDocument(documentId).GetSyntaxRootAsync().ConfigureAwait(false)).FindNode(textSpan);
-                    return await CodeLensReferencesServiceFactory.Instance.GetFullyQualifiedName(solution, documentId,
                         syntaxNode, token).ConfigureAwait(false);
                 }
             }, cancellationToken);

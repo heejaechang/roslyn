@@ -25,8 +25,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <PackageReference Include="Microsoft.VisualStudio.CoreUtility" Version="15.8.336-preview" />
-    <PackageReference Include="Microsoft.VisualStudio.Language" Version="15.8.336-preview" />
+    <PackageReference Include="Microsoft.VisualStudio.CoreUtility" Version="15.8.416-preview-ga640bb3a93" />
+    <PackageReference Include="Microsoft.VisualStudio.Language" Version="15.8.416-preview-ga640bb3a93" />
     <PackageReference Include="Microsoft.ServiceHub.Client" Version="$(MicrosoftServiceHubClientVersion)" />
     <PackageReference Include="StreamJsonRpc" Version="$(StreamJsonRpcVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
@@ -56,5 +56,18 @@
     <InternalsVisibleToTest Include="Roslyn.Services.Test.Utilities2" />
     <InternalsVisibleToTest Include="Roslyn.VisualStudio.Next.UnitTests" />
     <InternalsVisibleToCompletionTests Include="Microsoft.VisualStudio.Completion.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ServiceHubResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ServiceHubResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="ServiceHubResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ServiceHubResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

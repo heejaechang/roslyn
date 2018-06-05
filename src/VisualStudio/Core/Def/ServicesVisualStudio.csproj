@@ -205,6 +205,8 @@
     <PackageReference Include="NuGet.VisualStudio" Version="$(NuGetVisualStudioVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="$(MicrosoftVisualStudioShellInterop153DesignTimeVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.CoreUtility" Version="15.8.416-preview-ga640bb3a93" />
+    <PackageReference Include="Microsoft.VisualStudio.Language" Version="15.8.416-preview-ga640bb3a93" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Implementation\ChangeSignature\ChangeSignatureDialog.xaml.cs">
