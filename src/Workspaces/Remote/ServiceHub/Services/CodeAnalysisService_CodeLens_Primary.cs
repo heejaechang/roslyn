@@ -14,14 +14,16 @@ namespace Microsoft.CodeAnalysis.Remote
 {
     internal partial class CodeAnalysisService : IRemoteCodeLensReferencesForPrimaryWorkspaceService
     {
-        public Task<ReferenceCount> GetReferenceCountAsync(string filePath, TextSpan textSpan, int maxResultCount, CancellationToken cancellationToken)
+        public Task<ReferenceCount> GetReferenceCountAsync(Guid projectIdGuid, string filePath, TextSpan textSpan, int maxResultCount, CancellationToken cancellationToken)
         {
             return RunServiceAsync(async token =>
             {
                 using (Internal.Log.Logger.LogBlock(FunctionId.CodeAnalysisService_GetReferenceCountAsync, filePath, token))
                 {
                     var solution = SolutionService.PrimaryWorkspace.CurrentSolution;
-                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
+                    var projectId = ProjectId.CreateFromSerialized(projectIdGuid);
+
+                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault(id => id.ProjectId == projectId);
                     if (documentId == null)
                     {
                         return new ReferenceCount(0, isCapped: false);
@@ -34,14 +36,16 @@ namespace Microsoft.CodeAnalysis.Remote
             }, cancellationToken);
         }
 
-        public Task<IEnumerable<ReferenceLocationDescriptor>> FindReferenceLocationsAsync(string filePath, TextSpan textSpan, CancellationToken cancellationToken)
+        public Task<IEnumerable<ReferenceLocationDescriptor>> FindReferenceLocationsAsync(Guid projectIdGuid, string filePath, TextSpan textSpan, CancellationToken cancellationToken)
         {
             return RunServiceAsync(async token =>
             {
                 using (Internal.Log.Logger.LogBlock(FunctionId.CodeAnalysisService_FindReferenceLocationsAsync, filePath, token))
                 {
                     var solution = SolutionService.PrimaryWorkspace.CurrentSolution;
-                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
+                    var projectId = ProjectId.CreateFromSerialized(projectIdGuid);
+
+                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault(id => id.ProjectId == projectId);
                     if (documentId == null)
                     {
                         return Array.Empty<ReferenceLocationDescriptor>();

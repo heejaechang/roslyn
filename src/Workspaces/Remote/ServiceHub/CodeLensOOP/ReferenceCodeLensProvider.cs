@@ -77,23 +77,25 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
         {
             var callbackRpc = _codeLensCallbackService.GetCallbackJsonRpc(this);
 
-            return new DataPoint(
-                descriptor,
-                await GetConnectionAsync(cancellationToken).ConfigureAwait(false),
-                await callbackRpc.InvokeWithCancellationAsync<int>("GetMaxResultCapAsync", arguments: null, cancellationToken).ConfigureAwait(false));
+            var maxResult = await callbackRpc.InvokeWithCancellationAsync<int>("GetMaxResultCapAsync", arguments: null, cancellationToken).ConfigureAwait(false);
+            var projectIdGuid = await callbackRpc.InvokeWithCancellationAsync<Guid>("GetProjectId", new object[] { descriptor.ProjectGuid }, cancellationToken).ConfigureAwait(false);
+
+            return new DataPoint(descriptor, await GetConnectionAsync(cancellationToken).ConfigureAwait(false), maxResult, projectIdGuid);
         }
 
         private class DataPoint : IAsyncCodeLensDataPoint, IDisposable
         {
             private readonly JsonRpc _rpc;
             private readonly int _maxResult;
+            private readonly Guid _projectIdGuid;
 
-            public DataPoint(CodeLensDescriptor descriptor, JsonRpc rpc, int maxResult)
+            public DataPoint(CodeLensDescriptor descriptor, JsonRpc rpc, int maxResult, Guid projectIdGuid)
             {
                 this.Descriptor = descriptor;
 
                 _rpc = rpc;
                 _maxResult = maxResult;
+                _projectIdGuid = projectIdGuid;
             }
 
             public event AsyncEventHandler InvalidatedAsync;
@@ -104,9 +106,9 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             {
                 var referenceCount = await _rpc.InvokeWithCancellationAsync<ReferenceCount>(
                     nameof(IRemoteCodeLensReferencesForPrimaryWorkspaceService.GetReferenceCountAsync),
-                    new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan(), _maxResult }, token).ConfigureAwait(false);
+                    new object[] { _projectIdGuid, Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan(), _maxResult }, token).ConfigureAwait(false);
 
-                var referenceCountString = $"{ referenceCount.Count }{ (referenceCount.IsCapped ? "+" : string.Empty)}";
+                var referenceCountString = $"{referenceCount.Count}{(referenceCount.IsCapped ? "+" : string.Empty)}";
 
                 return new CodeLensDataPointDescriptor()
                 {
@@ -114,7 +116,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                                     string.Format(ServiceHubResources._0_reference, referenceCount.Count) :
                                     string.Format(ServiceHubResources._0_references, referenceCount.Count),
                     IntValue = referenceCount.Count,
-                    TooltipText = string.Format(ServiceHubResources.This_0_has_1_references, Util.GetCodeElementKindsString(Descriptor.Kind), referenceCount.Count),
+                    TooltipText = string.Format(ServiceHubResources.This_0_has_1_references, Util.GetCodeElementKindsString(Descriptor.Kind), referenceCountString),
                     ImageId = null
                 };
             }
@@ -123,7 +125,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             {
                 var referenceLocationDescriptors = await _rpc.InvokeWithCancellationAsync<IEnumerable<ReferenceLocationDescriptor>>(
                     nameof(IRemoteCodeLensReferencesForPrimaryWorkspaceService.FindReferenceLocationsAsync),
-                    new object[] { Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan() }, token).ConfigureAwait(false);
+                    new object[] { _projectIdGuid, Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan() }, token).ConfigureAwait(false);
 
                 var details = new CodeLensDetailsDescriptor
                 {

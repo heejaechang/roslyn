@@ -4,8 +4,10 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Remote;
 using Microsoft.VisualStudio.Language.CodeLens;
+using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.LanguageServices.Remote;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Settings;
@@ -20,7 +22,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeLens
         private const string CodeLensMaxSearchResults = nameof(CodeLensMaxSearchResults);
         private const int DefaultMaxSearchResultsValue = 99;
 
-        private readonly VisualStudioWorkspace _workspace;
+        private readonly VisualStudioWorkspaceImpl _workspace;
         private readonly IServiceProvider _serviceProvider;
         private readonly JoinableTaskContext _joinableTaskContext;
 
@@ -30,7 +32,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeLens
         public CodeLensCallbackListener(
             SVsServiceProvider serviceProvider,
             JoinableTaskContext joinableTaskContext,
-            VisualStudioWorkspace workspace)
+            VisualStudioWorkspaceImpl workspace)
         {
             _serviceProvider = serviceProvider;
             _joinableTaskContext = joinableTaskContext;
@@ -53,6 +55,16 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeLens
             await EnsureMaxResultAsync(cancellationToken).ConfigureAwait(false);
 
             return _maxSearchResults;
+        }
+
+        public Guid GetProjectId(Guid projectGuid, CancellationToken cancellationToken)
+        {
+            if (TryGetProjectId(_workspace, projectGuid, out var projectId))
+            {
+                return projectId.Id;
+            }
+
+            return Guid.Empty;
         }
 
         private async System.Threading.Tasks.Task EnsureMaxResultAsync(CancellationToken cancellationToken)
@@ -83,6 +95,24 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeLens
             {
                 // guard against users possibly creating a value with datatype other than Int32
             }
+        }
+
+        private bool TryGetProjectId(VisualStudioWorkspaceImpl workspace, Guid projectGuid, out ProjectId projectId)
+        {
+            if (projectGuid != VSConstants.CLSID.MiscellaneousFilesProject_guid)
+            {
+                foreach (var project in workspace.ProjectTracker.ImmutableProjects)
+                {
+                    if (project.Guid == projectGuid)
+                    {
+                        projectId = project.Id;
+                        return true;
+                    }
+                }
+            }
+
+            projectId = null;
+            return false;
         }
     }
 }

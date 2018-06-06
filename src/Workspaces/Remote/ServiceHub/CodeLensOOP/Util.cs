@@ -207,6 +207,5 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Unsupported type {0}", kind), nameof(kind));
             }
         }
-
     }
 }
