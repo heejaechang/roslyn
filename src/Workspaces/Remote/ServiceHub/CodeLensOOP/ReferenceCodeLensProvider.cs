@@ -113,8 +113,8 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                 return new CodeLensDataPointDescriptor()
                 {
                     Description = referenceCount.Count == 1 ?
-                                    string.Format(ServiceHubResources._0_reference, referenceCount.Count) :
-                                    string.Format(ServiceHubResources._0_references, referenceCount.Count),
+                                    string.Format(ServiceHubResources._0_reference, referenceCountString) :
+                                    string.Format(ServiceHubResources._0_references, referenceCountString),
                     IntValue = referenceCount.Count,
                     TooltipText = string.Format(ServiceHubResources.This_0_has_1_references, Util.GetCodeElementKindsString(Descriptor.Kind), referenceCountString),
                     ImageId = null
