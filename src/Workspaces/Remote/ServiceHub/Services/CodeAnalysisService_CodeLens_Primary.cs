@@ -21,9 +21,8 @@ namespace Microsoft.CodeAnalysis.Remote
                 using (Internal.Log.Logger.LogBlock(FunctionId.CodeAnalysisService_GetReferenceCountAsync, filePath, token))
                 {
                     var solution = SolutionService.PrimaryWorkspace.CurrentSolution;
-                    var projectId = ProjectId.CreateFromSerialized(projectIdGuid);
 
-                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault(id => id.ProjectId == projectId);
+                    var documentId = GetDocumentId(solution, projectIdGuid, filePath);
                     if (documentId == null)
                     {
                         return new ReferenceCount(0, isCapped: false);
@@ -43,9 +42,8 @@ namespace Microsoft.CodeAnalysis.Remote
                 using (Internal.Log.Logger.LogBlock(FunctionId.CodeAnalysisService_FindReferenceLocationsAsync, filePath, token))
                 {
                     var solution = SolutionService.PrimaryWorkspace.CurrentSolution;
-                    var projectId = ProjectId.CreateFromSerialized(projectIdGuid);
 
-                    var documentId = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault(id => id.ProjectId == projectId);
+                    var documentId = GetDocumentId(solution, projectIdGuid, filePath);
                     if (documentId == null)
                     {
                         return Array.Empty<ReferenceLocationDescriptor>();
@@ -56,6 +54,19 @@ namespace Microsoft.CodeAnalysis.Remote
                         syntaxNode, token).ConfigureAwait(false);
                 }
             }, cancellationToken);
+        }
+
+        private static DocumentId GetDocumentId(Solution solution, Guid projectIdGuid, string filePath)
+        {
+            var documentIds = solution.GetDocumentIdsWithFilePath(filePath);
+
+            if (projectIdGuid == Guid.Empty)
+            {
+                return documentIds.FirstOrDefault();
+            }
+
+            var projectId = ProjectId.CreateFromSerialized(projectIdGuid);
+            return documentIds.FirstOrDefault(id => id.ProjectId == projectId);
         }
     }
 }
