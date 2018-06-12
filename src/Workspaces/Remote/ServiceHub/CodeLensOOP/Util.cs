@@ -8,6 +8,9 @@ using Microsoft.VisualStudio.Language.Intellisense;
 
 namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 {
+    /// <summary>
+    /// ported from original reference code lens provider. keep exact same behavior
+    /// </summary>
     internal static class Util
     {
         public static ImageMoniker GetImageMoniker(Glyph glyph)

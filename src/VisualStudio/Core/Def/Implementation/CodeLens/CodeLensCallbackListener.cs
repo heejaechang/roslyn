@@ -15,12 +15,16 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeLens
 {
+    /// <summary>
+    /// This is used by new codelens API to get extra data from VS if it is needed.
+    /// </summary>
     [Export(typeof(ICodeLensCallbackListener))]
     internal class CodeLensCallbackListener : ICodeLensCallbackListener
     {
+        private const int DefaultMaxSearchResultsValue = 99;
+
         private const string CodeLensUserSettingsConfigPath = @"Text Editor\Global Options";
         private const string CodeLensMaxSearchResults = nameof(CodeLensMaxSearchResults);
-        private const int DefaultMaxSearchResultsValue = 99;
 
         private readonly VisualStudioWorkspaceImpl _workspace;
         private readonly IServiceProvider _serviceProvider;
@@ -41,6 +45,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeLens
 
         public async Task<string> GetHostGroupIdAsync(CancellationToken cancellationToken)
         {
+            // in VS host, RemoteHostClient is always ServiceHubRemoteHostClient
             var client = (ServiceHubRemoteHostClient)await _workspace.TryGetRemoteHostClientAsync(cancellationToken).ConfigureAwait(false);
             if (client == null)
             {

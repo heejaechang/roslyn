@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,24 +45,6 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
             _client = new HubClient(HubClientId);
         }
-
-        private async Task<JsonRpc> GetConnectionAsync(CancellationToken cancellationToken)
-        {
-            var callbackRpc = _codeLensCallbackService.GetCallbackJsonRpc(this);
-            var hostGroupId = await callbackRpc.InvokeWithCancellationAsync<string>("GetHostGroupIdAsync", arguments: null, cancellationToken).ConfigureAwait(false);
-
-            var hostGroup = new HostGroup(hostGroupId);
-            var serviceDescriptor = new ServiceDescriptor(RoslynCodeAnalysis) { HostGroup = hostGroup };
-
-            var stream = await _client.RequestServiceAsync(serviceDescriptor, cancellationToken).ConfigureAwait(false);
-            var rpc = new JsonRpc(new JsonRpcMessageHandler(stream, stream), null);
-
-            rpc.JsonSerializer.Converters.Add(AggregateJsonConverter.Instance);
-            rpc.StartListening();
-
-            return rpc;
-        }
-
         public Task<bool> CanCreateDataPointAsync(CodeLensDescriptor descriptor, CancellationToken token)
         {
             if (!descriptor.ApplicableToSpan.HasValue)
@@ -69,7 +52,8 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                 return SpecializedTasks.False;
             }
 
-            // all for now
+            // we allow all reference points. 
+            // engine will call this for all points our roslyn code lens (reference) tagger tagged.
             return SpecializedTasks.True;
         }
 
@@ -80,7 +64,23 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             var maxResult = await callbackRpc.InvokeWithCancellationAsync<int>("GetMaxResultCapAsync", arguments: null, cancellationToken).ConfigureAwait(false);
             var projectIdGuid = await callbackRpc.InvokeWithCancellationAsync<Guid>("GetProjectId", new object[] { descriptor.ProjectGuid }, cancellationToken).ConfigureAwait(false);
 
-            return new DataPoint(descriptor, await GetConnectionAsync(cancellationToken).ConfigureAwait(false), maxResult, projectIdGuid);
+            var dataPoint = new DataPoint(descriptor, await GetConnectionAsync(cancellationToken).ConfigureAwait(false), maxResult, projectIdGuid);
+            await dataPoint.TrackChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            return dataPoint;
+        }
+
+        private async Task<Stream> GetConnectionAsync(CancellationToken cancellationToken)
+        {
+            // any exception from this will be caught by codelens engine and saved to log file and ignored.
+            // this follows existing code lens behavior and user experience on failure is owned by codelens engine
+            var callbackRpc = _codeLensCallbackService.GetCallbackJsonRpc(this);
+            var hostGroupId = await callbackRpc.InvokeWithCancellationAsync<string>("GetHostGroupIdAsync", arguments: null, cancellationToken).ConfigureAwait(false);
+
+            var hostGroup = new HostGroup(hostGroupId);
+            var serviceDescriptor = new ServiceDescriptor(RoslynCodeAnalysis) { HostGroup = hostGroup };
+
+            return await _client.RequestServiceAsync(serviceDescriptor, cancellationToken).ConfigureAwait(false);
         }
 
         private class DataPoint : IAsyncCodeLensDataPoint, IDisposable
@@ -89,24 +89,28 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             private readonly int _maxResult;
             private readonly Guid _projectIdGuid;
 
-            public DataPoint(CodeLensDescriptor descriptor, JsonRpc rpc, int maxResult, Guid projectIdGuid)
+            public DataPoint(CodeLensDescriptor descriptor, Stream stream, int maxResult, Guid projectIdGuid)
             {
                 this.Descriptor = descriptor;
 
-                _rpc = rpc;
+                _rpc = new JsonRpc(new JsonRpcMessageHandler(stream, stream), target: this);
+                _rpc.JsonSerializer.Converters.Add(AggregateJsonConverter.Instance);
+
                 _maxResult = maxResult;
                 _projectIdGuid = projectIdGuid;
+
+                _rpc.StartListening();
             }
 
             public event AsyncEventHandler InvalidatedAsync;
 
             public CodeLensDescriptor Descriptor { get; }
 
-            public async Task<CodeLensDataPointDescriptor> GetDataAsync(CancellationToken token)
+            public async Task<CodeLensDataPointDescriptor> GetDataAsync(CancellationToken cancellationToken)
             {
                 var referenceCount = await _rpc.InvokeWithCancellationAsync<ReferenceCount>(
-                    nameof(IRemoteCodeLensReferencesForPrimaryWorkspaceService.GetReferenceCountAsync),
-                    new object[] { _projectIdGuid, Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan(), _maxResult }, token).ConfigureAwait(false);
+                    nameof(IRemoteCodeLensReferencesFromPrimaryWorkspaceService.GetReferenceCountAsync),
+                    new object[] { _projectIdGuid, Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan(), _maxResult }, cancellationToken).ConfigureAwait(false);
 
                 var referenceCountString = $"{referenceCount.Count}{(referenceCount.IsCapped ? "+" : string.Empty)}";
 
@@ -121,11 +125,11 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                 };
             }
 
-            public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CancellationToken token)
+            public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CancellationToken cancellationToken)
             {
                 var referenceLocationDescriptors = await _rpc.InvokeWithCancellationAsync<IEnumerable<ReferenceLocationDescriptor>>(
-                    nameof(IRemoteCodeLensReferencesForPrimaryWorkspaceService.FindReferenceLocationsAsync),
-                    new object[] { _projectIdGuid, Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan() }, token).ConfigureAwait(false);
+                    nameof(IRemoteCodeLensReferencesFromPrimaryWorkspaceService.FindReferenceLocationsAsync),
+                    new object[] { _projectIdGuid, Descriptor.FilePath, Descriptor.ApplicableToSpan.Value.ToTextSpan() }, cancellationToken).ConfigureAwait(false);
 
                 var details = new CodeLensDetailsDescriptor
                 {
@@ -155,6 +159,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
                         return new CodeLensDetailEntryDescriptor()
                         {
+                            // use default since reference codelens don't require special behaviors
                             NavigationCommand = null,
                             NavigationCommandArgs = null,
                             Tooltip = null,
@@ -188,10 +193,24 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
                         };
                     }).ToList(),
 
+                    // use default behavior
                     PaneNavigationCommands = null
                 };
 
                 return details;
+            }
+
+            public void Invalidate()
+            {
+                // fire and forget
+                InvalidatedAsync?.Invoke(this, EventArgs.Empty);
+            }
+
+            public Task TrackChangesAsync(CancellationToken cancellationToken)
+            {
+                return _rpc.InvokeWithCancellationAsync(
+                    nameof(IRemoteCodeLensReferencesFromPrimaryWorkspaceService.SetCodeLensReferenceCallback),
+                    new object[] { _projectIdGuid, Descriptor.FilePath }, cancellationToken);
             }
 
             public void Dispose()

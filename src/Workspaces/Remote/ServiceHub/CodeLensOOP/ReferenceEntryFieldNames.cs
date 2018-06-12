@@ -2,6 +2,9 @@
 
 namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 {
+    /// <summary>
+    /// this is well known consts in reference codelens in vs part.
+    /// </summary>
     internal static class ReferenceEntryFieldNames
     {
         public const string FilePath = "filePath";
