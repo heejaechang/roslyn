@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeLens;
+using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Remote.CodeLensOOP;
 using Microsoft.CodeAnalysis.Text;
@@ -88,11 +89,15 @@ namespace Microsoft.CodeAnalysis.Remote
 
         private class SemanticChangeTracker
         {
+            private const int DelayInMS = 100;
+
             private readonly Workspace _workspace;
             private readonly JsonRpc _rpc;
             private readonly DocumentId _documentId;
 
             private readonly object _gate;
+
+            private ResettableDelay _resettableDelay;
 
             public static void Track(Workspace workspace, JsonRpc rpc, DocumentId documentId)
             {
@@ -107,6 +112,8 @@ namespace Microsoft.CodeAnalysis.Remote
                 _rpc = rpc;
 
                 _documentId = documentId;
+
+                _resettableDelay = ResettableDelay.CompletedDelay;
 
                 ConnectEvents(subscription: true);
             }
@@ -130,9 +137,26 @@ namespace Microsoft.CodeAnalysis.Remote
 
             private void OnWorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
             {
-                // fire and forget.
-                // rpc being disconnected while invoked is fine. it gets ignored.
-                _rpc.InvokeAsync("Invalidate");
+                // workspace event is serialized events. and reset delay only get updated here
+                if (!_resettableDelay.Task.IsCompleted)
+                {
+                    _resettableDelay.Reset();
+                    return;
+                }
+
+                var delay = new ResettableDelay(DelayInMS);
+                _resettableDelay = delay;
+
+                delay.Task.ContinueWith(_ =>
+                {
+                    try
+                    {
+                        // fire and forget.
+                        // ignore any exception such as rps already disposed (disconnected)
+                        _rpc.InvokeAsync("Invalidate");
+                    }
+                    catch { }
+                }, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
             }
 
             private void OnRpcDisconnected(object sender, JsonRpcDisconnectedEventArgs e)
