@@ -207,6 +207,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
             public void Invalidate()
             {
                 // fire and forget
+                // this get called from roslyn remote host
                 InvalidatedAsync?.Invoke(this, EventArgs.Empty);
             }
 
