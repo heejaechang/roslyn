@@ -43,6 +43,17 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeLens
             _workspace = workspace;
         }
 
+        public async System.Threading.Tasks.Task SynchronizePrimaryWorkspaceAsync(CancellationToken cancellationToken)
+        {
+            var client = await _workspace.TryGetRemoteHostClientAsync(cancellationToken).ConfigureAwait(false);
+            if (client == null)
+            {
+                throw new InvalidOperationException("remote host doesn't exist");
+            }
+
+            await _workspace.SynchronizePrimaryWorkspaceAsync(_workspace.CurrentSolution, cancellationToken).ConfigureAwait(false);
+        }
+
         public async Task<string> GetHostGroupIdAsync(CancellationToken cancellationToken)
         {
             // in VS host, RemoteHostClient is always ServiceHubRemoteHostClient

@@ -36,13 +36,13 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
         private const string RoslynCodeAnalysis = "roslynCodeAnalysis";
 
         private readonly HubClient _client;
+
+        // use field rather than import constructor to break circular MEF dependency issue
+        [Import]
         private readonly ICodeLensCallbackService _codeLensCallbackService;
 
-        [ImportingConstructor]
-        public ReferenceCodeLensProvider(ICodeLensCallbackService codeLensCallbackService)
+        public ReferenceCodeLensProvider()
         {
-            _codeLensCallbackService = codeLensCallbackService;
-
             _client = new HubClient(HubClientId);
         }
 
@@ -61,6 +61,9 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
         public async Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(CodeLensDescriptor descriptor, CancellationToken cancellationToken)
         {
             var callbackRpc = _codeLensCallbackService.GetCallbackJsonRpc(this);
+
+            // bring roslyn OOP up to date
+            await callbackRpc.InvokeWithCancellationAsync("SynchronizePrimaryWorkspaceAsync", arguments: null, cancellationToken).ConfigureAwait(false);
 
             var maxResult = await callbackRpc.InvokeWithCancellationAsync<int>("GetMaxResultCapAsync", arguments: null, cancellationToken).ConfigureAwait(false);
             var projectIdGuid = await callbackRpc.InvokeWithCancellationAsync<Guid>("GetProjectId", new object[] { descriptor.ProjectGuid }, cancellationToken).ConfigureAwait(false);

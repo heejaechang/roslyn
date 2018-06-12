@@ -1,16 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using Microsoft.CodeAnalysis.CodeLens;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Internal.Log;
-using Microsoft.CodeAnalysis.Text;
-using System.Threading;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CodeLens;
+using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Remote.CodeLensOOP;
-using Microsoft.CodeAnalysis.Host.Mef;
-using Microsoft.CodeAnalysis.Notification;
+using Microsoft.CodeAnalysis.Text;
 using StreamJsonRpc;
 
 namespace Microsoft.CodeAnalysis.Remote
@@ -63,18 +61,6 @@ namespace Microsoft.CodeAnalysis.Remote
         {
             RunService(token =>
             {
-                var exportProvider = RoslynServices.HostServices as IMefHostExportProvider;
-                if (exportProvider == null)
-                {
-                    return;
-                }
-
-                var service = exportProvider.GetExports<ISemanticChangeNotificationService>().FirstOrDefault()?.Value;
-                if (service == null)
-                {
-                    return;
-                }
-
                 var solution = SolutionService.PrimaryWorkspace.CurrentSolution;
                 var documentId = GetDocumentId(solution, projectIdGuid, filePath);
                 if (documentId == null)
@@ -82,7 +68,7 @@ namespace Microsoft.CodeAnalysis.Remote
                     return;
                 }
 
-                SemanticChangeTracker.Track(service, Rpc, documentId);
+                SemanticChangeTracker.Track(solution.Workspace, Rpc, documentId);
             }, cancellationToken);
         }
 
@@ -102,23 +88,24 @@ namespace Microsoft.CodeAnalysis.Remote
 
         private class SemanticChangeTracker
         {
-            private readonly ISemanticChangeNotificationService _service;
+            private readonly Workspace _workspace;
             private readonly JsonRpc _rpc;
             private readonly DocumentId _documentId;
 
             private readonly object _gate;
 
-            public static void Track(ISemanticChangeNotificationService service, JsonRpc rpc, DocumentId documentId)
+            public static void Track(Workspace workspace, JsonRpc rpc, DocumentId documentId)
             {
-                var _ = new SemanticChangeTracker(service, rpc, documentId);
+                var _ = new SemanticChangeTracker(workspace, rpc, documentId);
             }
 
-            public SemanticChangeTracker(ISemanticChangeNotificationService service, JsonRpc rpc, DocumentId documentId)
+            public SemanticChangeTracker(Workspace workspace, JsonRpc rpc, DocumentId documentId)
             {
                 _gate = new object();
 
-                _service = service;
+                _workspace = workspace;
                 _rpc = rpc;
+
                 _documentId = documentId;
 
                 ConnectEvents(subscription: true);
@@ -131,31 +118,26 @@ namespace Microsoft.CodeAnalysis.Remote
                     if (subscription)
                     {
                         _rpc.Disconnected += OnRpcDisconnected;
-                        _service.OpenedDocumentSemanticChanged += OnOpenedDocumentSemanticChanged;
+                        _workspace.WorkspaceChanged += OnWorkspaceChanged;
                     }
                     else
                     {
                         _rpc.Disconnected -= OnRpcDisconnected;
-                        _service.OpenedDocumentSemanticChanged -= OnOpenedDocumentSemanticChanged;
+                        _workspace.WorkspaceChanged -= OnWorkspaceChanged;
                     }
                 }
+            }
+
+            private void OnWorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
+            {
+                // fire and forget.
+                // rpc being disconnected while invoked is fine. it gets ignored.
+                _rpc.InvokeAsync("Invalidate");
             }
 
             private void OnRpcDisconnected(object sender, JsonRpcDisconnectedEventArgs e)
             {
                 ConnectEvents(subscription: false);
-            }
-
-            private void OnOpenedDocumentSemanticChanged(object sender, Document e)
-            {
-                if (e.Id != _documentId)
-                {
-                    return;
-                }
-
-                // fire and forget.
-                // rpc being disconnected while invoked is fine. it gets ignored.
-                _rpc.InvokeAsync("Invalidate");
             }
         }
     }
