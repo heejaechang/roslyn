@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
         // use field rather than import constructor to break circular MEF dependency issue
         [Import]
-        private readonly ICodeLensCallbackService _codeLensCallbackService;
+        private ICodeLensCallbackService _codeLensCallbackService;
 
         public ReferenceCodeLensProvider()
         {
