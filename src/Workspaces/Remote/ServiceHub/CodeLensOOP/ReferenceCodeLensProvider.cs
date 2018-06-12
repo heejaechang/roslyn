@@ -45,6 +45,7 @@ namespace Microsoft.CodeAnalysis.Remote.CodeLensOOP
 
             _client = new HubClient(HubClientId);
         }
+
         public Task<bool> CanCreateDataPointAsync(CodeLensDescriptor descriptor, CancellationToken token)
         {
             if (!descriptor.ApplicableToSpan.HasValue)
