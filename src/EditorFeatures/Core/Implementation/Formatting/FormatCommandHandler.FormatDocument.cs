@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeCleanup;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Extensions;
+using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Roslyn.Utilities;
-using static Microsoft.CodeAnalysis.Options.OptionServiceFactory;
 using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
@@ -46,6 +46,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                               kind: InfoBarUI.UIKind.Button,
                               () =>
                               {
+                                  Logger.Log(FunctionId.CodeCleanupInfobar_ConfigNow);
                                   optionPageService.ShowFormattingOptionPage();
                                   _infoBarOpen = false;
                               }),
@@ -53,6 +54,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                               kind: InfoBarUI.UIKind.Button,
                               () =>
                               {
+                                  Logger.Log(FunctionId.CodeCleanupInfobar_DoNotShow);
                                   var optionService = document.Project.Solution.Workspace.Services.GetService<IOptionService>();
                                   var oldOptions = optionService.GetOptions();
                                   var newOptions = oldOptions.WithChangedOption(CodeCleanupOptions.NeverShowCodeCleanupInfoBarAgain,
