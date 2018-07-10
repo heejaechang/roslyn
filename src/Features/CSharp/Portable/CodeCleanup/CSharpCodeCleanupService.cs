@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.RemoveUnusedVariable;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Host.Mef;
+using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.OrganizeImports;
 using Microsoft.CodeAnalysis.RemoveUnnecessaryImports;
@@ -111,6 +112,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeCleanup
 
             if (_codeFixServiceOpt != null)
             {
+                Logger.Log(FunctionId.Rename_InlineSession_Session, CodeCleanupLogMessage.Create(docOptions));
                 document = await ApplyCodeFixesAsync(document, docOptions, cancellationToken).ConfigureAwait(false);
             }
 
