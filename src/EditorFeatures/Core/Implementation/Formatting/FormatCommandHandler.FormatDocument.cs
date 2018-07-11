@@ -29,6 +29,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
         private void ShowGoldBarForCodeCleanupConfiguration(Document document)
         {
             AssertIsForeground();
+            Logger.Log(FunctionId.CodeCleanupInfobar_BarDisplayed, KeyValueLogMessage.NoProperty);
 
             // If the gold bar is already open, do not show
             if (_infoBarOpen)
