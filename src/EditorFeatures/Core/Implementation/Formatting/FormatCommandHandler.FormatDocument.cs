@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                               kind: InfoBarUI.UIKind.Button,
                               () =>
                               {
-                                  Logger.Log(FunctionId.CodeCleanupInfobar_ConfigNow);
+                                  Logger.Log(FunctionId.CodeCleanupInfobar_ConfigureNow, KeyValueLogMessage.NoProperty);
                                   optionPageService.ShowFormattingOptionPage();
                                   _infoBarOpen = false;
                               }),
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                               kind: InfoBarUI.UIKind.Button,
                               () =>
                               {
-                                  Logger.Log(FunctionId.CodeCleanupInfobar_DoNotShow);
+                                  Logger.Log(FunctionId.CodeCleanupInfobar_DoNotShow, KeyValueLogMessage.NoProperty);
                                   var optionService = document.Project.Solution.Workspace.Services.GetService<IOptionService>();
                                   var oldOptions = optionService.GetOptions();
                                   var newOptions = oldOptions.WithChangedOption(CodeCleanupOptions.NeverShowCodeCleanupInfoBarAgain,
@@ -76,50 +76,51 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 return false;
             }
 
-            using (context.OperationContext.AddScope(allowCancellation: true, EditorFeaturesResources.Formatting_document))
+            var cancellationToken = context.OperationContext.UserCancellationToken;
+            var docOptions = document.GetOptionsAsync(cancellationToken).WaitAndGetResult(cancellationToken);
+
+            using (Logger.LogBlock(FunctionId.FormatDocument, CodeCleanupLogMessage.Create(docOptions), cancellationToken))
             {
-                var cancellationToken = context.OperationContext.UserCancellationToken;
-
-                var docOptions = document.GetOptionsAsync(cancellationToken).WaitAndGetResult(cancellationToken);
-
-                using (var transaction = new CaretPreservingEditTransaction(
-                    EditorFeaturesResources.Formatting, args.TextView, _undoHistoryRegistry, _editorOperationsFactoryService))
+                using (context.OperationContext.AddScope(allowCancellation: true, EditorFeaturesResources.Formatting_document))
                 {
-                    var codeCleanupService = document.GetLanguageService<ICodeCleanupService>();
+                    using (var transaction = new CaretPreservingEditTransaction(
+                        EditorFeaturesResources.Formatting, args.TextView, _undoHistoryRegistry, _editorOperationsFactoryService))
+                    {
+                        var codeCleanupService = document.GetLanguageService<ICodeCleanupService>();
 
-                    if (codeCleanupService == null)
-                    {
-                        Format(args.TextView, document, selectionOpt: null, cancellationToken);
-                    }
-                    else
-                    {
-                        if (docOptions.GetOption(CodeCleanupOptions.AreCodeCleanupRulesConfigured))
+                        if (codeCleanupService == null)
                         {
-                            // Code cleanup
-                            var oldDoc = document;
-                            var codeCleanupChanges = GetCodeCleanupAndFormatChangesAsync(document, codeCleanupService, cancellationToken).WaitAndGetResult(cancellationToken);
-
-                            if (codeCleanupChanges != null && codeCleanupChanges.Count() > 0)
-                            {
-                                ApplyChanges(oldDoc, codeCleanupChanges.ToList(), selectionOpt: null, cancellationToken);
-                            }
+                            Format(args.TextView, document, selectionOpt: null, cancellationToken);
                         }
                         else
                         {
-                            Format(args.TextView, document, selectionOpt: null, cancellationToken);
-
-                            if (!docOptions.GetOption(CodeCleanupOptions.NeverShowCodeCleanupInfoBarAgain))
+                            if (docOptions.GetOption(CodeCleanupOptions.AreCodeCleanupRulesConfigured))
                             {
-                                ShowGoldBarForCodeCleanupConfiguration(document);
+                                // Code cleanup
+                                var oldDoc = document;
+                                var codeCleanupChanges = GetCodeCleanupAndFormatChangesAsync(document, codeCleanupService, cancellationToken).WaitAndGetResult(cancellationToken);
+
+                                if (codeCleanupChanges != null && codeCleanupChanges.Count() > 0)
+                                {
+                                    ApplyChanges(oldDoc, codeCleanupChanges.ToList(), selectionOpt: null, cancellationToken);
+                                }
                             }
+                            else
+                            {
+                                Format(args.TextView, document, selectionOpt: null, cancellationToken);
+
+                                if (!docOptions.GetOption(CodeCleanupOptions.NeverShowCodeCleanupInfoBarAgain))
+                                {
+                                    ShowGoldBarForCodeCleanupConfiguration(document);
+                                }
+                            }
+
                         }
 
+                        transaction.Complete();
                     }
-
-                    transaction.Complete();
                 }
             }
-
             return true;
         }
 
