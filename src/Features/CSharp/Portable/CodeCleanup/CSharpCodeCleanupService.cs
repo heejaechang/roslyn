@@ -112,14 +112,16 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeCleanup
 
             if (_codeFixServiceOpt != null)
             {
-                Logger.Log(FunctionId.Rename_InlineSession_Session, CodeCleanupLogMessage.Create(docOptions));
                 document = await ApplyCodeFixesAsync(document, docOptions, cancellationToken).ConfigureAwait(false);
             }
 
             // do the remove usings after code fix, as code fix might remove some code which can results in unused usings.
             document = await RemoveSortUsingsAsync(document, docOptions, cancellationToken).ConfigureAwait(false);
 
-            return await Formatter.FormatAsync(document).ConfigureAwait(false);
+            using (Logger.LogBlock(FunctionId.CodeCleanup_Format, cancellationToken))
+            {
+                return await Formatter.FormatAsync(document).ConfigureAwait(false);
+            }
         }
 
         private async Task<Document> RemoveSortUsingsAsync(Document document, DocumentOptionSet docOptions, CancellationToken cancellationToken)
@@ -130,14 +132,20 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeCleanup
                 var removeUsingsService = document.GetLanguageService<IRemoveUnnecessaryImportsService>();
                 if (removeUsingsService != null)
                 {
-                    document = await removeUsingsService.RemoveUnnecessaryImportsAsync(document, cancellationToken).ConfigureAwait(false);
+                    using (Logger.LogBlock(FunctionId.CodeCleanup_RemoveUnusedImports, cancellationToken))
+                    {
+                        document = await removeUsingsService.RemoveUnnecessaryImportsAsync(document, cancellationToken).ConfigureAwait(false);
+                    }
                 }
             }
 
             // sort usings
             if (docOptions.GetOption(CodeCleanupOptions.SortImports))
             {
-                document = await OrganizeImportsService.OrganizeImportsAsync(document, cancellationToken).ConfigureAwait(false);
+                using (Logger.LogBlock(FunctionId.CodeCleanup_SortImports, cancellationToken))
+                {
+                    document = await OrganizeImportsService.OrganizeImportsAsync(document, cancellationToken).ConfigureAwait(false);
+                }
             }
 
             return document;
@@ -150,22 +158,25 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeCleanup
             var dummy = new ProgressTracker();
             foreach (var diagnosticId in GetEnabledDiagnosticIds(docOptions))
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var syntaxTree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
-                var textSpan = new TextSpan(0, syntaxTree.Length);
-
-                var fixCollection = await _codeFixServiceOpt.GetFixesAsync(document, textSpan, diagnosticId, cancellationToken).ConfigureAwait(false);
-                if (fixCollection == null)
+                using (Logger.LogBlock(FunctionId.CodeCleanup_ApplyCodeFixesAsync, diagnosticId, cancellationToken))
                 {
-                    continue;
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var syntaxTree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
+                    var textSpan = new TextSpan(0, syntaxTree.Length);
+
+                    var fixCollection = await _codeFixServiceOpt.GetFixesAsync(document, textSpan, diagnosticId, cancellationToken).ConfigureAwait(false);
+                    if (fixCollection == null)
+                    {
+                        continue;
+                    }
+
+                    var fixAll = fixCollection.FixAllState;
+                    var solution = await fixAllService.GetFixAllChangedSolutionAsync(
+                        fixAll.CreateFixAllContext(dummy, cancellationToken)).ConfigureAwait(false);
+
+                    document = solution.GetDocument(document.Id);
                 }
-
-                var fixAll = fixCollection.FixAllState;
-                var solution = await fixAllService.GetFixAllChangedSolutionAsync(
-                    fixAll.CreateFixAllContext(dummy, cancellationToken)).ConfigureAwait(false);
-
-                document = solution.GetDocument(document.Id);
             }
 
             return document;
