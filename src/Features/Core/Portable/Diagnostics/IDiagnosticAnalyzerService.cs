@@ -70,6 +70,11 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         Task<IEnumerable<DiagnosticData>> GetDiagnosticsForSpanAsync(Document document, TextSpan range, string diagnosticIdOpt = null, bool includeSuppressedDiagnostics = false, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// return up to date diagnostics for the given analyzers for the document
+        /// </summary>
+        Task<IEnumerable<DiagnosticData>> GetDiagnosticsAsync(Document document, IEnumerable<DiagnosticAnalyzer> analyzers, AnalysisKind kind, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Gets a list of <see cref="DiagnosticAnalyzer"/>s for the given <see cref="Project"/>
         /// </summary>
         ImmutableArray<DiagnosticAnalyzer> GetDiagnosticAnalyzers(Project project);

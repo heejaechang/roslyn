@@ -67,6 +67,19 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
             return stateSet.IsCompilationEndAnalyzer(project, compilation);
         }
 
+        public async Task<IEnumerable<DiagnosticData>> GetDiagnosticsAsync(Document document, IEnumerable<DiagnosticAnalyzer> analyzers, AnalysisKind kind, CancellationToken cancellationToken)
+        {
+            var analyzerDriverOpt = await _compilationManager.CreateAnalyzerDriverAsync(document.Project, analyzers, includeSuppressedDiagnostics: false, cancellationToken).ConfigureAwait(false);
+
+            var list = new List<DiagnosticData>();
+            foreach (var analyzer in analyzers)
+            {
+                list.AddRange(await _executor.ComputeDiagnosticsAsync(analyzerDriverOpt, document, analyzer, kind, spanOpt: null, cancellationToken).ConfigureAwait(false));
+            }
+
+            return list;
+        }
+
         public bool ContainsDiagnostics(Workspace workspace, ProjectId projectId)
         {
             foreach (var stateSet in _stateManager.GetStateSets(projectId))

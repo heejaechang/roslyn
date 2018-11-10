@@ -158,6 +158,16 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             return SpecializedTasks.EmptyEnumerable<DiagnosticData>();
         }
 
+        public Task<IEnumerable<DiagnosticData>> GetDiagnosticsAsync(Document document, IEnumerable<DiagnosticAnalyzer> analyzers, AnalysisKind kind, CancellationToken cancellationToken = default)
+        {
+            if (_map.TryGetValue(document.Project.Solution.Workspace, out var analyzer))
+            {
+                return analyzer.GetDiagnosticsAsync(document, analyzers, kind, cancellationToken);
+            }
+
+            return SpecializedTasks.EmptyEnumerable<DiagnosticData>();
+        }
+
         public Task<ImmutableArray<DiagnosticData>> GetCachedDiagnosticsAsync(Workspace workspace, ProjectId projectId = null, DocumentId documentId = null, bool includeSuppressedDiagnostics = false, CancellationToken cancellationToken = default)
         {
             if (_map.TryGetValue(workspace, out var analyzer))
