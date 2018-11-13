@@ -352,6 +352,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             var languageInformation = TryGetLanguageInformation(filePath);
             Contract.ThrowIfNull(languageInformation);
 
+            var fileExtension = PathUtilities.GetExtension(filePath);
+
             var languageServices = Services.GetLanguageServices(languageInformation.LanguageName);
             var compilationOptionsOpt = languageServices.GetService<ICompilationFactoryService>()?.GetDefaultCompilationOptions();
 
@@ -361,7 +363,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
             if (parseOptionsOpt != null &&
                 compilationOptionsOpt != null &&
-                PathUtilities.GetExtension(filePath) == languageInformation.ScriptExtension)
+                fileExtension == languageInformation.ScriptExtension)
             {
                 parseOptionsOpt = parseOptionsOpt.WithKind(SourceCodeKind.Script);
 
@@ -394,7 +396,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             var documentInfo = DocumentInfo.Create(
                 documentId,
                 filePath,
-                sourceCodeKind: parseOptionsOpt?.Kind ?? SourceCodeKind.Regular,
+                sourceCodeKind: parseOptionsOpt?.Kind ?? (string.Equals(fileExtension, languageInformation.ScriptExtension, StringComparison.OrdinalIgnoreCase) ? SourceCodeKind.Script : SourceCodeKind.Regular),
                 loader: new FileTextLoader(filePath, defaultEncoding: null),
                 filePath: filePath);
 
