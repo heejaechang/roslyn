@@ -67,19 +67,6 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
             return stateSet.IsCompilationEndAnalyzer(project, compilation);
         }
 
-        public async Task<IEnumerable<DiagnosticData>> GetDiagnosticsAsync(Document document, IEnumerable<DiagnosticAnalyzer> analyzers, AnalysisKind kind, CancellationToken cancellationToken)
-        {
-            var analyzerDriverOpt = await _compilationManager.CreateAnalyzerDriverAsync(document.Project, analyzers, includeSuppressedDiagnostics: false, cancellationToken).ConfigureAwait(false);
-
-            var list = new List<DiagnosticData>();
-            foreach (var analyzer in analyzers)
-            {
-                list.AddRange(await _executor.ComputeDiagnosticsAsync(analyzerDriverOpt, document, analyzer, kind, spanOpt: null, cancellationToken).ConfigureAwait(false));
-            }
-
-            return list;
-        }
-
         public bool ContainsDiagnostics(Workspace workspace, ProjectId projectId)
         {
             foreach (var stateSet in _stateManager.GetStateSets(projectId))
@@ -101,10 +88,10 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                    e.Option == RuntimeOptions.FullSolutionAnalysis;
         }
 
-        private bool SupportAnalysisKind(DiagnosticAnalyzer analyzer, string language, AnalysisKind kind)
+        private static bool SupportAnalysisKind(HostAnalyzerManager hostAnalyzerManager, DiagnosticAnalyzer analyzer, string language, AnalysisKind kind)
         {
             // compiler diagnostic analyzer always support all kinds
-            if (HostAnalyzerManager.IsCompilerDiagnosticAnalyzer(language, analyzer))
+            if (hostAnalyzerManager.IsCompilerDiagnosticAnalyzer(language, analyzer))
             {
                 return true;
             }
@@ -290,15 +277,28 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
             ResetDiagnosticLogAggregator();
         }
 
+        public static async Task<IEnumerable<DiagnosticData>> GetDiagnosticsAsync(
+            IDiagnosticAnalyzerService service, Document document, IEnumerable<DiagnosticAnalyzer> analyzers, AnalysisKind kind, CancellationToken cancellationToken)
+        {
+            // given service must be DiagnosticAnalyzerService
+            var diagnosticService = (DiagnosticAnalyzerService)service;
+
+            var analyzerDriverOpt = await CompilationManager.CreateAnalyzerDriverAsync(
+                diagnosticService, document.Project, analyzers, includeSuppressedDiagnostics: false, logAggregatorOpt: null, cancellationToken).ConfigureAwait(false);
+
+            var list = new List<DiagnosticData>();
+            foreach (var analyzer in analyzers)
+            {
+                list.AddRange(await Executor.ComputeDiagnosticsAsync(
+                    diagnosticService, analyzerDriverOpt, document, analyzer, kind, spanOpt: null, logAggregatorOpt: null, cancellationToken).ConfigureAwait(false));
+            }
+
+            return list;
+        }
+
         private void ResetDiagnosticLogAggregator()
         {
             DiagnosticLogAggregator = new DiagnosticLogAggregator(Owner);
-        }
-
-        // internal for testing purposes.
-        internal Action<Exception, DiagnosticAnalyzer, Diagnostic> GetOnAnalyzerException(ProjectId projectId)
-        {
-            return Owner.GetOnAnalyzerException(projectId, DiagnosticLogAggregator);
         }
 
         internal IEnumerable<DiagnosticAnalyzer> GetAnalyzersTestOnly(Project project)

@@ -66,6 +66,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             _listener = listener ?? AsynchronousOperationListenerProvider.NullListener;
         }
 
+        public HostAnalyzerManager HostAnalyzerManager => _hostAnalyzerManager;
+
         public ImmutableArray<DiagnosticAnalyzer> GetDiagnosticAnalyzers(Project project)
         {
             var map = _hostAnalyzerManager.CreateDiagnosticAnalyzersPerReference(project);
@@ -153,16 +155,6 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             {
                 // always make sure that analyzer is called on background thread.
                 return Task.Run(() => analyzer.GetDiagnosticsForSpanAsync(document, range, includeSuppressedDiagnostics, diagnosticIdOpt, cancellationToken), cancellationToken);
-            }
-
-            return SpecializedTasks.EmptyEnumerable<DiagnosticData>();
-        }
-
-        public Task<IEnumerable<DiagnosticData>> GetDiagnosticsAsync(Document document, IEnumerable<DiagnosticAnalyzer> analyzers, AnalysisKind kind, CancellationToken cancellationToken = default)
-        {
-            if (_map.TryGetValue(document.Project.Solution.Workspace, out var analyzer))
-            {
-                return analyzer.GetDiagnosticsAsync(document, analyzers, kind, cancellationToken);
             }
 
             return SpecializedTasks.EmptyEnumerable<DiagnosticData>();
@@ -272,12 +264,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         }
 
         // virtual for testing purposes.
-        internal virtual Action<Exception, DiagnosticAnalyzer, Diagnostic> GetOnAnalyzerException(ProjectId projectId, DiagnosticLogAggregator diagnosticLogAggregator)
+        internal virtual Action<Exception, DiagnosticAnalyzer, Diagnostic> GetOnAnalyzerException(ProjectId projectId, DiagnosticLogAggregator logAggregatorOpt)
         {
             return (ex, analyzer, diagnostic) =>
             {
                 // Log telemetry, if analyzer supports telemetry.
-                DiagnosticAnalyzerLogger.LogAnalyzerCrashCount(analyzer, ex, diagnosticLogAggregator, projectId);
+                DiagnosticAnalyzerLogger.LogAnalyzerCrashCount(analyzer, ex, logAggregatorOpt);
 
                 AnalyzerHelper.OnAnalyzerException_NoTelemetryLogging(ex, analyzer, diagnostic, _hostDiagnosticUpdateSource, projectId);
             };

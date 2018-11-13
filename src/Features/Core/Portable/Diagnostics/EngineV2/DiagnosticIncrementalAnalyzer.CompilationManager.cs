@@ -2,12 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Diagnostics.Log;
 using Microsoft.CodeAnalysis.ErrorReporting;
 using Roslyn.Utilities;
 
@@ -70,8 +70,18 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 return CreateAnalyzerDriverAsync(project, analyzers, includeSuppressedDiagnostics, cancellationToken);
             }
 
-            public async Task<CompilationWithAnalyzers> CreateAnalyzerDriverAsync(
+            public Task<CompilationWithAnalyzers> CreateAnalyzerDriverAsync(
                 Project project, IEnumerable<DiagnosticAnalyzer> analyzers, bool includeSuppressedDiagnostics, CancellationToken cancellationToken)
+            {
+                return CreateAnalyzerDriverAsync(_owner.Owner, project, analyzers, includeSuppressedDiagnostics, _owner.DiagnosticLogAggregator, cancellationToken);
+            }
+
+            public static async Task<CompilationWithAnalyzers> CreateAnalyzerDriverAsync(
+                DiagnosticAnalyzerService service,
+                Project project, IEnumerable<DiagnosticAnalyzer> analyzers,
+                bool includeSuppressedDiagnostics,
+                DiagnosticLogAggregator logAggregatorOpt,
+                CancellationToken cancellationToken)
             {
                 if (!project.SupportsCompilation)
                 {
@@ -82,15 +92,23 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
                 // Create driver that holds onto compilation and associated analyzers
                 return CreateAnalyzerDriver(
-                    project, compilation, analyzers, logAnalyzerExecutionTime: true, reportSuppressedDiagnostics: includeSuppressedDiagnostics);
+                    service,
+                    project,
+                    compilation,
+                    analyzers,
+                    logAnalyzerExecutionTime: true,
+                    reportSuppressedDiagnostics: includeSuppressedDiagnostics,
+                    logAggregatorOpt);
             }
 
-            private CompilationWithAnalyzers CreateAnalyzerDriver(
+            private static CompilationWithAnalyzers CreateAnalyzerDriver(
+                DiagnosticAnalyzerService service,
                 Project project,
                 Compilation compilation,
                 IEnumerable<DiagnosticAnalyzer> allAnalyzers,
                 bool logAnalyzerExecutionTime,
-                bool reportSuppressedDiagnostics)
+                bool reportSuppressedDiagnostics,
+                DiagnosticLogAggregator logAggregatorOpt)
             {
                 var analyzers = allAnalyzers.Where(a => !a.IsWorkspaceDiagnosticAnalyzer()).ToImmutableArrayOrEmpty();
 
@@ -104,29 +122,31 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 Contract.ThrowIfFalse(project.SupportsCompilation);
                 AssertCompilation(project, compilation);
 
-                var analysisOptions = GetAnalyzerOptions(project, logAnalyzerExecutionTime, reportSuppressedDiagnostics);
+                var analysisOptions = GetAnalyzerOptions(service, project, logAnalyzerExecutionTime, reportSuppressedDiagnostics, logAggregatorOpt);
 
                 // Create driver that holds onto compilation and associated analyzers
                 return compilation.WithAnalyzers(analyzers, analysisOptions);
             }
 
-            private CompilationWithAnalyzersOptions GetAnalyzerOptions(
+            private static CompilationWithAnalyzersOptions GetAnalyzerOptions(
+                DiagnosticAnalyzerService service,
                 Project project,
                 bool logAnalyzerExecutionTime,
-                bool reportSuppressedDiagnostics)
+                bool reportSuppressedDiagnostics,
+                DiagnosticLogAggregator logAggregatorOpt)
             {
                 // in IDE, we always set concurrentAnalysis == false otherwise, we can get into thread starvation due to
                 // async being used with syncronous blocking concurrency.
                 return new CompilationWithAnalyzersOptions(
                     options: new WorkspaceAnalyzerOptions(project.AnalyzerOptions, project.Solution.Options, project.Solution),
-                    onAnalyzerException: GetOnAnalyzerException(project.Id),
+                    onAnalyzerException: service.GetOnAnalyzerException(project.Id, logAggregatorOpt),
                     analyzerExceptionFilter: GetAnalyzerExceptionFilter(project),
                     concurrentAnalysis: false,
                     logAnalyzerExecutionTime: logAnalyzerExecutionTime,
                     reportSuppressedDiagnostics: reportSuppressedDiagnostics);
             }
 
-            private Func<Exception, bool> GetAnalyzerExceptionFilter(Project project)
+            private static Func<Exception, bool> GetAnalyzerExceptionFilter(Project project)
             {
                 return ex =>
                 {
@@ -138,11 +158,6 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
                     return true;
                 };
-            }
-
-            private Action<Exception, DiagnosticAnalyzer, Diagnostic> GetOnAnalyzerException(ProjectId projectId)
-            {
-                return _owner.Owner.GetOnAnalyzerException(projectId, _owner.DiagnosticLogAggregator);
             }
 
             private void ResetAnalyzerDriverMap()
@@ -170,7 +185,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
             }
 
             [Conditional("DEBUG")]
-            private void AssertCompilation(Project project, Compilation compilation1)
+            private static void AssertCompilation(Project project, Compilation compilation1)
             {
                 // given compilation must be from given project.
                 Contract.ThrowIfFalse(project.TryGetCompilation(out var compilation2));

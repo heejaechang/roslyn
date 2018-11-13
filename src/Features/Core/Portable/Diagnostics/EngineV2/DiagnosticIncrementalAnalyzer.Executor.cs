@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 _diagnosticAnalyzerRunner = new InProcOrRemoteHostAnalyzerRunner(_owner.Owner, _owner.HostDiagnosticUpdateSource);
             }
 
-            public IEnumerable<DiagnosticData> ConvertToLocalDiagnostics(Document targetDocument, IEnumerable<Diagnostic> diagnostics, TextSpan? span = null)
+            public static IEnumerable<DiagnosticData> ConvertToLocalDiagnostics(Document targetDocument, IEnumerable<Diagnostic> diagnostics, TextSpan? span = null)
             {
                 var project = targetDocument.Project;
 
@@ -179,19 +179,34 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 return result.SetItem(compilerAnalyzer, newCompilerAnalysisResult);
             }
 
+            public Task<IEnumerable<DiagnosticData>> ComputeDiagnosticsAsync(
+               CompilationWithAnalyzers analyzerDriverOpt, Document document, DiagnosticAnalyzer analyzer, AnalysisKind kind, TextSpan? spanOpt, CancellationToken cancellationToken)
+            {
+                return ComputeDiagnosticsAsync(_owner.Owner, analyzerDriverOpt, document, analyzer, kind, spanOpt, _owner.DiagnosticLogAggregator, cancellationToken);
+            }
+
             /// <summary>
             /// Return all local diagnostics (syntax, semantic) that belong to given document for the given StateSet (analyzer) by calculating them
             /// </summary>
-            public async Task<IEnumerable<DiagnosticData>> ComputeDiagnosticsAsync(
-                CompilationWithAnalyzers analyzerDriverOpt, Document document, DiagnosticAnalyzer analyzer, AnalysisKind kind, TextSpan? spanOpt, CancellationToken cancellationToken)
+            public static async Task<IEnumerable<DiagnosticData>> ComputeDiagnosticsAsync(
+                DiagnosticAnalyzerService service,
+                CompilationWithAnalyzers analyzerDriverOpt,
+                Document document,
+                DiagnosticAnalyzer analyzer,
+                AnalysisKind kind,
+                TextSpan? spanOpt,
+                DiagnosticLogAggregator logAggregatorOpt,
+                CancellationToken cancellationToken)
             {
                 if (analyzer is DocumentDiagnosticAnalyzer documentAnalyzer)
                 {
-                    var diagnostics = await ComputeDocumentDiagnosticAnalyzerDiagnosticsAsync(document, documentAnalyzer, kind, analyzerDriverOpt?.Compilation, cancellationToken).ConfigureAwait(false);
+                    var diagnostics = await ComputeDocumentDiagnosticAnalyzerDiagnosticsAsync(
+                        service, document, documentAnalyzer, kind, analyzerDriverOpt?.Compilation, logAggregatorOpt, cancellationToken).ConfigureAwait(false);
                     return ConvertToLocalDiagnostics(document, diagnostics);
                 }
 
-                var documentDiagnostics = await ComputeDiagnosticAnalyzerDiagnosticsAsync(analyzerDriverOpt, document, analyzer, kind, spanOpt, cancellationToken).ConfigureAwait(false);
+                var documentDiagnostics = await ComputeDiagnosticAnalyzerDiagnosticsAsync(
+                    service, analyzerDriverOpt, document, analyzer, kind, spanOpt, cancellationToken).ConfigureAwait(false);
                 return ConvertToLocalDiagnostics(document, documentDiagnostics);
             }
 
@@ -377,8 +392,32 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
             }
 
-            private async Task<IEnumerable<Diagnostic>> ComputeProjectDiagnosticAnalyzerDiagnosticsAsync(
-                Project project, ProjectDiagnosticAnalyzer analyzer, Compilation compilationOpt, CancellationToken cancellationToken)
+            private Task<IEnumerable<Diagnostic>> ComputeProjectDiagnosticAnalyzerDiagnosticsAsync(
+                Project project,
+                ProjectDiagnosticAnalyzer analyzer,
+                Compilation compilationOpt,
+                CancellationToken cancellationToken)
+            {
+                return ComputeProjectDiagnosticAnalyzerDiagnosticsAsync(_owner.Owner, project, analyzer, compilationOpt, _owner.DiagnosticLogAggregator, cancellationToken);
+            }
+
+            private Task<IEnumerable<Diagnostic>> ComputeDocumentDiagnosticAnalyzerDiagnosticsAsync(
+                Document document,
+                DocumentDiagnosticAnalyzer analyzer,
+                AnalysisKind kind,
+                Compilation compilationOpt,
+                CancellationToken cancellationToken)
+            {
+                return ComputeDocumentDiagnosticAnalyzerDiagnosticsAsync(_owner.Owner, document, analyzer, kind, compilationOpt, _owner.DiagnosticLogAggregator, cancellationToken);
+            }
+
+            private static async Task<IEnumerable<Diagnostic>> ComputeProjectDiagnosticAnalyzerDiagnosticsAsync(
+                DiagnosticAnalyzerService service,
+                Project project,
+                ProjectDiagnosticAnalyzer analyzer,
+                Compilation compilationOpt,
+                DiagnosticLogAggregator logAggregatorOpt,
+                CancellationToken cancellationToken)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -403,13 +442,19 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
                 catch (Exception e) when (!IsCanceled(e, cancellationToken))
                 {
-                    OnAnalyzerException(analyzer, project.Id, compilationOpt, e);
+                    OnAnalyzerException(service, analyzer, project.Id, compilationOpt, e, logAggregatorOpt);
                     return ImmutableArray<Diagnostic>.Empty;
                 }
             }
 
-            private async Task<IEnumerable<Diagnostic>> ComputeDocumentDiagnosticAnalyzerDiagnosticsAsync(
-                Document document, DocumentDiagnosticAnalyzer analyzer, AnalysisKind kind, Compilation compilationOpt, CancellationToken cancellationToken)
+            private static async Task<IEnumerable<Diagnostic>> ComputeDocumentDiagnosticAnalyzerDiagnosticsAsync(
+                DiagnosticAnalyzerService service,
+                Document document,
+                DocumentDiagnosticAnalyzer analyzer,
+                AnalysisKind kind,
+                Compilation compilationOpt,
+                DiagnosticLogAggregator logAggregatorOpt,
+                CancellationToken cancellationToken)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -448,22 +493,28 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
                 catch (Exception e) when (!IsCanceled(e, cancellationToken))
                 {
-                    OnAnalyzerException(analyzer, document.Project.Id, compilationOpt, e);
+                    OnAnalyzerException(service, analyzer, document.Project.Id, compilationOpt, e, logAggregatorOpt);
                     return ImmutableArray<Diagnostic>.Empty;
                 }
             }
 
-            private async Task<IEnumerable<Diagnostic>> ComputeDiagnosticAnalyzerDiagnosticsAsync(
-                CompilationWithAnalyzers analyzerDriverOpt, Document document, DiagnosticAnalyzer analyzer, AnalysisKind kind, TextSpan? spanOpt, CancellationToken cancellationToken)
+            private static async Task<IEnumerable<Diagnostic>> ComputeDiagnosticAnalyzerDiagnosticsAsync(
+                DiagnosticAnalyzerService service,
+                CompilationWithAnalyzers analyzerDriverOpt,
+                Document document,
+                DiagnosticAnalyzer analyzer,
+                AnalysisKind kind,
+                TextSpan? spanOpt,
+                CancellationToken cancellationToken)
             {
                 // quick optimization to reduce allocations.
-                if (analyzerDriverOpt == null || !_owner.SupportAnalysisKind(analyzer, document.Project.Language, kind))
+                if (analyzerDriverOpt == null || !SupportAnalysisKind(service.HostAnalyzerManager, analyzer, document.Project.Language, kind))
                 {
                     LogSyntaxInfo(analyzerDriverOpt, document, analyzer, kind);
                     return ImmutableArray<Diagnostic>.Empty;
                 }
 
-                if (!await AnalysisEnabled(document, analyzer, kind, cancellationToken).ConfigureAwait(false))
+                if (!await AnalysisEnabled(service.HostAnalyzerManager, document, analyzer, kind, cancellationToken).ConfigureAwait(false))
                 {
                     return ImmutableArray<Diagnostic>.Empty;
                 }
@@ -491,10 +542,10 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
             }
 
-            private async Task<bool> AnalysisEnabled(Document document, DiagnosticAnalyzer analyzer, AnalysisKind kind, CancellationToken cancellationToken)
+            private static async Task<bool> AnalysisEnabled(HostAnalyzerManager hostAnalyzerManager, Document document, DiagnosticAnalyzer analyzer, AnalysisKind kind, CancellationToken cancellationToken)
             {
                 // if project is not loaded successfully then, we disable semantic errors for compiler analyzers
-                if (kind == AnalysisKind.Syntax || !_owner.HostAnalyzerManager.IsCompilerDiagnosticAnalyzer(document.Project.Language, analyzer))
+                if (kind == AnalysisKind.Syntax || !hostAnalyzerManager.IsCompilerDiagnosticAnalyzer(document.Project.Language, analyzer))
                 {
                     return true;
                 }
@@ -537,7 +588,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 return (ex as OperationCanceledException)?.CancellationToken == cancellationToken;
             }
 
-            private void OnAnalyzerException(DiagnosticAnalyzer analyzer, ProjectId projectId, Compilation compilationOpt, Exception ex)
+            private static void OnAnalyzerException(
+                DiagnosticAnalyzerService service, DiagnosticAnalyzer analyzer, ProjectId projectId, Compilation compilationOpt, Exception ex, DiagnosticLogAggregator logAggregatorOpt)
             {
                 var exceptionDiagnostic = AnalyzerHelper.CreateAnalyzerExceptionDiagnostic(analyzer, ex);
 
@@ -546,11 +598,11 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     exceptionDiagnostic = CompilationWithAnalyzers.GetEffectiveDiagnostics(ImmutableArray.Create(exceptionDiagnostic), compilationOpt).SingleOrDefault();
                 }
 
-                var onAnalyzerException = _owner.GetOnAnalyzerException(projectId);
-                onAnalyzerException(ex, analyzer, exceptionDiagnostic);
+                var onAnalyzerException = service.GetOnAnalyzerException(projectId, logAggregatorOpt);
+                onAnalyzerException?.Invoke(ex, analyzer, exceptionDiagnostic);
             }
 
-            private IEnumerable<DiagnosticData> ConvertToLocalDiagnosticsWithoutCompilation(Document targetDocument, IEnumerable<Diagnostic> diagnostics, TextSpan? span = null)
+            private static IEnumerable<DiagnosticData> ConvertToLocalDiagnosticsWithoutCompilation(Document targetDocument, IEnumerable<Diagnostic> diagnostics, TextSpan? span = null)
             {
                 var project = targetDocument.Project;
                 Contract.ThrowIfTrue(project.SupportsCompilation);
@@ -589,7 +641,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 return await _diagnosticAnalyzerRunner.AnalyzeAsync(analyzerDriver, project, forcedAnalysis, cancellationToken).ConfigureAwait(false);
             }
 
-            private IEnumerable<DiagnosticData> ConvertToLocalDiagnosticsWithCompilation(Document targetDocument, IEnumerable<Diagnostic> diagnostics, TextSpan? span = null)
+            private static IEnumerable<DiagnosticData> ConvertToLocalDiagnosticsWithCompilation(Document targetDocument, IEnumerable<Diagnostic> diagnostics, TextSpan? span = null)
             {
                 var project = targetDocument.Project;
                 Contract.ThrowIfFalse(project.SupportsCompilation);

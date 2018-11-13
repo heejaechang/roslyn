@@ -118,10 +118,6 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.EditAndContinue
             Public Function IsCompilationEndAnalyzer(analyzer As DiagnosticAnalyzer, project As Project, compilation As Compilation) As Boolean Implements IDiagnosticAnalyzerService.IsCompilationEndAnalyzer
                 Throw New NotImplementedException()
             End Function
-
-            Public Function GetDiagnosticsAsync(document As Document, analyzers As IEnumerable(Of DiagnosticAnalyzer), kind As AnalysisKind, Optional cancellationToken As CancellationToken = Nothing) As Task(Of IEnumerable(Of DiagnosticData)) Implements IDiagnosticAnalyzerService.GetDiagnosticsAsync
-                Throw New NotImplementedException()
-            End Function
         End Class
     End Class
 End Namespace

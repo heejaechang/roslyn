@@ -7,6 +7,7 @@ using System.Composition;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Diagnostics.EngineV2;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Shared.Options;
 using Microsoft.CodeAnalysis.SolutionCrawler;
@@ -119,12 +120,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 var compilerAnalyzer = _service._analyzerService.GetCompilerDiagnosticAnalyzer(document.Project.Language);
                 if (compilerAnalyzer != null)
                 {
-                    return _service._analyzerService.GetDiagnosticsAsync(document, SpecializedCollections.SingletonEnumerable(compilerAnalyzer), kind, cancellationToken);
+                    return DiagnosticIncrementalAnalyzer.GetDiagnosticsAsync(_service._analyzerService, document, SpecializedCollections.SingletonEnumerable(compilerAnalyzer), kind, cancellationToken);
                 }
 
                 // document that doesn't support compiler diagnostics such as fsharp or typescript
                 var analyzers = _service._analyzerService.GetDiagnosticAnalyzers(document.Project);
-                return _service._analyzerService.GetDiagnosticsAsync(document, analyzers, AnalysisKind.Syntax, cancellationToken);
+                return DiagnosticIncrementalAnalyzer.GetDiagnosticsAsync(_service._analyzerService, document, analyzers, kind, cancellationToken);
             }
 
             public void RemoveDocument(DocumentId documentId)
