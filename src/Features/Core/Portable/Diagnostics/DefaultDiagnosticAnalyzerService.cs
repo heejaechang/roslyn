@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     return;
                 }
 
-                await AnalyzeForKind(document, AnalysisKind.Syntax, cancellationToken).ConfigureAwait(false);
+                await AnalyzeForKind(document, AnalysisKind.Semantic, cancellationToken).ConfigureAwait(false);
             }
 
             private async Task AnalyzeForKind(Document document, AnalysisKind kind, CancellationToken cancellationToken)
