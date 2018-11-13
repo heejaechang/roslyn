@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return null;
             }
 
-            return new DefaultDiagnosticAnalyzer(this, workspace);
+            return new DefaultDiagnosticIncrementalAnalyzer(this, workspace);
         }
 
         public event EventHandler<DiagnosticsUpdatedArgs> DiagnosticsUpdated;
@@ -56,12 +56,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             this.DiagnosticsUpdated?.Invoke(this, state);
         }
 
-        private class DefaultDiagnosticAnalyzer : IIncrementalAnalyzer
+        private class DefaultDiagnosticIncrementalAnalyzer : IIncrementalAnalyzer
         {
             private readonly DefaultDiagnosticAnalyzerService _service;
             private readonly Workspace _workspace;
 
-            public DefaultDiagnosticAnalyzer(DefaultDiagnosticAnalyzerService service, Workspace workspace)
+            public DefaultDiagnosticIncrementalAnalyzer(DefaultDiagnosticAnalyzerService service, Workspace workspace)
             {
                 _service = service;
                 _workspace = workspace;
