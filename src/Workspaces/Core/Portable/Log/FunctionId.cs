@@ -433,5 +433,7 @@ namespace Microsoft.CodeAnalysis.Internal.Log
         Workspace_Events,
 
         Refactoring_ExtractMethod_UnknownMatrixItem,
+        Workspace_SetCurrentSolution,
+        Workspace_Update,
     }
 }

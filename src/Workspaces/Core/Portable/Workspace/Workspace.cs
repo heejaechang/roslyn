@@ -173,22 +173,26 @@ namespace Microsoft.CodeAnalysis
         protected Solution SetCurrentSolution(Solution solution)
         {
             var currentSolution = Volatile.Read(ref _latestSolution);
-            if (solution == currentSolution)
+            using (Logger.LogBlock(FunctionId.Workspace_SetCurrentSolution, s => s.WorkspaceVersion.ToString(), currentSolution, CancellationToken.None))
             {
-                // No change
-                return solution;
-            }
-
-            while (true)
-            {
-                var newSolution = solution.WithNewWorkspace(this, currentSolution.WorkspaceVersion + 1);
-                var replacedSolution = Interlocked.CompareExchange(ref _latestSolution, newSolution, currentSolution);
-                if (replacedSolution == currentSolution)
+                if (solution == currentSolution)
                 {
-                    return newSolution;
+                    // No change
+                    return solution;
                 }
 
-                currentSolution = replacedSolution;
+                while (true)
+                {
+                    var newSolution = solution.WithNewWorkspace(this, currentSolution.WorkspaceVersion + 1);
+                    var replacedSolution = Interlocked.CompareExchange(ref _latestSolution, newSolution, currentSolution);
+                    if (replacedSolution == currentSolution)
+                    {
+                        Logger.Log(FunctionId.Workspace_Update, s => s.WorkspaceVersion.ToString(), newSolution);
+                        return newSolution;
+                    }
+
+                    currentSolution = replacedSolution;
+                }
             }
         }
 
