@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                     private readonly ConcurrentDictionary<DocumentId, IDisposable> _higherPriorityDocumentsNotProcessed;
 
                     private ProjectId _currentProjectProcessing;
-                    private Solution _processingSolution;
+                    private int _lastSolutionVersion;
                     private IDisposable _projectCache;
 
                     // whether this processor is running or not
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                         _higherPriorityDocumentsNotProcessed = new ConcurrentDictionary<DocumentId, IDisposable>(concurrencyLevel: 2, capacity: 20);
 
                         _currentProjectProcessing = default;
-                        _processingSolution = null;
+                        _lastSolutionVersion = -1;
 
                         Start();
                     }
@@ -310,7 +310,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                         try
                         {
-                            var solution = _processingSolution;
+                            var solution = this.Processor.CurrentSolution;
 
                             using (Logger.LogBlock(FunctionId.WorkCoordinator_ProcessDocumentAsync, (w, s) => $"{s.WorkspaceVersion}: {w}", workItem, solution, source.Token))
                             {
@@ -444,14 +444,8 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                     private void ResetLogAggregatorIfNeeded(Solution currentSolution)
                     {
-                        if (currentSolution == null || _processingSolution == null ||
-                            currentSolution.Id == _processingSolution.Id)
-                        {
-                            return;
-                        }
-
                         SolutionCrawlerLogger.LogIncrementalAnalyzerProcessorStatistics(
-                            this.Processor._registration.CorrelationId, _processingSolution, this.Processor._logAggregator, this.Analyzers);
+                            this.Processor._registration.CorrelationId, currentSolution, this.Processor._logAggregator, this.Analyzers);
 
                         this.Processor.ResetLogAggregator();
                     }
@@ -460,10 +454,10 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                     {
                         try
                         {
-                            using (Logger.LogBlock(FunctionId.WorkCoordinator_ResetState, s => s?.WorkspaceVersion.ToString() ?? "null", _processingSolution, CancellationToken.None))
+                            using (Logger.LogBlock(FunctionId.WorkCoordinator_ResetState, s => s.ToString(), _lastSolutionVersion, CancellationToken.None))
                             {
                                 var currentSolution = this.Processor.CurrentSolution;
-                                if (currentSolution == _processingSolution)
+                                if (currentSolution.WorkspaceVersion == _lastSolutionVersion)
                                 {
                                     return;
                                 }
@@ -471,8 +465,8 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                                 // solution has changed
                                 ResetLogAggregatorIfNeeded(currentSolution);
 
-                                _processingSolution = currentSolution;
-                                Logger.Log(FunctionId.WorkCoordinator_Solution, s => s.WorkspaceVersion.ToString(), currentSolution);
+                                _lastSolutionVersion = currentSolution.WorkspaceVersion;
+                                Logger.Log(FunctionId.WorkCoordinator_Solution, s => s.ToString(), _lastSolutionVersion);
 
                                 // synchronize new solution to OOP
                                 await currentSolution.Workspace.SynchronizePrimaryWorkspaceAsync(currentSolution, this.CancellationToken).ConfigureAwait(false);
@@ -497,7 +491,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                     {
                         base.Shutdown();
 
-                        SolutionCrawlerLogger.LogIncrementalAnalyzerProcessorStatistics(this.Processor._registration.CorrelationId, _processingSolution, this.Processor._logAggregator, this.Analyzers);
+                        SolutionCrawlerLogger.LogIncrementalAnalyzerProcessorStatistics(this.Processor._registration.CorrelationId, this.Processor.CurrentSolution, this.Processor._logAggregator, this.Analyzers);
 
                         _workItemQueue.Dispose();
 
@@ -512,7 +506,6 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                     {
                         CancellationTokenSource source = new CancellationTokenSource();
 
-                        _processingSolution = this.Processor.CurrentSolution;
                         foreach (var item in items)
                         {
                             ProcessDocumentAsync(analyzers, item, source).Wait();
