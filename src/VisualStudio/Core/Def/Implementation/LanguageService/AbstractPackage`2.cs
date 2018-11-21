@@ -72,6 +72,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
             //          installs a service roslyn visual studio workspace requires
             shell.LoadPackage(Guids.RoslynPackageId, out var setupPackage);
 
+            // force load the package
+            shell.LoadPackage(new Guid("49e24138-9ee3-49e0-8ede-6b39f49303bf"), out var _);
+
             _miscellaneousFilesWorkspace = this.ComponentModel.GetService<MiscellaneousFilesWorkspace>();
             if (_miscellaneousFilesWorkspace != null)
             {
