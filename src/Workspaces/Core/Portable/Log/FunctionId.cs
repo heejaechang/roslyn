@@ -435,5 +435,8 @@ namespace Microsoft.CodeAnalysis.Internal.Log
         Refactoring_ExtractMethod_UnknownMatrixItem,
         Workspace_SetCurrentSolution,
         Workspace_Update,
+        WorkCoordinator_ResetState,
+        WorkCoordinator_Solution,
+        WorkCoordinator_ProcessHighPriorityDocumentAsync,
     }
 }

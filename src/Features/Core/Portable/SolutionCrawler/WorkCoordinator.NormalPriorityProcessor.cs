@@ -13,7 +13,6 @@ using Microsoft.CodeAnalysis.Notification;
 using Microsoft.CodeAnalysis.Remote;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Shared.TestHooks;
-using Microsoft.CodeAnalysis.Versions;
 using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.SolutionCrawler
@@ -311,10 +310,12 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                         try
                         {
-                            using (Logger.LogBlock(FunctionId.WorkCoordinator_ProcessDocumentAsync, w => w.ToString(), workItem, source.Token))
+                            var solution = _processingSolution;
+
+                            using (Logger.LogBlock(FunctionId.WorkCoordinator_ProcessDocumentAsync, (w, s) => $"{s.WorkspaceVersion}: {w}", workItem, solution, source.Token))
                             {
                                 var cancellationToken = source.Token;
-                                var document = _processingSolution.GetDocument(documentId);
+                                var document = solution.GetDocument(documentId);
 
                                 if (document != null)
                                 {
@@ -459,29 +460,32 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                     {
                         try
                         {
-                            var currentSolution = this.Processor.CurrentSolution;
-
-                            if (currentSolution == _processingSolution)
+                            using (Logger.LogBlock(FunctionId.WorkCoordinator_ResetState, s => s?.WorkspaceVersion.ToString() ?? "null", _processingSolution, CancellationToken.None))
                             {
-                                return;
+                                var currentSolution = this.Processor.CurrentSolution;
+                                if (currentSolution == _processingSolution)
+                                {
+                                    return;
+                                }
+
+                                // solution has changed
+                                ResetLogAggregatorIfNeeded(currentSolution);
+
+                                _processingSolution = currentSolution;
+                                Logger.Log(FunctionId.WorkCoordinator_Solution, s => s.WorkspaceVersion.ToString(), currentSolution);
+
+                                // synchronize new solution to OOP
+                                await currentSolution.Workspace.SynchronizePrimaryWorkspaceAsync(currentSolution, this.CancellationToken).ConfigureAwait(false);
+
+                                await RunAnalyzersAsync(this.Analyzers, currentSolution, (a, s, c) => a.NewSolutionSnapshotAsync(s, c), this.CancellationToken).ConfigureAwait(false);
+
+                                foreach (var id in this.Processor.GetOpenDocumentIds())
+                                {
+                                    AddHigherPriorityDocument(id);
+                                }
+
+                                SolutionCrawlerLogger.LogResetStates(this.Processor._logAggregator);
                             }
-
-                            // solution has changed
-                            ResetLogAggregatorIfNeeded(currentSolution);
-
-                            _processingSolution = currentSolution;
-
-                            // synchronize new solution to OOP
-                            await currentSolution.Workspace.SynchronizePrimaryWorkspaceAsync(currentSolution, this.CancellationToken).ConfigureAwait(false);
-
-                            await RunAnalyzersAsync(this.Analyzers, currentSolution, (a, s, c) => a.NewSolutionSnapshotAsync(s, c), this.CancellationToken).ConfigureAwait(false);
-
-                            foreach (var id in this.Processor.GetOpenDocumentIds())
-                            {
-                                AddHigherPriorityDocument(id);
-                            }
-
-                            SolutionCrawlerLogger.LogResetStates(this.Processor._logAggregator);
                         }
                         catch (Exception e) when (FatalError.ReportUnlessCanceled(e))
                         {

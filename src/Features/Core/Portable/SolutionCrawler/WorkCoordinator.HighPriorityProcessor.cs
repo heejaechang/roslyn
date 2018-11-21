@@ -156,10 +156,11 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                         try
                         {
-                            using (Logger.LogBlock(FunctionId.WorkCoordinator_ProcessDocumentAsync, w => w.ToString(), workItem, source.Token))
+                            using (Logger.LogBlock(FunctionId.WorkCoordinator_ProcessHighPriorityDocumentAsync, (w, s) => $"{s.WorkspaceVersion}: {w}", workItem, solution, source.Token))
                             {
                                 var cancellationToken = source.Token;
                                 var document = solution.GetDocument(documentId);
+
                                 if (document != null)
                                 {
                                     await ProcessDocumentAnalyzersAsync(document, analyzers, workItem, cancellationToken).ConfigureAwait(false);
